@@ -99,3 +99,13 @@ function submitFunction()
 		}
 	});
 }
+
+function bindPostcode()
+{
+	$('input[name^=postcode]').on('keyup', function(e)
+	{
+		var char = String.fromCharCode(e.keyCode);
+		if (/[a-zA-Z]/.test(char))
+			$.trim($(this).val($(this).val().toUpperCase()));
+	});
+}

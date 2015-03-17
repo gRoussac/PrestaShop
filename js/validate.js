@@ -117,24 +117,27 @@ function validate_isAddress(s)
 	return reg.test(s);
 }
 
-function validate_isPostCode(s, pattern)
+function validate_isPostCode(s, pattern, iso_code)
 {
+	if (typeof iso_code === 'undefined' || iso_code == '')
+		iso_code = '[A-Z]{2}';
 	if (typeof(pattern) == 'undefined' || pattern.length == 0)
 		pattern = '[a-z 0-9-]+';
 	else
 	{
 		var replacements = {
-			' ': '( |)',
-			'-': '(-|)',
+			' ': '(?: |)',
+			'-': '(?:-|)',
 			'N': '[0-9]',
-			'L': '[a-zA-Z]'
+			'L': '[a-zA-Z]',
+			'C': iso_code
 		};
 
+		var nb = replacements.lentgh;
 		for (var new_value in replacements)
-			pattern = pattern.split(new_value).join(replacements[new_value]); 
+			pattern = pattern.split(new_value).join(replacements[new_value]);
 	}
-
-	var reg = new RegExp('^'+pattern+'$', 'i');
+	var reg = new RegExp('^' + pattern + '$');
 	return reg.test(s);
 }
 
@@ -176,8 +179,9 @@ function validate_isPasswd(s)
 $(document).on('focusout', 'input.validate, textarea.validate', function() {
 	if ($(this).hasClass('is_required') || $(this).val().length)
 	{
-		if ($(this).attr('name') == 'postcode' && typeof(countriesNeedZipCode[$('#id_country option:selected').val()]) != 'undefined')
-			var result = window['validate_'+$(this).attr('data-validate')]($(this).val(), countriesNeedZipCode[$('#id_country option:selected').val()]);
+		var id_country = $('#id_country option:selected').val();
+		if ($(this).attr('name') == 'postcode' && typeof(countriesNeedZipCode[id_country]) != 'undefined' && typeof(countries[id_country]['iso_code']) != 'undefined')
+			var result = window['validate_'+$(this).attr('data-validate')]($(this).val(), countriesNeedZipCode[id_country], countries[id_country]['iso_code']);
 		else
 			var result = window['validate_'+$(this).attr('data-validate')]($(this).val())
 

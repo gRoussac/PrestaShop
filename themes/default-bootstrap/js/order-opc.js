@@ -877,6 +877,13 @@ function bindInputs()
 	$('#cgv').on('click', function(e){
 		updatePaymentMethodsDisplay();
 	});
+
+	$('input[name^=postcode]').on('keyup', function(e)
+	{
+		var char = String.fromCharCode(e.keyCode);
+		if (/[a-zA-Z]/.test(char))
+			$.trim($(this).val($(this).val().toUpperCase()));
+	});
 }
 
 function multishippingMode(it)

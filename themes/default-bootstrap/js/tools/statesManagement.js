@@ -25,6 +25,7 @@
 //global variables
 var countriesNeedIDNumber = [];
 var countriesNeedZipCode = [];
+var states = [];
 
 $(document).ready(function(){
 	setCountries();
@@ -45,19 +46,20 @@ function setCountries()
 	    for (var i in countries)
 		{
 			var id_country = countries[i]['id_country'];
-			if (typeof countries[i]['states'] !== 'undefined' && countries[i]['states'] && countries[i]['contains_states'])
+			if (typeof countries[i]['states'] !== 'undefined' && parseInt(countries[i]['contains_states']))
 			{
 				countriesPS[id_country] = [];
 	    		for (var j in countries[i]['states'])
 					countriesPS[parseInt(id_country)].push({'id' : parseInt(countries[i]['states'][j]['id_state']), 'name' : countries[i]['states'][j]['name']});
 			}
+
 			if (typeof countries[i]['need_identification_number'] !== 'undefined' && parseInt(countries[i]['need_identification_number']) > 0)
 				countriesNeedIDNumber.push(parseInt(countries[i]['id_country']));
 			if (typeof countries[i]['need_zip_code'] !== 'undefined' && parseInt(countries[i]['need_zip_code']) > 0)
 				countriesNeedZipCode[parseInt(countries[i]['id_country'])] = countries[i]['zip_code_format'];
 		}
 	}
-	countries =  countriesPS;
+	states = countriesPS;
 }
 
 function bindCheckbox()
@@ -81,9 +83,11 @@ function bindUniform()
 
 function bindPostcode()
 {
-	$(document).on('keyup', 'input[name=postcode]', function(e)
+	$('input[name=postcode]').on('keyup', function(e)
 	{
-		$(this).val($(this).val().toUpperCase());
+		var char = String.fromCharCode(e.keyCode);
+		if (/[a-zA-Z]/.test(char))
+			$.trim($(this).val($(this).val().toUpperCase()));
 	});
 }
 
@@ -124,10 +128,10 @@ function updateState(suffix)
 {
 	$('#id_state' + (typeof suffix !== 'undefined' ? '_' + suffix : '')+' option:not(:first-child)').remove();
 	if (typeof countries !== 'undefined')
-		var states = countries[parseInt($('#id_country' + (typeof suffix !== 'undefined' ? '_' + suffix : '')).val())];
-	if (typeof states !== 'undefined')
+		var state_list = states[parseInt($('#id_country' + (typeof suffix !== 'undefined' ? '_' + suffix : '')).val())];
+	if (typeof state_list !== 'undefined')
 	{
-		$(states).each(function(key, item){
+		$(state_list).each(function(key, item){
 			$('#id_state' + (typeof suffix !== 'undefined' ? '_' + suffix : '')).append('<option value="' + parseInt(item.id) + '">' + item.name + '</option>');
 		});
 
