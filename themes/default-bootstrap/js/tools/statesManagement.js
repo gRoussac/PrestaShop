@@ -31,7 +31,7 @@ $(document).ready(function(){
 	setCountries();
 	bindStateInputAndUpdate();
 	bindUniform();
-	bindPostcode();
+	bindZipcode();
 	bindCheckbox();
 	$(document).on('click', '#invoice_address', function(e){
 		bindCheckbox();
@@ -81,7 +81,7 @@ function bindUniform()
 		$("select.form-control,input[type='radio'],input[type='checkbox']").uniform();
 }
 
-function bindPostcode()
+function bindZipcode()
 {
 	$('input[name=postcode]').on('keyup', function(e)
 	{
@@ -103,6 +103,8 @@ function bindStateInputAndUpdate()
 		updateState();
 		updateNeedIDNumber();
 		updateZipCode();
+		if (typeof validate_field !== 'undefined')
+			validate_field('#postcode');
 	});
 
 	if ($('#id_country_invoice').length !== 0)
@@ -112,6 +114,8 @@ function bindStateInputAndUpdate()
 			updateState('invoice');
 			updateNeedIDNumber('invoice');
 			updateZipCode('invoice');
+			if (typeof validate_field !== 'undefined')
+				validate_field('#postcode_invoice');
 		});
 		updateState('invoice');
 		updateNeedIDNumber('invoice');
@@ -144,8 +148,8 @@ function updateState(suffix)
 
 function updateNeedIDNumber(suffix)
 {
-	var idCountry = parseInt($('#id_country' + (typeof suffix !== 'undefined' ? '_' + suffix : '')).val());
-	if (typeof countriesNeedIDNumber !== 'undefined' && in_array(idCountry, countriesNeedIDNumber))
+	var id_country = parseInt($('#id_country' + (typeof suffix !== 'undefined' ? '_' + suffix : '')).val());
+	if (in_array(id_country, countriesNeedIDNumber))
 	{
 		$('.dni' + (typeof suffix !== 'undefined' ? '_' + suffix : '') + ':hidden').fadeIn('slow');
 		$('#dni').uniform();
@@ -156,8 +160,8 @@ function updateNeedIDNumber(suffix)
 
 function updateZipCode(suffix)
 {
-	var idCountry = parseInt($('#id_country' + (typeof suffix !== 'undefined' ? '_' + suffix : '')).val());
-	if (typeof countriesNeedZipCode !== 'undefined' && typeof countriesNeedZipCode[idCountry] !== 'undefined')
+	var id_country = parseInt($('#id_country' + (typeof suffix !== 'undefined' ? '_' + suffix : '')).val());
+	if (typeof countriesNeedZipCode[id_country] !== 'undefined')
 	{
 		$('.postcode' + (typeof suffix !== 'undefined' ? '_' + suffix : '') + ':hidden').fadeIn('slow');
 		$('#postcode').uniform();

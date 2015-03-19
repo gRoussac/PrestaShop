@@ -176,18 +176,31 @@ function validate_isPasswd(s)
 	return (s.length >= 5 && s.length < 255);
 }
 
-$(document).on('focusout', 'input.validate, textarea.validate', function() {
-	if ($(this).hasClass('is_required') || $(this).val().length)
+function validate_field(that)
+{
+	if ($(that).hasClass('is_required') || $(that).val().length)
 	{
-		var id_country = $('#id_country option:selected').val();
-		if ($(this).attr('name') == 'postcode' && typeof(countriesNeedZipCode[id_country]) != 'undefined' && typeof(countries[id_country]['iso_code']) != 'undefined')
-			var result = window['validate_'+$(this).attr('data-validate')]($(this).val(), countriesNeedZipCode[id_country], countries[id_country]['iso_code']);
-		else
-			var result = window['validate_'+$(this).attr('data-validate')]($(this).val())
+		if ($(that).attr('data-validate') == 'isPostCode')
+		{
+			var selector = '#id_country';
+			if ($(that).attr('name') == 'postcode_invoice')
+				selector += '_invoice';
+
+			var id_country = $(selector + ' option:selected').val();
+
+			if (typeof(countriesNeedZipCode[id_country]) != 'undefined' && typeof(countries[id_country]['iso_code']) != 'undefined')
+				var result = window['validate_'+$(that).attr('data-validate')]($(that).val(), countriesNeedZipCode[id_country], countries[id_country]['iso_code']);
+		}
+		else if($(that).attr('data-validate'))
+			var result = window['validate_' + $(that).attr('data-validate')]($(that).val());
 
 		if (result)
-			$(this).parent().removeClass('form-error').addClass('form-ok');
+			$(that).parent().removeClass('form-error').addClass('form-ok');
 		else
-			$(this).parent().addClass('form-error').removeClass('form-ok');
+			$(that).parent().addClass('form-error').removeClass('form-ok');
 	}
+}
+
+$(document).on('focusout', 'input.validate, textarea.validate', function() {
+	validate_field(this);
 });

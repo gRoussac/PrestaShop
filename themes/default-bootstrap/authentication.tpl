@@ -220,7 +220,7 @@
 							{assign var='postCodeExist' value=true}
 							<div class="required postcode form-group">
 								<label for="postcode">{l s='Zip/Postal Code'} <sup>*</sup></label>
-								<input type="text" class="form-control" name="postcode" id="postcode" value="{if isset($smarty.post.postcode)}{$smarty.post.postcode}{/if}"/>
+								<input type="text" class="validate form-control" name="postcode" id="postcode" data-validate="isPostCode" value="{if isset($smarty.post.postcode)}{$smarty.post.postcode}{/if}"/>
 							</div>
 						{elseif $field_name eq "city"}
 							<div class="required form-group">
@@ -258,7 +258,7 @@
 					{if $postCodeExist eq false}
 						<div class="required postcode unvisible form-group">
 							<label for="postcode">{l s='Zip/Postal Code'} <sup>*</sup></label>
-							<input type="text" class="form-control" name="postcode" id="postcode" value="{if isset($smarty.post.postcode)}{$smarty.post.postcode}{/if}"/>
+							<input type="text" class="validate form-control" name="postcode" id="postcode" data-validate="isPostCode" value="{if isset($smarty.post.postcode)}{$smarty.post.postcode}{/if}"/>
 						</div>
 					{/if}
 					{if $dniExist eq false}
@@ -328,7 +328,7 @@
 						{$postCodeExist = true}
 						<div class="required postcode_invoice form-group">
 							<label for="postcode_invoice">{l s='Zip/Postal Code'} <sup>*</sup></label>
-							<input type="text" class="form-control" name="postcode_invoice" id="postcode_invoice" value="{if isset($smarty.post.postcode_invoice) && $smarty.post.postcode_invoice}{$smarty.post.postcode_invoice}{/if}"/>
+							<input type="text" class="validate form-control" name="postcode_invoice" id="postcode_invoice" data-validate="isPostCode" value="{if isset($smarty.post.postcode_invoice) && $smarty.post.postcode_invoice}{$smarty.post.postcode_invoice}{/if}"/>
 						</div>
 						{elseif $field_name eq "city"}
 						<div class="required form-group">
@@ -584,7 +584,7 @@
 						{assign var='postCodeExist' value=true}
 						<p class="required postcode form-group">
 							<label for="postcode">{l s='Zip/Postal Code'} <sup>*</sup></label>
-							<input type="text" class="form-control" name="postcode" id="postcode" value="{if isset($smarty.post.postcode)}{$smarty.post.postcode}{/if}"/>
+							<input type="text" class="validate form-control" name="postcode" id="postcode" data-validate="isPostCode" value="{if isset($smarty.post.postcode)}{$smarty.post.postcode}{/if}"/>
 						</p>
 					{elseif $field_name eq "city"}
 						<p class="required form-group">
@@ -615,7 +615,7 @@
 				{if $postCodeExist eq false}
 					<p class="required postcode form-group unvisible">
 						<label for="postcode">{l s='Zip/Postal Code'} <sup>*</sup></label>
-						<input type="text" class="form-control" name="postcode" id="postcode" value="{if isset($smarty.post.postcode)}{$smarty.post.postcode}{/if}"/>
+						<input type="text" class="validate form-control" name="postcode" id="postcode" data-validate="isPostCode" value="{if isset($smarty.post.postcode)}{$smarty.post.postcode}{/if}"/>
 					</p>
 				{/if}
 				{if $stateExist eq false}
