@@ -1853,7 +1853,7 @@ class OrderCore extends ObjectModel
 		{
 			// sum by taxes
 			$taxes_by_tax = Db::getInstance()->executeS('
-			SELECT odt.`id_order_detail`, t.`name`, t.`rate`, SUM(`total_amount`) AS `total_amount`
+			SELECT odt.`id_order_detail`, t.`name`, t.`rate`, SUM(od.`total_price_tax_excl`) AS total_price_tax_excl, SUM(`total_amount`) AS `total_amount`
 			FROM `'._DB_PREFIX_.'order_detail_tax` odt
 			LEFT JOIN `'._DB_PREFIX_.'tax` t ON (t.`id_tax` = odt.`id_tax`)
 			LEFT JOIN `'._DB_PREFIX_.'order_detail` od ON (od.`id_order_detail` = odt.`id_order_detail`)
