@@ -82,7 +82,7 @@ ALTER TABLE `PREFIX_cart_product` DROP KEY `cart_product_index`;
 ALTER IGNORE TABLE `PREFIX_cart_product` ADD PRIMARY KEY (`id_cart`,`id_product`,`id_product_attribute`,`id_address_delivery`);
 ALTER TABLE `PREFIX_cart_product` ADD KEY `id_cart_order` (`id_cart`, `date_add`, `id_product`, `id_product_attribute`);
 ALTER TABLE `PREFIX_customization` DROP KEY id_cart;
-ALTER IGNORE TABLE `PREFIX_customization` ADD UNIQUE `id_cart_product` (`id_cart`, `id_product`, `id_product_attribute`);
+ALTER IGNORE TABLE `PREFIX_customization` ADD KEY `id_cart_product` (`id_cart`, `id_product`, `id_product_attribute`);
 ALTER TABLE `PREFIX_category` DROP KEY nleftright, DROP KEY nleft;
 ALTER TABLE `PREFIX_category` ADD KEY `activenleft` (`active`,`nleft`), ADD KEY `activenright` (`active`,`nright`);
 ALTER IGNORE TABLE `PREFIX_image_shop` DROP KEY `id_image`, ADD PRIMARY KEY (`id_image`, `id_shop`, `cover`);
@@ -212,3 +212,8 @@ INSERT INTO `PREFIX_hook` (`name`, `title`, `description`) VALUES ('displayInvoi
 UPDATE `PREFIX_hook` SET position = 0 WHERE name LIKE 'action%';
 
 ALTER IGNORE TABLE `PREFIX_specific_price` ADD UNIQUE KEY `id_product_2` (`id_product`,`id_shop`,`id_shop_group`,`id_currency`,`id_country`,`id_group`,`id_customer`,`id_product_attribute`,`from_quantity`,`id_specific_price_rule`,`from`,`to`);
+
+INSERT INTO `PREFIX_configuration` (`name`, `value`, `date_add`, `date_upd`)
+  VALUES ('PS_INVCE_INVOICE_ADDR_RULES', '{"avoid":["vat_number","phone","phone_mobile"]}', NOW(), NOW());
+INSERT INTO `PREFIX_configuration` (`name`, `value`, `date_add`, `date_upd`)
+  VALUES ('PS_INVCE_DELIVERY_ADDR_RULES', '{"avoid":["vat_number","phone","phone_mobile"]}', NOW(), NOW());
