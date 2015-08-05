@@ -5102,7 +5102,11 @@ class AdminProductsControllerCore extends AdminController
 
                 if ($max) {
                     $max++;
-                    $max = $max - count($positions);
+                    if (count($positions) != $max) {
+                        $max = $max - count($positions);
+                    } else {
+                        $max = 0;
+                    }
                 }
 
                 foreach ($positions as $position => $value) {
