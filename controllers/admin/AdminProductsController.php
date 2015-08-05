@@ -5092,30 +5092,46 @@ class AdminProductsControllerCore extends AdminController
             $selected_pagination = (int)Tools::getValue('selected_pagination');
 
             if (is_array($positions)) {
+                foreach ($positions as $value) {
+
+                    $pos = explode('_', $value);
+                    if (isset($pos[3]) && $pos[3] > $max) {
+                        $max = $pos[3];
+                    }
+                }
+
+                if ($max) {
+                    $max++;
+                    $max = $max - count($positions);
+                }
+
                 foreach ($positions as $position => $value) {
                     $pos = explode('_', $value);
-
                     if ((isset($pos[1]) && isset($pos[2])) && ($pos[1] == $id_category && (int)$pos[2] === $id_product)) {
+
+                        $next_position = $position;
+                        if ($max) {
+                            $next_position = $next_position + $max;
+                        }
                         if ($page > 1) {
-                            $position = $position + (($page - 1) * $selected_pagination);
+                            $next_position = $next_position + (($page - 1) * $selected_pagination);
                         }
-
-                        if ($product = new Product((int)$pos[2])) {
-                            if (isset($position) && $product->updatePosition($way, $position)) {
-                                $category = new Category((int)$id_category);
-                                if (Validate::isLoadedObject($category)) {
-                                    hook::Exec('categoryUpdate', array('category' => $category));
-                                }
-                                echo 'ok position '.(int)$position.' for product '.(int)$pos[2]."\r\n";
-                            } else {
-                                echo '{"hasError" : true, "errors" : "Can not update product '.(int)$id_product.' to position '.(int)$position.' "}';
-                            }
-                        } else {
-                            echo '{"hasError" : true, "errors" : "This product ('.(int)$id_product.') can t be loaded"}';
-                        }
-
                         break;
                     }
+                }
+
+                if (isset($next_position) && $product = new Product($id_product)) {
+                    if ($product->updatePosition($way, $next_position)) {
+                        $category = new Category((int)$id_category);
+                        if (Validate::isLoadedObject($category)) {
+                            hook::Exec('categoryUpdate', array('category' => $category));
+                        }
+                        echo 'ok position '.(int)$next_position.' for product '.(int)$id_product."\r\n";
+                    } else {
+                        echo '{"hasError" : true, "errors" : "Can not update product '.(int)$id_product.' to position '.(int)$next_position.' "}';
+                    }
+                } else {
+                    echo '{"hasError" : true, "errors" : "This product ('.(int)$id_product.') can t be loaded"}';
                 }
             }
         }
