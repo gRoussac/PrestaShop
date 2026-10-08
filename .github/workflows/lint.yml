@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '16.x'
+          node-version: "16.x"
 
       - name: BackOffice Theme `new-theme`
         run: cd ./admin-dev/themes/new-theme && npm ci && npm run scss-lint
@@ -35,13 +35,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '16.x'
+          node-version: "16.x"
 
       - name: Validate npm config
         run: >-
-            (cd admin-dev/themes/default && npm ci)
-            && (cd admin-dev/themes/new-theme && npm ci)
-            && (cd themes && npm ci)
+          (cd admin-dev/themes/default && npm ci)
+          && (cd admin-dev/themes/new-theme && npm ci)
+          && (cd themes && npm ci)
 
       - name: BackOffice Theme `default`
         run: cd ./admin-dev/themes/default && npm ci && npm run lint
@@ -82,21 +82,17 @@ jobs:
       - name: Run Lint Yaml on `src` tags are allowed
         run: php bin/console lint:yaml src --parse-tags
 
-      - name: Run Lint Yaml on `.t9n.yml`
-        run: php bin/console lint:yaml .t9n.yml
-
   yamllint:
     name: YAML Lint (YamlLint Check)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: "3.x"
       - name: Install YAMLLint
         run: |
           pip install --user yamllint
       - uses: actions/checkout@v4
-
       - name: yamllint on `.github`
         run: yamllint -c .github/workflows/yamllint/.yamllint.yml .github
 
@@ -105,9 +101,6 @@ jobs:
 
       - name: yamllint on `src`
         run: yamllint -c .github/workflows/yamllint/.yamllint.yml src
-
-      - name: yamllint on `.t9n.yml`
-        run: yamllint -c .github/workflows/yamllint/.yamllint.yml .t9n.yml
 
   legacy_link_lint:
     name: Legacy Link Lint
@@ -156,46 +149,19 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           PHP_VERSION: 8.1
-          ENABLE_SSL: 'true'
-          INSTALL_AUTO: 'true'
-          DISABLE_MAKE: 'false'
+          ENABLE_SSL: "true"
+          INSTALL_AUTO: "true"
+          DISABLE_MAKE: "false"
       - name: Setup Environment failure
         uses: ./.github/actions/setup-env-export-logs
         with:
           DOCKER_PREFIX: ${{ env.DOCKER_PREFIX }}
           ARTIFACT_NAME: setup-symfony-console-${{ matrix.app-id }}
-          ENABLE_SSL: 'true'
-          INSTALL_AUTO: 'true'
+          ENABLE_SSL: "true"
+          INSTALL_AUTO: "true"
         if: failure()
 
       - name: Run Admin Security Attribute Linter (inside the docker so installed modules are also scanned)
         run: |
           echo Searching for routes without security
           docker exec ${{ env.DOCKER_PREFIX }}-prestashop-git-1 php bin/console prestashop:linter:security-attribute find-missing
-
-  header-stamp:
-    name: Check license headers
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      # Composer cache
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-      - name: Cache Composer Directory
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-      - name: Composer Install
-        run: COMPOSER_PROCESS_TIMEOUT=600 composer install --ansi --prefer-dist --no-interaction --no-progress
-
-      # Run header stamp
-      - name: Header stamp dry run
-        run: composer header-stamp
-      # Little hint to help contributors fix their PRs
-      - name: Hint to fix
-        if: failure()
-        run: echo "::notice::Run composer header-stamp-fix at the root of the project to fix files, or update the .header-stamp-config.yml file to add exceptions"

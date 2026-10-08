@@ -1,10 +1,10 @@
 # Executables (local)
-DOCKER_COMP = docker compose
+DOCKER_COMP = docker compose -f docker/docker-compose.yml
 PHP_CONT =
 PHP_CONT_WITH_LOGIN = bash
 
 # Determine if we are using docker
-DOCKER_RUNNING := $(shell docker compose ps -q 2>/dev/null)
+DOCKER_RUNNING := $(shell $(DOCKER_COMP) ps -q 2>/dev/null)
 ifneq ($(strip $(DOCKER_RUNNING)),)
 	PHP_CONT = $(DOCKER_COMP) exec -T prestashop-git runuser -u www-data -g www-data --
 	PHP_CONT_WITH_LOGIN = $(DOCKER_COMP) exec -T prestashop-git runuser -u www-data -g www-data -- bash -l
@@ -47,7 +47,7 @@ docker-sh: ## Connect to the PHP container via bash so up and down arrows go to 
 install: composer cc assets  ## Install PHP dependencies and build the static assets
 
 install-prestashop: ## Install fresh PrestaShop database (requires containers to be running)
-	$(PHP_CONT) .docker/install/database.sh
+	$(PHP_CONT) docker/install/database.sh
 
 ## —— Assets 🎨 ———————————————————————————————————————————————————————————————
 assets: ## Build all assets

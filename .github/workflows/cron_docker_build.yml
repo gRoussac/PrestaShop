@@ -3,7 +3,7 @@ name: Cron docker build
 
 on:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: "0 1 * * *"
 
 jobs:
   docker-build:
@@ -25,4 +25,4 @@ jobs:
           fetch-depth: 0
 
       - name: Running latest prestashop with docker
-        run: docker compose build --build-arg VERSION=${{ matrix.version }}-${{ matrix.base }}
+        run: docker compose -f docker/docker-compose.yml build --build-arg VERSION=${{ matrix.version }}-${{ matrix.base }}

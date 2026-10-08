@@ -221,9 +221,9 @@ tools/build/releases/*
 
 # Docker configuration
 install.lock
-docker-compose.override.yml
-.docker/ssl.crt
-.docker/ssl.key
+docker/docker-compose.override.yml
+docker/ssl.crt
+docker/ssl.key
 
 # DotEnv files
 /.env.local

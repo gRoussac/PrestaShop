@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-define('_PS_ROOT_DIR_', __DIR__. '/../../../');
+define('_PS_ROOT_DIR_', dirname(__DIR__) . '/');
 
 // Add module composer autoloader
 require_once _PS_ROOT_DIR_ . 'vendor/autoload.php';

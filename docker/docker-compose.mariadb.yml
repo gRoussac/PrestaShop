@@ -24,8 +24,8 @@ services:
   prestashop-git:
     hostname: ${PS_HOSTNAME:-localhost}
     build:
-      dockerfile: .docker/Dockerfile
-      context: .
+      context: ..
+      dockerfile: docker/Dockerfile
       args:
         - VERSION=${VERSION:-8.1-apache}
         - USER_ID=${USER_ID:-1000}
@@ -62,12 +62,12 @@ services:
       mariadb:
         condition: service_healthy
     volumes:
-      - ./:/var/www/html:delegated
+      - ..:/var/www/html:delegated
     networks:
       - prestashop-network
 
   maildev:
-    image: 'maildev/maildev'
+    image: "maildev/maildev"
     ports:
       - "1080:1080"
     networks:

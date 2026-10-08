@@ -17,30 +17,30 @@ inputs:
   ENABLE_SSL:
     required: false
     description: True to Run with SSL
-    default: 'true'
+    default: "true"
   INSTALL_AUTO:
     required: false
     description: True To Auto Install
-    default: 'true'
+    default: "true"
   DEV_MODE:
     required: false
     description: True to enable Developer mode
-    default: 'false'
+    default: "false"
   DISABLE_MAKE:
     required: false
     description: true to disable Make
-    default: 'false'
+    default: "false"
   PRESTASHOP_DIR:
     required: false
     description: Prestashop folder
-    default: '.'
+    default: "."
   DOCKER_DAEMON:
     required: false
     description: true to launch docker as a daemon, by default, false to see the whole initialization logs but the rest of the workflow is blocked
-    default: 'true'
+    default: "true"
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     # Certificate for SSL
     - name: Generate a Certificate
@@ -54,11 +54,11 @@ runs:
           chmod +x mkcert-v*-linux-amd64
           sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
           ## Generate certificate
-          mkcert -key-file ${{ inputs.PRESTASHOP_DIR }}/.docker/ssl.key -cert-file ${{ inputs.PRESTASHOP_DIR }}/.docker/ssl.crt localhost
+          mkcert -key-file ${{ inputs.PRESTASHOP_DIR }}/docker/ssl.key -cert-file ${{ inputs.PRESTASHOP_DIR }}/docker/ssl.crt localhost
           ## Link certificate to Chrome Trust Store
           mkdir -p $HOME/.pki/nssdb
           certutil -d $HOME/.pki/nssdb -N
-          certutil -d sql:$HOME/.pki/nssdb -n localhost -A -t "TCu,Cu,Tu" -i ${{ inputs.PRESTASHOP_DIR }}/.docker/ssl.crt
+          certutil -d sql:$HOME/.pki/nssdb -n localhost -A -t "TCu,Cu,Tu" -i ${{ inputs.PRESTASHOP_DIR }}/docker/ssl.crt
           ## Add self-signed certificate to Chrome Trust Store
           mkcert -install
 
@@ -83,18 +83,18 @@ runs:
         PS_DOMAIN: ${{ (inputs.ENABLE_SSL == 'false') && 'localhost:8001' || 'localhost:8002' }}
         PS_DEV_MODE: ${{ (inputs.DEV_MODE == 'false') && '0' || '1' }}
         DB_SERVER: ${{ inputs.DB_SERVER }}
-        DB_NAME: 'prestashop'
-        DB_PREFIX: 'tst_'
-        DB_USER: 'root'
-        DB_PASSWD: 'prestashop'
-        PS_LANGUAGE: 'en'
-        ADMIN_PASSWD: 'Pr3st4Sh0P'
-        TIMEZONE: 'Europe/Paris'
+        DB_NAME: "prestashop"
+        DB_PREFIX: "tst_"
+        DB_USER: "root"
+        DB_PASSWD: "prestashop"
+        PS_LANGUAGE: "en"
+        ADMIN_PASSWD: "Pr3st4Sh0P"
+        TIMEZONE: "Europe/Paris"
       run: |
         cd ${{ inputs.PRESTASHOP_DIR }}
         if [[ "${{ inputs.DOCKER_DAEMON }}" = "true" ]]; then
-          USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose -f ${{ (inputs.DB_SERVER == 'mysql') && 'docker-compose.yml' || 'docker-compose.mariadb.yml' }} up -d prestashop-git --build
+          USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose -f ${{ (inputs.DB_SERVER == 'mysql') && 'docker/docker-compose.yml' || 'docker/docker-compose.mariadb.yml' }} up -d prestashop-git --build
           bash -c 'while [[ "$(curl -L -s -o /dev/null -w %{http_code} ${{ env.URL_FO }}${{ env.URL_PING }})" != "200" ]]; do sleep 5; done'
         else
-          USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose -f ${{ (inputs.DB_SERVER == 'mysql') && 'docker-compose.yml' || 'docker-compose.mariadb.yml' }} up prestashop-git --build
+          USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose -f ${{ (inputs.DB_SERVER == 'mysql') && 'docker/docker-compose.yml' || 'docker/docker-compose.mariadb.yml' }} up prestashop-git --build
         fi
