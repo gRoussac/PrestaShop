@@ -242,6 +242,13 @@ class InstallControllerHttp
             $session->step = self::getSteps()->current()->getName();
         }
 
+        if (Tools::getValue('checkDb') || Tools::getValue('createDb')) {
+            self::getSteps()->setOffsetFromStepName('database');
+            self::getSteps()->current()->getControllerInstance()->process();
+
+            return;
+        }
+
         self::getSteps()->current()->getControllerInstance()->process();
         self::getSteps()->current()->getControllerInstance()->display();
     }
