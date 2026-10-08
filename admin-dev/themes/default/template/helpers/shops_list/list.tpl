@@ -1,6 +1,6 @@
 {**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  *}
 {strip}
 <a href="javascript:void(0)" class="multistore-toggle dropdown-toggle" data-toggle="dropdown">

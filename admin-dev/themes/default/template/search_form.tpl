@@ -1,6 +1,6 @@
 {**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  *}
 <form id="header_search" class="component bo_search_form" method="post" action="{$link->getAdminLink('AdminSearch')}" role="search">
 	<div class="form-group">

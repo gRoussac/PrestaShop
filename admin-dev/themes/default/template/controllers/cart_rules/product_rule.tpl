@@ -1,6 +1,6 @@
 {**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  *}
  <tr id="product_rule_{$product_rule_group_id|intval}_{$product_rule_id|intval}_tr">
 	<td>

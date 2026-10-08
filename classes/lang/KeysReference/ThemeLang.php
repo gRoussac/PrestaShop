@@ -1,7 +1,7 @@
 <?php
 /**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  */
 trans('Full width', 'Admin.Design.Feature');
 trans('Three columns', 'Admin.Design.Feature');

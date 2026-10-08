@@ -1,7 +1,7 @@
 <?php
 /**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  */
 define('_PS_IN_TEST_', true);
 define('_PS_ROOT_DIR_', dirname(__DIR__, 2));

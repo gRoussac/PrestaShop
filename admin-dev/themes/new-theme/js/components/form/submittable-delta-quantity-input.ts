@@ -1,6 +1,6 @@
 /**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  */
 import SubmittableInput, {SubmittableInputConfig} from '@components/form/submittable-input';
 import DeltaQuantityInput, {DeltaQuantityConfig} from '@components/form/delta-quantity-input';

@@ -1,6 +1,6 @@
 {**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  *}
 <div class="panel">
 	<h3><i class="icon-tag"></i> {l s='Cart rule' d='Admin.Catalog.Feature'}</h3>
