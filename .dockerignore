@@ -1,0 +1,6 @@
+*
+!docker/
+!docker/**
+docker/ssl.crt
+docker/ssl.key
+docker/docker-compose.override.yml

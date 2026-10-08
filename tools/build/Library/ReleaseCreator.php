@@ -96,7 +96,6 @@ class ReleaseCreator
         'app/config/parameters\.php$',
         'config/settings\.inc\.php$',
         'app/cache/..*$',
-        '\.t9n\.yml$',
         '\.scrutinizer\.yml$',
         'admin/(.*/)?webpack\.config\.js$',
         'admin/(.*/)?package\.json$',
@@ -152,9 +151,8 @@ class ReleaseCreator
         '\.php_cs\.dist$',
         'tools/assets$',
         '\.webpack$',
-        'rector\.php',
+        '^phpstan/',
         '^(?!.*vendor).*phpstan.*\.neon',
-        '\.header-stamp.*',
         // Filter AI tools (MD files are alredy filtered via a generic rule above)
         '\.ai.*',
         '\.claude.*',
@@ -254,8 +252,7 @@ class ReleaseCreator
         if (!$keepTests) {
             $this->patternsRemoveList[] = 'tests(\-legacy)?$';
             $this->patternsRemoveList[] = '(.*)?\.git(.*)?$';
-            $this->patternsRemoveList[] = '.docker';
-            $this->patternsRemoveList[] = 'docker-compose\.yml$';
+            $this->patternsRemoveList[] = '^docker/';
             $this->patternsRemoveList[] = '((?<!_dev\/)package\.json)$';
         }
 

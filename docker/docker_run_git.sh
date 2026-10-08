@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ $PS_ENABLE_SSL = 1 ]; then
-  if [ -f ./.docker/ssl.key ]; then
+  if [ -f ./docker/ssl.key ]; then
     echo "\n* Remove default-ssl.conf file ...";
     rm /etc/apache2/sites-available/default-ssl.conf
 
@@ -17,8 +17,8 @@ if [ $PS_ENABLE_SSL = 1 ]; then
   DocumentRoot /var/www/html
   ErrorLog \${APACHE_LOG_DIR}/error.log
   SSLEngine on
-  SSLCertificateFile /var/www/html/.docker/ssl.crt
-  SSLCertificateKeyFile /var/www/html/.docker/ssl.key
+  SSLCertificateFile /var/www/html/docker/ssl.crt
+  SSLCertificateKeyFile /var/www/html/docker/ssl.key
 </VirtualHost>" > /etc/apache2/sites-available/001-ssl.conf
 
     echo "\n* Enable https site"
@@ -28,7 +28,7 @@ if [ $PS_ENABLE_SSL = 1 ]; then
     echo "\n* Stop apache ...";
     service apache2 stop
   else
-    echo "\n* The file .docker/ssl.key has not been found.";
+    echo "\n* The file docker/ssl.key has not been found.";
   fi
 else
   echo "\n* HTTPS is not enabled.";

@@ -5,7 +5,6 @@ name: Create diff for 'Needs autoupgrade PR' label
 on: pull_request
 
 jobs:
-
   check_is_merge:
     name: Check is merge PR
     runs-on: ubuntu-latest
@@ -27,13 +26,14 @@ jobs:
   install_prestashop_and_dump:
     name: Install Prestashop and create database dump
     runs-on: ubuntu-latest
-    needs: [ check_is_merge ]
+    needs: [check_is_merge]
     if: needs.check_is_merge.outputs.isMerge != 'true'
     strategy:
       matrix:
-        branch: [ base, head ]
+        branch: [base, head]
       fail-fast: false
     env:
+      COMPOSE_FILE: docker/docker-compose.yml
       DUMP_TABLES_FOR_DIFF: "ps_hook ps_feature_flag ps_tab"
     steps:
       - uses: actions/checkout@v4
@@ -62,7 +62,8 @@ jobs:
         run: docker compose run --rm mysql mysql -hmysql -uroot -pprestashop -e "CREATE DATABASE presta_${{ matrix.branch }};"
 
       - name: Install shop
-        run: docker compose run --rm prestashop-git php install-dev/index_cli.php \
+        run:
+          docker compose run --rm prestashop-git php install-dev/index_cli.php \
           --step=database --db_server=mysql:3306 --db_name=presta_${{ matrix.branch }} \
           --db_user=root --db_password=prestashop --prefix=ps_ --db_clear=1 \
           --domain=localhost:8001 --firstname="Marc" --lastname="Beier" \
@@ -83,7 +84,7 @@ jobs:
 
   create_diff:
     name: Create database dumps diff
-    needs: [ install_prestashop_and_dump ]
+    needs: [install_prestashop_and_dump]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v5

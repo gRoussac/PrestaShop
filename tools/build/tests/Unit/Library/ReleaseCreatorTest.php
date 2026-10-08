@@ -22,6 +22,7 @@ class ReleaseCreatorTest extends TestCase
 {
     private const OLD_PHPSTAN_PATTERN = 'phpstan(.*)?';
     private const NEW_PHPSTAN_PATTERN = '^(?!.*vendor).*phpstan.*\.neon';
+    private const PHPSTAN_DIR_PATTERN = '^phpstan/';
 
     private function patternMatches(string $pattern, string $path): bool
     {
@@ -53,6 +54,28 @@ class ReleaseCreatorTest extends TestCase
             'phpstan.neon in subdirectory'                      => ['config/phpstan.neon'],
             'phpstan.neon via absolute path without vendor'     => ['/tmp/build/prestashop/phpstan.neon'],
             'phpstan.neon via absolute path in subdir'          => ['/tmp/build/prestashop/config/phpstan.neon'],
+            'phpstan dir neon'                                  => ['phpstan/phpstan.neon.dist'],
+            'phpstan dir baseline'                              => ['phpstan/baseline.neon'],
+        ];
+    }
+
+    /**
+     * @dataProvider providePhpstanDirectoryPaths
+     */
+    public function testPhpstanDirectoryPatternMatchesToolingFolder(string $path): void
+    {
+        $this->assertTrue(
+            $this->patternMatches(self::PHPSTAN_DIR_PATTERN, $path),
+            "Expected phpstan/ directory pattern to match '{$path}'"
+        );
+    }
+
+    public static function providePhpstanDirectoryPaths(): array
+    {
+        return [
+            'phpstan neon' => ['phpstan/phpstan.neon.dist'],
+            'phpstan autoload' => ['phpstan/autoload.php'],
+            'phpstan baseline' => ['phpstan/baseline.neon'],
         ];
     }
 

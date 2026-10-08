@@ -66,8 +66,8 @@ class PrestaShopExceptionCore extends Exception
             echo '</div>';
         } else {
             // If not in mode dev, display an error page
-            if (file_exists(_PS_ROOT_DIR_ . '/error500.html')) {
-                echo file_get_contents(_PS_ROOT_DIR_ . '/error500.html');
+            if (file_exists(_PS_ROOT_DIR_ . '/errors/500.html')) {
+                echo file_get_contents(_PS_ROOT_DIR_ . '/errors/500.html');
             }
         }
         // Log the error in the disk

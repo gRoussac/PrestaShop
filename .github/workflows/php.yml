@@ -11,7 +11,7 @@ concurrency:
 jobs:
   php-cs-fixer:
     permissions:
-      contents: read  # for actions/checkout to fetch code
+      contents: read # for actions/checkout to fetch code
     name: PHP CS Fixer
     runs-on: ubuntu-latest
     steps:
@@ -55,7 +55,7 @@ jobs:
       matrix_type: PHP
   phpstan:
     permissions:
-      contents: read  # for actions/checkout to fetch code
+      contents: read # for actions/checkout to fetch code
     name: PHP Static Analysis
     runs-on: ubuntu-latest
     needs: workflow_matrix_generator
@@ -67,9 +67,9 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.1'  # will be overriden by platform.php in composer.json see https://phpstan.org/config-reference#phpversion
+          php-version: "8.1" # will be overriden by platform.php in composer.json see https://phpstan.org/config-reference#phpversion
           extensions: mbstring, intl, gd, xml, dom, json, fileinfo, curl, zip, iconv, simplexml
-          coverage: none  # disable coverage to disable xdebug in the action.
+          coverage: none # disable coverage to disable xdebug in the action.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -93,10 +93,10 @@ jobs:
           composer config platform.php ${{ matrix.php }}
 
       - name: Run phpstan
-        run: ./vendor/bin/phpstan analyse -c phpstan.neon.dist
+        run: ./vendor/bin/phpstan analyse -c phpstan/phpstan.neon.dist
   phpunit:
     permissions:
-      contents: read  # for actions/checkout to fetch code
+      contents: read # for actions/checkout to fetch code
     name: PHPUnit
     runs-on: ubuntu-latest
     needs: workflow_matrix_generator
@@ -138,5 +138,5 @@ jobs:
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
       - name: Test git versionned files unchanged
-        if: ${{ !startsWith(matrix.php, '8.') }}  # composer.lock changes when updating phpunit version
+        if: ${{ !startsWith(matrix.php, '8.') }} # composer.lock changes when updating phpunit version
         run: git diff --exit-code

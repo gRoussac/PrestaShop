@@ -1,45 +1,45 @@
 includes:
-	- phpstan-baseline.neon
-	- phpstan-disallowed-calls.neon
-	- phpstan-tmp-legacy-layout-baseline.neon
+	- baseline.neon
+	- disallowed-calls.neon
+	- tmp-legacy-layout-baseline.neon
 parameters:
   phpVersion: 80100
   level: 5
   bootstrapFiles:
-    - .github/workflows/phpstan/autoload.php
+    - autoload.php
   paths:
-    - admin-dev
-    - app
-    - bin
-    - cache
-    - classes
-    - config
-    - controllers
-    - docs
-    - download
-    - img
-    - install-dev
-    - js
-    - localization
-    - mails
-    # - modules
-    - override
-    - pdf
-    - src
-    - tests
-    - themes
-    - tools
-    - translations
-    - upload
-    - webservice
+    - ../admin-dev
+    - ../app
+    - ../bin
+    - ../cache
+    - ../classes
+    - ../config
+    - ../controllers
+    - ../docs
+    - ../download
+    - ../img
+    - ../install-dev
+    - ../js
+    - ../localization
+    - ../mails
+    # - ../modules
+    - ../override
+    - ../pdf
+    - ../src
+    - ../tests
+    - ../themes
+    - ../tools
+    - ../translations
+    - ../upload
+    - ../webservice
   excludePaths:
-    - admin-dev/filemanager
-    - admin-dev/themes
-    - classes/lang/KeysReference
-    - install-dev/theme/views
-    - install-dev/theme/config.php
-    - tests/Resources
-    - tests/Unit/Core/Foundation/IoC/Fixtures
+    - ../admin-dev/filemanager
+    - ../admin-dev/themes
+    - ../classes/lang/KeysReference
+    - ../install-dev/theme/views
+    - ../install-dev/theme/config.php
+    - ../tests/Resources
+    - ../tests/Unit/Core/Foundation/IoC/Fixtures
     - */node_modules/*
   ignoreErrors:
     - '#^Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:#'
@@ -49,13 +49,13 @@ parameters:
     - '~^Access to an undefined property PrestaShop\\PrestaShop\\Core\\Module\\ModuleInterface::\$(attributes|disk|database)\.$~'
     - message: "#^Dead catch \\- Symfony\\\\Component\\\\HttpFoundation\\\\File\\\\Exception\\\\FileNotFoundException is never thrown in the try block\\.$#"
       count: 1
-      path: src/PrestaShopBundle/Controller/Admin/SecuredFileReaderController.php
+      path: ../src/PrestaShopBundle/Controller/Admin/SecuredFileReaderController.php
     ## Smarty functions
     - '#^Function smartyRegisterFunction not found\.$#'
     ## CQRS API Platform operations
     -
       message: '#Constructor of class [a-zA-Z0-9\\_]+ has an unused parameter \$[a-zA-Z0-9_]+.$#'
-      path: src/PrestaShopBundle/ApiPlatform/Metadata/
+      path: ../src/PrestaShopBundle/ApiPlatform/Metadata/
   reportUnmatchedIgnoredErrors: false
   universalObjectCratesClasses:
     - Cookie
