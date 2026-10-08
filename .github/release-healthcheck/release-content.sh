@@ -9,9 +9,9 @@
 # shellcheck disable=SC2034
 HC_GROUP="Release content artifacts"
 
-CHANGELOG_FILE="docs/CHANGELOG.txt"   # NB: under docs/, not repo root
+CHANGELOG_FILE="docs/CHANGELOG"   # NB: under docs/, not repo root
 
-# spec ref: D1 — CHANGELOG.txt has an entry for core_version (header e.g. "#   v9.1.4 - (2026-06-03)")
+# spec ref: D1 — CHANGELOG has an entry for core_version (header e.g. "#   v9.1.4 - (2026-06-03)")
 check_changelog_updated() {
   HC_LINK="https://github.com/$REPO/blob/$REF/$CHANGELOG_FILE"
   if [ ! -f "$CHANGELOG_FILE" ]; then

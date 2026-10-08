@@ -6,28 +6,28 @@ on:
   workflow_dispatch:
     inputs:
       base_branch:
-        description: 'Branch to create the changelog on (e.g. develop, 9.1.x, 9.1.2-build)'
+        description: "Branch to create the changelog on (e.g. develop, 9.1.x, 9.1.2-build)"
         required: true
         type: string
-        default: 'develop'
+        default: "develop"
       previous_ref:
-        description: 'Previous git ref - tag, branch or SHA (e.g. 9.0.2)'
+        description: "Previous git ref - tag, branch or SHA (e.g. 9.0.2)"
         required: true
         type: string
       next_version:
-        description: 'Next version for the changelog (e.g. 9.1.0 Beta 1)'
+        description: "Next version for the changelog (e.g. 9.1.0 Beta 1)"
         required: true
         type: string
       target_ref:
-        description: 'Leave empty to use the provided base_branch. Tou can optionally specify target git ref - tag, branch or SHA (e.g. HEAD)'
+        description: "Leave empty to use the provided base_branch. Tou can optionally specify target git ref - tag, branch or SHA (e.g. HEAD)"
         required: false
         type: string
-        default: ''
+        default: ""
       release_date:
-        description: 'Release date (YYYY-MM-DD). Empty = today'
+        description: "Release date (YYYY-MM-DD). Empty = today"
         required: false
         type: string
-        default: ''
+        default: ""
 
 permissions:
   contents: write
@@ -76,9 +76,9 @@ jobs:
           echo "branch_name=${BRANCH_NAME}" >> "$GITHUB_OUTPUT"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/CHANGELOG.txt CONTRIBUTORS.md
+          git add docs/CHANGELOG
           if git diff --staged --quiet; then
-            echo "No changes to commit (no new PRs or contributors since previous version?)."
+            echo "No changes to commit (no new PRs since previous version?)."
             echo "pushed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
@@ -97,12 +97,12 @@ jobs:
           | Questions         | Answers
           | ----------------- | -------------------------------------------------------
           | Branch?           | ${{ inputs.base_branch }}
-          | Description?      | Update `docs/CHANGELOG.txt` with merged PRs between `${{ inputs.previous_ref }}` and `${{ inputs.target_ref || inputs.base_branch }}`, and update `CONTRIBUTORS.md` with new contributors.
+          | Description?      | Update `docs/CHANGELOG` with merged PRs between `${{ inputs.previous_ref }}` and `${{ inputs.target_ref || inputs.base_branch }}`.
           | Type?             | improvement
           | Category?         | PM
           | BC breaks?        | no
           | Deprecations?     | no
-          | How to test?      | Review the changes in `docs/CHANGELOG.txt` and `CONTRIBUTORS.md`.
+          | How to test?      | Review the changes in `docs/CHANGELOG`.
           | UI Tests          | N/A
           | Fixed issue or discussion? | N/A
           | Related PRs       | N/A
