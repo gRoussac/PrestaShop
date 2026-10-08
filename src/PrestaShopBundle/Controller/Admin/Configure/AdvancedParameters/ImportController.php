@@ -18,7 +18,6 @@ use PrestaShop\PrestaShop\Core\Import\File\FileUploader;
 use PrestaShop\PrestaShop\Core\Import\Handler\ImportHandlerFinderInterface;
 use PrestaShop\PrestaShop\Core\Import\ImportDirectory;
 use PrestaShop\PrestaShop\Core\Import\ImporterInterface;
-use PrestaShop\PrestaShop\Core\Import\Sample\SampleFileProvider;
 use PrestaShop\PrestaShop\Core\Import\Validator\ImportRequestValidatorInterface;
 use PrestaShop\PrestaShop\Core\Security\Permission;
 use PrestaShopBundle\Controller\Admin\PrestaShopAdminController;
@@ -195,30 +194,6 @@ class ImportController extends PrestaShopAdminController
         }
 
         return $this->redirectToRoute('admin_import');
-    }
-
-    /**
-     * Download import sample file.
-     *
-     * @param string $sampleName
-     *
-     * @return RedirectResponse|BinaryFileResponse
-     */
-    #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))", redirectRoute: 'admin_import')]
-    public function downloadSampleAction(
-        string $sampleName,
-        SampleFileProvider $sampleFileProvider,
-    ): RedirectResponse|BinaryFileResponse {
-        $sampleFile = $sampleFileProvider->getFile($sampleName);
-
-        if (null === $sampleFile) {
-            return $this->redirectToRoute('admin_import');
-        }
-
-        $response = new BinaryFileResponse($sampleFile->getPathname());
-        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $sampleFile->getFilename());
-
-        return $response;
     }
 
     /**

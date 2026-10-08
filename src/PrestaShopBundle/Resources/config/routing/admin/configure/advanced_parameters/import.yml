@@ -55,14 +55,6 @@ admin_import_file_download:
     _legacy_controller: AdminImport
     _legacy_link: AdminImport:download
 
-admin_import_sample_download:
-  path: /sample/download/{sampleName}
-  methods: [ GET ]
-  defaults:
-    _controller: 'PrestaShopBundle\Controller\Admin\Configure\AdvancedParameters\ImportController::downloadSampleAction'
-    _legacy_controller: AdminImport
-    _legacy_link: AdminImport:sampleDownload
-
 admin_import_data_configuration_create:
   path: /match
   methods: [ POST ]

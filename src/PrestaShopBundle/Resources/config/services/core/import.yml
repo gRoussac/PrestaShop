@@ -44,17 +44,6 @@ services:
   prestashop.core.import.file_removal:
     alias: 'PrestaShop\PrestaShop\Core\Import\File\FileRemoval'
 
-  PrestaShop\PrestaShop\Core\Import\Sample\SampleFileProvider:
-    public: false
-    arguments:
-      - '@prestashop.adapter.legacy.configuration'
-
-  prestashop.core.import.sample.file_provider:
-    alias: 'PrestaShop\PrestaShop\Core\Import\Sample\SampleFileProvider'
-    deprecated:
-      package: PrestaShop\PrestaShop
-      version: 9.0
-
   prestashop.core.import.csv_file_reader:
     class: 'PrestaShop\PrestaShop\Core\Import\File\CsvFileReader'
     arguments:

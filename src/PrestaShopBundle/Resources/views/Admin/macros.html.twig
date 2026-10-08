@@ -66,14 +66,6 @@
   </div>
 {% endmacro %}
 
-{# Show link to import file sample #}
-{% macro import_file_sample(label, filename) %}
-    <a id="download-sample-{{ filename }}-file-link" class="list-group-item list-group-item-action"
-       href="{{ path('admin_import_sample_download', {sampleName: filename}) }}">
-        {{ label|trans({}, 'Admin.Advparameters.Feature') }}
-    </a>
-{% endmacro %}
-
 {#
   Show form widget with errors rendered below it. It displays all nested errors for any form type.
   If form type has error_by_locale parameter set then the error is being displayed with the specific locale assigned to it.
