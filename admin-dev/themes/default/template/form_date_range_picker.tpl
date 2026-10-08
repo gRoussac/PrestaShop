@@ -1,6 +1,6 @@
 {**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  *}
 <div id="calendar" class="panel">
 	<form action="{$action|escape}" method="post" id="calendar_form" name="calendar_form" class="calendar-form form-inline">

@@ -1,7 +1,7 @@
 <?php
 /**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  */
 // install-dev/langs/en/data/order_state.xml
 trans('Awaiting check payment', 'Admin.Orderscustomers.Feature');

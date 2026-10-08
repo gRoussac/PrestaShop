@@ -1,6 +1,6 @@
 {**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  *}
 <form action="{$link->getAdminLink('AdminCustomerThreads', true, [], ['id_customer_thread' => $id_customer_thread|intval, 'viewcustomer_thread' => 1])|escape:'html':'UTF-8'}" method="post" enctype="multipart/form-data" class="form-horizontal">
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">

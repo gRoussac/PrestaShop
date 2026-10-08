@@ -31,4 +31,4 @@ Same baseline as upstream PrestaShop 9:
 
 ## License
 
-Same license terms as upstream PrestaShop. See [`docs/licenses`](./licenses/).
+Same license terms as upstream PrestaShop. See [LICENSE](../LICENSE).

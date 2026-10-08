@@ -1,6 +1,6 @@
 {**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  *}
 <div class="form-group" style="display: none;">
 	<div class="col-lg-12" id="{$id|escape:'html':'UTF-8'}-images-thumbnails">

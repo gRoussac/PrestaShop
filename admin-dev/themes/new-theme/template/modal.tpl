@@ -1,6 +1,6 @@
 {**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  *}
 <div class="modal fade" id="{$modal_id}" tabindex="-1">
 	<div class="modal-dialog {if isset($modal_class)}{$modal_class}{/if}">

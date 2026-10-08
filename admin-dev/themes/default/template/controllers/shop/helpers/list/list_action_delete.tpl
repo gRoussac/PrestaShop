@@ -1,6 +1,6 @@
 {**
  * For the full copyright and license information, please view the
- * docs/licenses/LICENSE.txt file that was distributed with this source code.
+ * LICENSE file that was distributed with this source code.
  *}
 <a href="{$href|escape:'html':'UTF-8'}" class="delete" title="{$action|escape:'html':'UTF-8'}"
 	{if in_array($id_shop, $shops_having_dependencies)}
