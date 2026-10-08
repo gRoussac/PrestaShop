@@ -5,6 +5,8 @@ import testContext from '@utils/testContext';
 import {setupSmtpConfigTest, resetSmtpConfigTest} from '@commonTests/BO/advancedParameters/smtp';
 
 import {expect} from 'chai';
+import fs from 'fs';
+import path from 'path';
 import {
   boDashboardPage,
   boImportPage,
@@ -19,12 +21,11 @@ import {
 } from '@prestashop-core/ui-testing';
 
 const baseContext: string = 'functional_BO_advancedParameters_import_importFile';
+const importFixturesDir: string = path.resolve(__dirname, '../../../../../../Resources/import');
 
 describe('BO - Advanced Parameters - Import : Import file', async () => {
   let browserContext: BrowserContext;
   let page: Page;
-  let filePath: string | null;
-  let secondFilePath: string | null;
   let newMail: MailDevEmail;
   let mailListener: MailDev;
   const firstFile:string = 'alias.csv';
@@ -83,20 +84,18 @@ describe('BO - Advanced Parameters - Import : Import file', async () => {
       expect(pageTitle).to.contains(boImportPage.pageTitle);
     });
 
-    describe('Download then import alias simple file', async () => {
-      it('should download \'Sample alias file\' file', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'downloadFile', baseContext);
+    describe('Import alias simple file', async () => {
+      it('should prepare alias fixture file', async function () {
+        await testContext.addContextItem(this, 'testIdentifier', 'prepareAliasFixture', baseContext);
 
-        filePath = await boImportPage.downloadSampleFile(page, 'alias_import');
+        fs.copyFileSync(path.join(importFixturesDir, 'alias_import.csv'), firstFile);
 
-        const doesFileExist = await utilsFile.doesFileExist(filePath);
-        expect(doesFileExist, 'alias_import sample file was not downloaded').to.be.eq(true);
+        const doesFileExist = await utilsFile.doesFileExist(firstFile);
+        expect(doesFileExist, 'alias fixture file was not prepared').to.be.eq(true);
       });
 
       it('should upload the file', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'importFile', baseContext);
-
-        await utilsFile.renameFile(filePath, 'alias.csv');
 
         const uploadSuccessText = await boImportPage.uploadImportFile(page, 'Alias', firstFile);
         expect(uploadSuccessText).to.contains(firstFile);
@@ -140,19 +139,17 @@ describe('BO - Advanced Parameters - Import : Import file', async () => {
     });
 
     describe('Check choose from history / FTP then import suppliers simple file', async () => {
-      it('should download \'Sample suppliers file\' file', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'downloadFile2', baseContext);
+      it('should prepare suppliers fixture file', async function () {
+        await testContext.addContextItem(this, 'testIdentifier', 'prepareSuppliersFixture', baseContext);
 
-        secondFilePath = await boImportPage.downloadSampleFile(page, 'suppliers_import');
+        fs.copyFileSync(path.join(importFixturesDir, 'suppliers_import.csv'), secondFile);
 
-        const doesFileExist = await utilsFile.doesFileExist(secondFilePath);
-        expect(doesFileExist, 'suppliers sample file was not downloaded').to.be.eq(true);
+        const doesFileExist = await utilsFile.doesFileExist(secondFile);
+        expect(doesFileExist, 'suppliers fixture file was not prepared').to.be.eq(true);
       });
 
       it('should upload the file', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'importFile2', baseContext);
-
-        await utilsFile.renameFile(secondFilePath, 'suppliers.csv');
 
         const uploadSuccessText = await boImportPage.uploadImportFile(page, 'Suppliers', secondFile);
         expect(uploadSuccessText).contain('suppliers.csv');

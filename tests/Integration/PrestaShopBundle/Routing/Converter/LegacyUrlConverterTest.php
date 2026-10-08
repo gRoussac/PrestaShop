@@ -95,7 +95,6 @@ class LegacyUrlConverterTest extends SymfonyIntegrationTestCase
             'admin_import_file_upload' => ['/configure/advanced/import/file/upload', 'AdminImport', 'uploadCsv'],
             'admin_import_file_delete' => ['/configure/advanced/import/file/delete', 'AdminImport', 'delete'],
             'admin_import_file_download' => ['/configure/advanced/import/file/download', 'AdminImport', 'download'],
-            'admin_import_sample_download' => ['/configure/advanced/import/sample/download/categories_import', 'AdminImport', 'sampleDownload', ['sampleName' => 'categories_import']],
 
             'admin_system_information' => ['/configure/advanced/system-information/', 'AdminInformation'],
             'admin_system_information_check_files' => ['/configure/advanced/system-information/files', 'AdminInformation', 'checkFiles'],
