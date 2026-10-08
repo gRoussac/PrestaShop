@@ -1,4 +1,4 @@
-# gRoussac / PrestaShop (personal fork)
+# GregoShop (personal fork)
 
 This repository is a **personal fork** of [PrestaShop/PrestaShop](https://github.com/PrestaShop/PrestaShop). It is not the official PrestaShop project.
 
