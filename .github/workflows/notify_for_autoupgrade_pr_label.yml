@@ -10,7 +10,7 @@ on:
 jobs:
   add_comment:
     name: Add comment
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - id: download_artifact
         name: Download artifact

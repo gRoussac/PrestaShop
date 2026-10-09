@@ -24,7 +24,7 @@ on:
         description: 'Ubuntu Server'
         required: false
         type: string
-        default: 'ubuntu-latest'
+        default: 'ubuntu-26.04'
       TESTS_DIR:
         description: 'Where UI tests are'
         required: false

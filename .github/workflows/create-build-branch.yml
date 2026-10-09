@@ -16,7 +16,7 @@ permissions:
 jobs:
   check-membership:
     name: Check team membership
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     env:
       TEAM_SLUG: prestashop-sa
     steps:
@@ -52,7 +52,7 @@ jobs:
 
   create-build-branch:
     name: Create Build Branch
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: check-membership
     steps:
       - name: Parse version and compute branch name
