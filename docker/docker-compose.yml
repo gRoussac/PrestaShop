@@ -18,7 +18,7 @@ services:
   prestashop-git:
     hostname: ${PS_HOSTNAME:-localhost}
     build:
-      context: ..
+      context: .
       dockerfile: docker/Dockerfile
       args:
         - VERSION=${VERSION:-8.1-apache}
@@ -55,7 +55,7 @@ services:
     depends_on:
       - mysql
     volumes:
-      - ..:/var/www/html
+      - .:/var/www/html
     networks:
       - prestashop-network
 

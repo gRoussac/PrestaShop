@@ -93,8 +93,8 @@ runs:
       run: |
         cd ${{ inputs.PRESTASHOP_DIR }}
         if [[ "${{ inputs.DOCKER_DAEMON }}" = "true" ]]; then
-          USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose -f ${{ (inputs.DB_SERVER == 'mysql') && 'docker/docker-compose.yml' || 'docker/docker-compose.mariadb.yml' }} up -d prestashop-git --build
+          USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose -f ${{ (inputs.DB_SERVER == 'mysql') && 'docker/docker-compose.yml' || 'docker/docker-compose.mariadb.yml' }} --project-directory . up -d prestashop-git --build
           bash -c 'while [[ "$(curl -L -s -o /dev/null -w %{http_code} ${{ env.URL_FO }}${{ env.URL_PING }})" != "200" ]]; do sleep 5; done'
         else
-          USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose -f ${{ (inputs.DB_SERVER == 'mysql') && 'docker/docker-compose.yml' || 'docker/docker-compose.mariadb.yml' }} up prestashop-git --build
+          USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose -f ${{ (inputs.DB_SERVER == 'mysql') && 'docker/docker-compose.yml' || 'docker/docker-compose.mariadb.yml' }} --project-directory . up prestashop-git --build
         fi

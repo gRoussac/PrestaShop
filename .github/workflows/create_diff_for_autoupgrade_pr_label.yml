@@ -34,6 +34,7 @@ jobs:
       fail-fast: false
     env:
       COMPOSE_FILE: docker/docker-compose.yml
+      COMPOSE_PROJECT_DIRECTORY: .
       DUMP_TABLES_FOR_DIFF: "ps_hook ps_feature_flag ps_tab"
     steps:
       - uses: actions/checkout@v4
