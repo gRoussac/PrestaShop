@@ -1,13 +1,19 @@
-name: Js
+# BO new-theme unit tests (admin-dev/themes/new-theme).
+# Runner: ubuntu-26.04. Action JS runtime: Node 24 (FORCE_JAVASCRIPT_ACTIONS_TO_NODE24).
+name: CI JS
 on:
   push:
+    branches: [dev]
   pull_request:
-
+    branches: [dev]
 permissions:
   contents: read
 concurrency:
   group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   js-unit-tests:
     runs-on: ubuntu-26.04
@@ -17,15 +23,15 @@ jobs:
         js: [ '20' ]
     steps:
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.js }}
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Cache Node Directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}

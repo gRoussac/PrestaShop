@@ -1,13 +1,19 @@
-name: Behaviour tests
+# PHP integration tests (DB) via workflow matrix.
+# Runner: ubuntu-26.04. Action JS runtime: Node 24 (FORCE_JAVASCRIPT_ACTIONS_TO_NODE24).
+name: CI Integration
 on:
   push:
+    branches: [dev]
   pull_request:
-
+    branches: [dev]
 permissions:
   contents: read   #   to clone the repos and get release assets (shivammathur/setup-php)
 concurrency:
   group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   # Define which PHP versions need to be used
   workflow_matrix_generator:
@@ -15,10 +21,10 @@ jobs:
     uses: ./.github/workflows/workflow-matrix-generator.yml
     with:
       matrix_type: PHP
-  behaviour:
+  integration:
     permissions:
       contents: read   #   to clone the repos and get release assets (shivammathur/setup-php)
-    name: Behaviour tests
+    name: Integration tests
     runs-on: ubuntu-26.04
     needs: workflow_matrix_generator
     strategy:
@@ -43,7 +49,7 @@ jobs:
         with:
           node-version: '20'
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: PrestaShop Configuration
         run: |
@@ -55,14 +61,14 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Node Directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-
 
       - name: Cache Composer Directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -71,26 +77,16 @@ jobs:
       - name: Composer Install
         run: COMPOSER_PROCESS_TIMEOUT=600 composer install --ansi --prefer-dist --no-interaction --no-progress
 
-      - name: Build theme assets
-        run: make front-classic
+      # Front assets are needed for the theme to be installed and image types to be inserted in DB, admin assets required especially
+      # because some built files (like preload.html.twig) are included and cause errors when absent
+      - name: Build all assets
+        run: make assets
 
-      - name: Install maildev
-        run: |
-          docker run -d -p 1080:1080 -p 1025:1025 maildev/maildev:2.2.1
-          bash -c 'while [[ "$(curl -L -s -o /dev/null -w %{http_code} http://localhost:1080)" != "200" ]]; do echo "Wait for maildev"; sleep 5; done'
-
-      - name: Run integration-behaviour-tests
-        run: composer run-script integration-behaviour-tests --timeout=0
+      - name: Run integration-tests
+        run: composer run-script integration-tests --timeout=0
         env:
           SYMFONY_DEPRECATIONS_HELPER: disabled
 
-      - name: Upload logs
-        uses: actions/upload-artifact@v5
-        if: failure()
-        with:
-          name: behaviour-${{ matrix.php }}
-          path: |
-            ./var/logs
-
       - name: Test git versionned files unchanged
+        if: ${{ !startsWith(matrix.php, '8.') }}  # composer.lock changes when updating phpunit version
         run: git diff --exit-code

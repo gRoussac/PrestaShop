@@ -8,6 +8,9 @@ on:
     types:
       - requested
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   test_9_1_x:
     uses: ./.github/workflows/cron_nightly_tests_reusable.yml

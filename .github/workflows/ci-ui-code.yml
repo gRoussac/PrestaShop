@@ -1,14 +1,18 @@
-name: UI tests code checks
+# Lint/typecheck for tests/UI sources.
+# Runner: ubuntu-26.04. Action JS runtime: Node 24 (FORCE_JAVASCRIPT_ACTIONS_TO_NODE24).
+name: CI UI code
 
 on:
   push:
+    branches: [dev]
     paths:
       - 'tests/UI/**'
-      - '.github/workflows/ui_tests_code_checks.yml'
+      - '.github/workflows/ci-ui-code.yml'
   pull_request:
+    branches: [dev]
     paths:
       - 'tests/UI/**'
-      - '.github/workflows/ui_tests_code_checks.yml'
+      - '.github/workflows/ci-ui-code.yml'
 
 defaults:
   run:
@@ -16,6 +20,7 @@ defaults:
 
 env:
   NODE_VERSION: '20'
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 concurrency:
   group: ${{ github.event_name }}-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -29,10 +34,10 @@ jobs:
 
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright/
           key: ${{ runner.os }}-browsers
@@ -54,10 +59,10 @@ jobs:
 
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright/
           key: ${{ runner.os }}-browsers
@@ -79,10 +84,10 @@ jobs:
 
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright/
           key: ${{ runner.os }}-browsers
@@ -111,10 +116,10 @@ jobs:
 
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright/
           key: ${{ runner.os }}-browsers
