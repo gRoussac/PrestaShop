@@ -11,6 +11,9 @@ on:
         description: Dynamic matrix, defined in a JSON payload that needs to be parsed
         value: ${{ jobs.workflow_matrix_generator.outputs.dynamic_matrix }}
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   workflow_matrix_generator:
     name: Build workflow matrix

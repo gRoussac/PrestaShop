@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '0 5 * * *'
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   update-prestashop-packages:
     permissions:
@@ -22,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           ref: ${{ env.GH_BRANCH }}

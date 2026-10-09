@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: "0 1 * * *"
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   docker-build:
     name: Docker build
@@ -20,7 +23,7 @@ jobs:
           - fpm
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 

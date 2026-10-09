@@ -5,6 +5,9 @@ on:
   workflow_dispatch:
 
 permissions: { }
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   js-routing-dump:
     permissions:
@@ -54,7 +57,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           ref: ${{ env.GH_BRANCH }}
@@ -67,7 +70,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Node Directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -75,7 +78,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Cache Composer Directory
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}

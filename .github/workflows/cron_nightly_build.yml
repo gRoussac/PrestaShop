@@ -9,6 +9,9 @@ on:
 permissions:
   contents: read
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   nightly-build:
     name: Nightly Build
@@ -41,7 +44,7 @@ jobs:
       ZIP_FILE: ${{ matrix.BRANCH == 'develop' && 'nightly.zip' || format('nightly_{0}.zip', matrix.BRANCH)}}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
           ref: ${{ env.GH_BRANCH }}
