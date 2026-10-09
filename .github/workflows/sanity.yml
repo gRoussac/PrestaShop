@@ -22,7 +22,7 @@ jobs:
   sanity:
     permissions:
       contents: read   #   to fetch code (actions/checkout)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     name: Sanity
     needs: workflow_matrix_generator
     strategy:

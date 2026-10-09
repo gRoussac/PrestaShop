@@ -50,7 +50,7 @@ jobs:
   # ---------------------------------------------------------------------------
   derive:
     name: Derive release context
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     outputs:
       core_version: ${{ steps.derive.outputs.core_version }}
       major: ${{ steps.derive.outputs.major }}
@@ -99,7 +99,7 @@ jobs:
   # ---------------------------------------------------------------------------
   static:
     name: Checks — static
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: derive
     defaults:
       run:
@@ -147,7 +147,7 @@ jobs:
   # ---------------------------------------------------------------------------
   deps:
     name: Checks — dependencies
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: derive
     defaults:
       run:
@@ -212,7 +212,7 @@ jobs:
   # ---------------------------------------------------------------------------
   app:
     name: Checks — app (booted)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: derive
     defaults:
       run:
@@ -298,7 +298,7 @@ jobs:
   # ---------------------------------------------------------------------------
   translation:
     name: Checks — translation catalogue
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: derive
     defaults:
       run:
@@ -353,7 +353,7 @@ jobs:
   # ---------------------------------------------------------------------------
   gh:
     name: Checks — cross-repo / CI / post-release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: derive
     defaults:
       run:
@@ -403,7 +403,7 @@ jobs:
   # ---------------------------------------------------------------------------
   summary:
     name: Healthcheck summary
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: [ derive, static, deps, app, translation, gh ]
     if: always()
     env:

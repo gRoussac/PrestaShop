@@ -13,7 +13,7 @@ permissions:
 jobs:
   build-release:
     name: Build Release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@v4
         with:

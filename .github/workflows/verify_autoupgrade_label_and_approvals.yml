@@ -6,7 +6,7 @@ on:
 
 jobs:
   check_label_and_appoval:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
 
       - name: Check if comment already exist

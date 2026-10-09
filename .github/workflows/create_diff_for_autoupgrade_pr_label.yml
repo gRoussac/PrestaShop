@@ -7,7 +7,7 @@ on: pull_request
 jobs:
   check_is_merge:
     name: Check is merge PR
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - name: Check is merge PR
         id: check-is-merge
@@ -25,7 +25,7 @@ jobs:
 
   install_prestashop_and_dump:
     name: Install Prestashop and create database dump
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs: [check_is_merge]
     if: needs.check_is_merge.outputs.isMerge != 'true'
     strategy:
@@ -86,7 +86,7 @@ jobs:
   create_diff:
     name: Create database dumps diff
     needs: [install_prestashop_and_dump]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/download-artifact@v5
 

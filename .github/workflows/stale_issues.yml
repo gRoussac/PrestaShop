@@ -37,7 +37,7 @@ permissions:
 jobs:
   stale:
     name: Mark and close stale issues
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
 
     steps:
       - name: Run stale issues action

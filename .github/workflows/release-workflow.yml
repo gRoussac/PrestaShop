@@ -13,7 +13,7 @@ jobs:
   normalize-dependabot-pr:
     name: Normalize Dependabot PR
     if: contains(github.actor, 'dependabot')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - name: Normalize Dependabot PR
         uses: PrestaShop/.github/.github/actions/normalize-dependabot-pr@master
