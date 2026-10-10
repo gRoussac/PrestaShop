@@ -45,8 +45,9 @@ function restoreDatabaseDraft() {
 			$el.val(draft[id]);
 		}
 	});
-	if (typeof draft.db_clear !== 'undefined') {
-		$('#db_clear').prop('checked', !!draft.db_clear);
+	// Never force the clear checkbox unchecked from a draft (PHP defaults to checked).
+	if (draft.db_clear === true || draft.db_clear === 1 || draft.db_clear === '1') {
+		$('#db_clear').prop('checked', true);
 	}
 }
 

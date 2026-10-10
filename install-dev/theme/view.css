@@ -1565,7 +1565,7 @@ ul#optional_update li.ok {
   display: none;
   padding: var(--cdk-size-16);
   width: 100%;
-  height: var(--cdk-size-240);
+  height: calc(var(--cdk-size-240) * 2);
   overflow: auto;
   border: 1px solid var(--cdk-primary-400);
 }
