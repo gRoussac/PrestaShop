@@ -15,10 +15,10 @@ function loadDatabaseDraft() {
 
 function saveDatabaseDraft(partial) {
 	try {
-		localStorage.setItem(
-			DATABASE_DRAFT_KEY,
-			JSON.stringify($.extend({}, loadDatabaseDraft(), partial || {})),
-		);
+		var draft = $.extend({}, loadDatabaseDraft(), partial || {});
+		// Never persist DB password in localStorage.
+		delete draft.dbPassword;
+		localStorage.setItem(DATABASE_DRAFT_KEY, JSON.stringify(draft));
 	} catch (e) {
 		// Ignore quota / private mode.
 	}
@@ -29,7 +29,6 @@ function collectDatabaseDraft() {
 		dbServer: $('#dbServer').val(),
 		dbName: $('#dbName').val(),
 		dbLogin: $('#dbLogin').val(),
-		dbPassword: $('#dbPassword').val(),
 		db_prefix: $('#db_prefix').val(),
 		db_clear: $('#db_clear').prop('checked'),
 	};
@@ -40,7 +39,7 @@ function restoreDatabaseDraft() {
 	if (!draft || !Object.keys(draft).length) {
 		return;
 	}
-	['dbServer', 'dbName', 'dbLogin', 'dbPassword', 'db_prefix'].forEach(function(id) {
+	['dbServer', 'dbName', 'dbLogin', 'db_prefix'].forEach(function(id) {
 		var $el = $('#' + id);
 		if ($el.length && !$el.val() && draft[id]) {
 			$el.val(draft[id]);

@@ -40,6 +40,8 @@ function loadConfigureDraft() {
 function saveConfigureDraft(partial) {
   try {
     var draft = $.extend({}, loadConfigureDraft(), partial || {});
+    // Never persist passwords in localStorage.
+    delete draft.admin_password;
     delete draft.admin_password_confirm;
     localStorage.setItem(CONFIGURE_DRAFT_KEY, JSON.stringify(draft));
   } catch (e) {
@@ -65,8 +67,6 @@ function collectConfigureDraft() {
     admin_firstname: $("#infosFirstname").val(),
     admin_lastname: $("#infosName").val(),
     admin_email: $("#infosEmail").val(),
-    admin_password: $("#infosPassword").val(),
-    // Never persist "Re-type to confirm".
   };
 }
 
@@ -81,7 +81,6 @@ function restoreConfigureDraft() {
     infosFirstname: "admin_firstname",
     infosName: "admin_lastname",
     infosEmail: "admin_email",
-    infosPassword: "admin_password",
   };
 
   $.each(textFields, function (id, key) {
@@ -120,10 +119,8 @@ function restoreConfigureDraft() {
     }
   }
 
-  // On HTTPS, always prefer Enable SSL = Yes (page is already SSL).
-  if (window.location.protocol === "https:") {
-    $('input[name="enable_ssl"][value="1"]').prop("checked", true);
-  } else if (typeof draft.enable_ssl !== "undefined") {
+  // Restore SSL preference from draft when present (PHP still defaults Yes on HTTPS).
+  if (typeof draft.enable_ssl !== "undefined") {
     $(
       'input[name="enable_ssl"][value="' +
         (draft.enable_ssl ? "1" : "0") +
@@ -173,11 +170,11 @@ $(function () {
   $("#mainForm").on("submit", function (e) {
     saveConfigureDraft(collectConfigureDraft());
     var submitName =
-      ($("#mainForm").data("submitName") ||
-        (e.originalEvent &&
-          e.originalEvent.submitter &&
-          e.originalEvent.submitter.name) ||
-        "");
+      $("#mainForm").data("submitName") ||
+      (e.originalEvent &&
+        e.originalEvent.submitter &&
+        e.originalEvent.submitter.name) ||
+      "";
     if (submitName === "submitPrevious") {
       return;
     }
