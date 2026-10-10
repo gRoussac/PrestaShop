@@ -16,13 +16,13 @@ function setNextDisabled(disabled) {
 }
 
 /**
- * Same as legacy install.js: $('#btNext').hide() on forward submit.
- * Keep the input in the DOM so submitNext stays in the POST body
- * (Vue v-if removal would drop it).
+ * Hide Next only when advancing (submitNext). Keep the input in the DOM
+ * so submitNext stays in the POST body (v-if removal would drop it).
+ * Do not hide on Refresh / Back / nameless submits.
  */
 function onFormSubmit(event) {
   const submitName = (event.submitter && event.submitter.name) || "";
-  if (submitName !== "submitPrevious") {
+  if (submitName === "submitNext") {
     nextDisplay.value = "none";
   }
 }
