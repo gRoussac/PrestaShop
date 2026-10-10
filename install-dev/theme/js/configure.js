@@ -23,7 +23,13 @@
 })();
 
 $(function() {
-  checkTimeZone($('#infosCountry'));
+  restoreConfigureDraft();
+  bindConfigureDraftPersistence();
+
+  // Only auto-pick timezone from country when none is set yet (session or draft).
+  if (!$('#infosTimezone').val() || $('#infosTimezone').val() === '0') {
+    checkTimeZone($('#infosCountry'));
+  }
   // When a country is changed
   $('#infosCountry').on('change', function()
 	{
@@ -31,6 +37,9 @@ $(function() {
   });
 
   watchPasswordStrength($('#infosPassword'), '#btNext');
+  if ($('#infosPassword').val()) {
+    $('#infosPassword').trigger('keyup');
+  }
 
   // Safety net: prevent submit (e.g. via Enter key) when password does not meet requirements.
   // The button is already disabled by watchPasswordStrength, but Enter key can bypass that.
@@ -46,6 +55,95 @@ $(function() {
     }
   });
 });
+
+const CONFIGURE_DRAFT_KEY = 'gregoshop.install.configure';
+
+function loadConfigureDraft() {
+  try {
+    return JSON.parse(localStorage.getItem(CONFIGURE_DRAFT_KEY) || '{}') || {};
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveConfigureDraft(partial) {
+  try {
+    localStorage.setItem(
+      CONFIGURE_DRAFT_KEY,
+      JSON.stringify(Object.assign(loadConfigureDraft(), partial)),
+    );
+  } catch (e) {
+    // Ignore quota / private mode.
+  }
+}
+
+function isBlankInstallValue(value) {
+  return value === null || value === undefined || value === '' || value === '0';
+}
+
+function restoreConfigureDraft() {
+  const draft = loadConfigureDraft();
+  if (!draft || Object.keys(draft).length === 0) {
+    return;
+  }
+
+  const textFields = {
+    infosShop: 'shop_name',
+    infosFirstname: 'admin_firstname',
+    infosName: 'admin_lastname',
+    infosEmail: 'admin_email',
+    infosPassword: 'admin_password',
+    infosPasswordRepeat: 'admin_password_confirm',
+  };
+
+  Object.keys(textFields).forEach(function(id) {
+    const $el = $('#' + id);
+    if ($el.length && isBlankInstallValue($el.val()) && !isBlankInstallValue(draft[textFields[id]])) {
+      $el.val(draft[textFields[id]]);
+    }
+  });
+
+  const $country = $('#infosCountry');
+  if ($country.length && isBlankInstallValue($country.val()) && draft.shop_country) {
+    $country.val(draft.shop_country).trigger('liszt:updated').trigger('chosen:updated');
+  }
+
+  const $timezone = $('#infosTimezone');
+  if ($timezone.length && !isBlankInstallValue(draft.shop_timezone)) {
+    if (isBlankInstallValue($timezone.val()) || $timezone.val() === '0') {
+      $timezone.val(draft.shop_timezone).trigger('liszt:updated').trigger('chosen:updated');
+    }
+    if (in_array($country.val(), ['br', 'us', 'ca', 'ru', 'me', 'au', 'id'])) {
+      $('#timezone_div').show();
+    }
+  }
+
+  if (typeof draft.enable_ssl !== 'undefined') {
+    $('input[name="enable_ssl"][value="' + (draft.enable_ssl ? '1' : '0') + '"]').prop('checked', true);
+  }
+}
+
+function bindConfigureDraftPersistence() {
+  const persist = function() {
+    saveConfigureDraft({
+      shop_name: $('#infosShop').val(),
+      shop_country: $('#infosCountry').val(),
+      shop_timezone: $('#infosTimezone').val(),
+      enable_ssl: $('input[name="enable_ssl"]:checked').val() === '1',
+      admin_firstname: $('#infosFirstname').val(),
+      admin_lastname: $('#infosName').val(),
+      admin_email: $('#infosEmail').val(),
+      admin_password: $('#infosPassword').val(),
+      admin_password_confirm: $('#infosPasswordRepeat').val(),
+    });
+  };
+
+  $('#infosShopBlock').on(
+    'input change',
+    'input, select',
+    persist,
+  );
+}
 
 function checkTimeZone(elt)
 {
