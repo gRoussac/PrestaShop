@@ -1,0 +1,19 @@
+{**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ *}
+{extends file="components/module-products.tpl"}
+
+{block name='module_products_variables'}
+  {assign var="need_container" value=false}
+{/block}
+
+{block name='module_products_name'}ps-categoryproducts{/block}
+
+{block name='module_products_title'}
+  {if $products|@count == 1}
+    {include file='components/section-title.tpl' title={l s='%s other product in the same category' sprintf=[$products|@count] d='Shop.Theme.Catalog'}}
+  {else}
+    {include file='components/section-title.tpl' title={l s='%s other products in the same category' sprintf=[$products|@count] d='Shop.Theme.Catalog'}}
+  {/if}
+{/block}

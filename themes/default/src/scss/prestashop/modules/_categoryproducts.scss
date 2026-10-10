@@ -1,0 +1,13 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+$module-name: ps-categoryproducts;
+
+.#{$module-name} {
+  margin-block-end: 2rem;
+
+  @include media-breakpoint-up(xl) {
+    margin-block-end: 3rem;
+  }
+}

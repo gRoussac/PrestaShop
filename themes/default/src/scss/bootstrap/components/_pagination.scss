@@ -1,0 +1,27 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+$component-name: "pagination";
+$sub-component-name: "page";
+
+.#{$component-name} {
+  flex-wrap: wrap;
+}
+
+.#{$sub-component-name} {
+  &-link {
+    display: inline-flex;
+    gap: 0.5em;
+    align-items: center;
+
+    &.active,
+    .active > & {
+      font-weight: 600;
+
+      &.disabled {
+        color: var(--bs-pagination-active-color);
+      }
+    }
+  }
+}

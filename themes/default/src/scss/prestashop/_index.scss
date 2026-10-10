@@ -1,0 +1,26 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+// Base
+@import "base";
+
+// Components
+@layer ps-components {
+  @import "components";
+}
+
+// Modules
+@layer ps-modules {
+  @import "modules";
+}
+
+// Layout
+@layer ps-base {
+  @import "layout";
+}
+
+// Pages
+@layer ps-pages {
+  @import "pages";
+}

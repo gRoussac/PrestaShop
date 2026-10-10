@@ -1,0 +1,18 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+$component-name: final-summary;
+
+.#{$component-name} {
+  &__header {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-block-start: 2rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--bs-secondary-color);
+  }
+}

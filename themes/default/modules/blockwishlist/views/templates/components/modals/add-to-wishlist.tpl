@@ -1,0 +1,55 @@
+{**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ *}
+
+<div
+ class="wishlist-add-to"
+ data-url="{$url}"
+>
+  <div
+    class="wishlist-modal modal fade"
+    :class="{ldelim}show: !isHidden{rdelim}"
+    tabindex="-1"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <p class="h2 modal-title">{l s='Add to wishlist' d='Modules.Blockwishlist.Shop'}</p>
+          <button
+            type="button"
+            class="btn-close"
+            @click="toggleModal"
+            data-dismiss="modal"
+            aria-label="{l s='Close' d='Modules.Blockwishlist.Shop'}"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <choose-list
+            @hide="toggleModal"
+            :product-id="productId"
+            :product-attribute-id="productAttributeId"
+            :quantity="quantity"
+            url="{$url}"
+            add-url="{$addUrl}"
+            empty-text="{l s='No list found.' d='Modules.Blockwishlist.Shop'}"
+          ></choose-list>
+        </div>
+
+        <div class="modal-footer">
+          <div role="button" @click="openNewWishlistModal" class="wishlist-add-to-new text-primary-emphasis">
+            <i class="material-icons text-primary-emphasis" aria-hidden="true">&#xE148;</i> {$newWishlistCTA}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal-backdrop fade"
+    :class="{ldelim}show: !isHidden{rdelim}"
+  ></div>
+</div>

@@ -1,0 +1,31 @@
+{
+  "name": "prestashop/theme-default",
+  "description": "Hummingbird development theme for PrestaShop",
+  "type": "prestashop-theme",
+  "license": "AFL-3.0",
+  "authors": [
+    {
+      "name": "PrestaShop SA",
+      "email": "contact@prestashop.com"
+    },
+    {
+      "name": "PrestaShop Community",
+      "homepage": "https://contributors.prestashop-project.org/"
+    }
+  ],
+  "require-dev": {
+    "prestashop/header-stamp": "^3.1",
+    "prestashop/autoindex": "^2.1"
+  },
+  "scripts": {
+    "autoindex": [
+      "@php ./vendor/bin/autoindex --exclude=.github,.storybook,docker,docs,node_modules,src,stories,types,vendor,webpack"
+    ],
+    "header-stamp": [
+      "@php ./vendor/bin/header-stamp --config=.header-stamp-config.yml --dry-run"
+    ],
+    "header-stamp-fix": [
+      "@php ./vendor/bin/header-stamp --config=.header-stamp-config.yml"
+    ]
+  }
+}

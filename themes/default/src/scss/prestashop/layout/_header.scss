@@ -1,0 +1,15 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+// @TODO: refacto
+$component-name: header;
+
+.#{$component-name} {
+  position: sticky;
+  top: 0;
+  z-index: calc($zindex-sticky + 1);
+  width: 100%;
+  max-width: 100vw;
+  background-color: var(--bs-body-bg);
+}

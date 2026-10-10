@@ -1,0 +1,28 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+$component-name: currency-selector;
+
+.#{$component-name} {
+  display: flex;
+  align-items: center;
+
+  > span {
+    margin-right: 0.5rem;
+  }
+
+  @include media-breakpoint-down(md) {
+    &__wrapper {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+/* stylelint-disable */
+#_mobile_currency_selector {
+  &:empty {
+    display: none;
+  }
+}
+/* stylelint-enable */

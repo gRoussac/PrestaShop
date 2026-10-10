@@ -1,0 +1,39 @@
+{**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ *}
+{if isset($blocks) && !empty($blocks)}
+  <div class="blockreassurance blockreassurance--light">
+    <div class="blockreassurance--horizontal container">
+      {foreach from=$blocks item=$block key=$key}
+        {if $block['type_link'] !== $LINK_TYPE_NONE && !empty($block['link'])}
+          <a class="reassurance reassurance--link" href="{$block['link']|escape:'htmlall':'UTF-8'}">
+        {else}
+          <div class="reassurance">
+        {/if}
+
+          <span class="reassurance__image">
+            {if $block['custom_icon']}
+              <img class="{if $block['is_svg']}svg invisible{/if} img-fluid" src="{$block['custom_icon']}" alt="">
+            {elseif $block['icon']}
+              <img class="svg img-fluid invisible" src="{$block['icon']}" alt="">
+            {/if}
+          </span>
+
+          <span class="reassurance__content">
+            <span class="reassurance__title">{$block['title']|escape:'htmlall':'UTF-8'}</span>
+            {if !empty($block['description'])}
+              <br/>
+              <small class="reassurance__desc">{$block['description'] nofilter}</small>
+            {/if}
+          </span>
+
+        {if !empty($block['link']) && $block['type_link'] !== $LINK_TYPE_NONE}
+          </a>
+        {else}
+          </div>
+        {/if}
+      {/foreach}
+    </div>
+  </div>
+{/if}

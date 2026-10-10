@@ -1,0 +1,99 @@
+{**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ *}
+{if $product.show_price}
+  <div class="product__prices js-product-prices">
+    {block name='product_price'}
+      <div class="product__prices-block">
+        {if $product.has_discount}
+          <div class="product__discount-price product__prices-inline product__prices-inline--small-gap">
+            {hook h='displayProductPriceBlock' product=$product type="old_price"}
+
+            <span class="product__regular-price">
+              <span class="visually-hidden">{l s='Regular price: ' d='Shop.Theme.Catalog'}</span>
+              {$product.regular_price}
+            </span>
+
+            {if $product.discount_type === 'percentage'}
+              <span class="product__discount-percentage text-primary-emphasis">
+                ({l s='Save %percentage%' d='Shop.Theme.Catalog' sprintf=['%percentage%' => $product.discount_percentage_absolute]})
+              </span>
+            {else}
+              <span class="product__discount-amount text-primary-emphasis">
+                ({l s='Save %amount%' d='Shop.Theme.Catalog' sprintf=['%amount%' => $product.discount_to_display]})
+              </span>
+            {/if}
+          </div>
+        {/if}
+        
+        <div class="product__prices-inline product__prices-inline--small-gap">
+          <div class="product__price">
+            {capture name='custom_price'}{hook h='displayProductPriceBlock' product=$product type='custom_price' hook_origin='product_sheet'}{/capture}
+            {if !empty($smarty.capture.custom_price)}
+              {$smarty.capture.custom_price nofilter}
+            {else}
+              <span class="visually-hidden">{l s='Price: ' d='Shop.Theme.Catalog'}</span>
+              {$product.price}
+            {/if}
+          </div>
+
+          {block name='product_unit_price'}
+            {if $displayUnitPrice}
+              <span class="product__unit-price">
+                {l s='(%unit_price%)' sprintf=['%unit_price%' => $product.unit_price_full] d='Shop.Theme.Catalog'}
+              </span>
+            {/if}
+          {/block}
+        </div>
+
+        {block name='product_pack_price'}
+          {if $displayPackPrice}
+            <span class="product__pack-price">
+              {l s='Instead of %price%' d='Shop.Theme.Catalog' sprintf=['%price%' => $noPackPrice]}
+            </span>
+          {/if}
+        {/block}
+
+        {capture name='product_price_hooks'}{hook h='displayProductPriceBlock' product=$product type="price"}{hook h='displayProductPriceBlock' product=$product type="after_price"}{/capture}
+        {if $configuration.display_taxes_label || $product.ecotax.amount > 0 || $smarty.capture.product_price_hooks|trim}
+          <div class="product__tax-infos">
+            <span class="product__tax-label">
+              {if $configuration.display_taxes_label}
+                {if $configuration.taxes_enabled}
+                  {$product.labels.tax_long}
+                {else}
+                  {l s='No tax' d='Shop.Theme.Catalog'}
+                {/if}
+              {/if}
+
+              {$smarty.capture.product_price_hooks nofilter}
+            </span>
+
+            {* Separator *}
+            {if $configuration.display_taxes_label && $product.ecotax.amount > 0}<span class="product__price-separator"> - </span>{/if}
+
+            {block name='product_ecotax'}
+              {if $product.ecotax.amount> 0}
+                <span class="product__ecotax-price">
+                  {l s='Including %amount% for ecotax' d='Shop.Theme.Catalog' sprintf=['%amount%' => $product.ecotax.value]}
+                  {if $product.has_discount}
+                    {l s='(not impacted by the discount)' d='Shop.Theme.Catalog'}
+                  {/if}
+                </span>
+              {/if}
+            {/block}
+          </div>
+        {/if}
+
+        {block name='product_without_taxes'}
+          {if $priceDisplay == 0 && $configuration.is_b2b}
+            <span class="product__taxless-price">{l s='%price% tax excluded' d='Shop.Theme.Catalog' sprintf=['%price%' => $product.price_tax_excluded]}</span>
+          {/if}
+        {/block}
+      </div>
+    {/block}
+
+    {hook h='displayProductPriceBlock' product=$product type="weight" hook_origin='product_sheet'}
+  </div>
+{/if}

@@ -1,0 +1,23 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+$component-name: module-products;
+
+.#{$component-name} {
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    margin-block-start: 2rem;
+  }
+}
+
+body {
+  &:not(#index) {
+    .#{$component-name} {
+      &.container {
+        padding-inline: 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+$component-name: outline;
+
+.#{$component-name} {
+  &:focus-visible {
+    outline: 0.125rem solid var(--bs-primary);
+    outline-offset: -0.125rem;
+  }
+
+  &--rounded {
+    border-radius: var(--bs-border-radius);
+  }
+
+  &.disabled,
+  &:disabled {
+    &:focus-visible {
+      outline: none;
+    }
+  }
+}
