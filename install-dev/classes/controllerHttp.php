@@ -452,7 +452,8 @@ class InstallControllerHttp
 
     public function displayContent(string $content): void
     {
-        $this->setContent($this->getTemplate($content));
+        $this->setContent('');
+        $this->install_ui_bootstrap = (new InstallUiBootstrap($this))->build($content);
         echo $this->getTemplate('layout');
     }
 

@@ -3,6 +3,13 @@
  * For the full copyright and license information, please view the
  * LICENSE file that was distributed with this source code.
  */
+$installAppJs = _PS_INSTALL_PATH_ . 'theme/js/install-app.js';
+$installAppCss = _PS_INSTALL_PATH_ . 'theme/css/install-app.css';
+$viewCss = _PS_INSTALL_PATH_ . 'theme/view.css';
+$bootstrapJson = json_encode(
+    $this->install_ui_bootstrap ?? ['step' => 'welcome', 'strings' => [], 'stepData' => []],
+    JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE
+);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -16,91 +23,30 @@
     <meta http-equiv="Expires" content="-1" />
     <meta name="robots" content="noindex" />
     <link rel="shortcut icon" href="theme/img/favicon.ico" />
-    <link rel="stylesheet" type="text/css" media="all" href="theme/view.css?version=<?php echo rawurlencode(_PS_VERSION_ . '.' . (string) filemtime(_PS_INSTALL_PATH_ . 'theme/view.css')); ?>" />
+    <link rel="stylesheet" type="text/css" media="all" href="theme/view.css?version=<?php echo rawurlencode(_PS_VERSION_ . '.' . (string) filemtime($viewCss)); ?>" />
+    <?php if (is_file($installAppCss)) { ?>
+      <link rel="stylesheet" type="text/css" media="all" href="theme/css/install-app.css?version=<?php echo rawurlencode(_PS_VERSION_ . '.' . (string) filemtime($installAppCss)); ?>" />
+    <?php } ?>
 
     <?php if ($this->language->getLanguage()->isRtl() == 'true') { ?>
       <link rel="stylesheet" type="text/css" media="all" href="theme/rtl.css" />
     <?php } ?>
 
-    <script type="text/javascript" src="../js/jquery/jquery-3.7.1.min.js"></script>
-    <script type="text/javascript" src="../js/jquery/jquery-migrate-3.4.0.min.js"></script>
-    <script type="text/javascript" src="../js/jquery/plugins/jquery.chosen.js"></script>
-
-    <script src="theme/js/sprintf.min.js" integrity="sha512-pmG0OkYtZVB2EqETE5HPsEaok7sNZFfStp5rNdpHv0tGQjbt1z8Qjzhtx88/4wsttOtDwq5DZGJyKyzEe7ribg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="theme/js/zxcvbn-core.js"></script>
-    <script src="theme/js/zxcvbn-language-common.js"></script>
-    <script src="theme/js/zxcvbn-language-en.js"></script>
-
-    <script type="text/javascript" src="theme/js/install.js"></script>
-    <?php
-    $stepJs = _PS_INSTALL_PATH_ . 'theme/js/' . self::getSteps()->current()->getName() . '.js';
-    if (file_exists($stepJs)) {
-        $stepJsVersion = _PS_VERSION_ . '.' . (string) filemtime($stepJs);
-        ?>
-      <script type="text/javascript" src="theme/js/<?php echo self::getSteps()->current()->getName(); ?>.js?version=<?php echo rawurlencode($stepJsVersion); ?>"></script>
-    <?php } ?>
     <script type="text/javascript">
+      window.__INSTALL_BOOTSTRAP__ = <?php echo $bootstrapJson; ?>;
       var ps_base_uri = '<?php echo addslashes(__PS_BASE_URI__); ?>';
       var ps_version = '<?php echo addslashes(_PS_INSTALL_VERSION_); ?>';
     </script>
   </head>
 
   <body>
-    <div id="container">
-      <!-- Ajax loader animation -->
-      <div id="loaderSpace">
-        <div id="loader">&nbsp;</div>
-      </div>
-
-      <!-- Page content -->
-      <form id="mainForm" action="index.php" method="post">
-        <div class="mainForm__header">
-          <h1><?php echo $this->translator->trans('Installation Assistant', [], 'Install'); ?></h1>
-
-          <ul id="stepList_1" class="stepList">
-            <?php foreach (self::getSteps() as $step) { ?>
-              <li <?php if ($this->isStepFinished($step->getName())) { ?>class="ok"<?php } ?>><?php echo $step; ?></li>
-            <?php } ?>
-          </ul>
-        </div>
-
-        <div class="mainForm__content">
-          <?php echo $this->getTemplate('menu'); ?>
-
-          <div id="sheets" class="sheet shown">
-            <div id="sheet_<?php echo self::getSteps()->current()->getName(); ?>" class="sheet shown clearfix">
-              <noscript>
-                <h4 class="errorBlock" style="margin-bottom:10px">
-                  <?php echo $this->translator->trans('To install PrestaShop, you need to have JavaScript enabled in your browser.', [], 'Install'); ?>
-                  <a href="<?php echo $this->translator->trans('https://enable-javascript.com/', [], 'Install'); ?>" target="_blank" rel="noopener noreferrer">
-                    <img src="theme/img/help.png" style="height:16px;width:16px" />
-                  </a>
-                </h4>
-              </noscript>
-
-              <div>
-                <?php echo $this->getContent(); ?>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="buttons" class="mainForm__footer">
-          <?php if (!$this->isLastStep()) { ?>
-            <?php if ($this->next_button) { ?>
-              <input id="btNext" class="button little" type="submit" name="submitNext" value="<?php echo $this->translator->trans('Next', [], 'Install'); ?>" />
-            <?php } else { ?>
-              <input id="btNext" class="button little disabled" type="submit" name="submitNext" value="<?php echo $this->translator->trans('Next', [], 'Install'); ?>" disabled="disabled" />
-            <?php } ?>
-          <?php } ?>
-
-          <?php if (!$this->isFirstStep() && $this->previous_button) { ?>
-            <input id="btBack" class="button little" type="submit" name="submitPrevious" value="<?php echo $this->translator->trans('Back', [], 'Install'); ?>" />
-          <?php } ?>
-        </div>
-      </form>
-
-      <?php echo $this->getHook('content-footer'); ?>
-    </div>
+    <div id="install-app"></div>
+    <?php if (is_file($installAppJs)) { ?>
+      <script src="theme/js/install-app.js?version=<?php echo rawurlencode(_PS_VERSION_ . '.' . (string) filemtime($installAppJs)); ?>"></script>
+    <?php } else { ?>
+      <p class="errorBlock">
+        <?php echo $this->translator->trans('Installer UI assets are missing. Run make install-ui from a development checkout.', [], 'Install'); ?>
+      </p>
+    <?php } ?>
   </body>
 </html>

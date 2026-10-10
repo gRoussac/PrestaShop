@@ -1,7 +1,10 @@
-.PHONY: assets wait-assets admin front admin-default admin-new-theme front-core front-default
+.PHONY: assets wait-assets admin front admin-default admin-new-theme front-core front-default install-ui
 
 assets: ## Build all assets
 	$(PHP_CONT_WITH_LOGIN) ./tools/assets/build.sh all --force
+
+install-ui: ## Build installer Vue UI into install-dev/theme (dev-only source: install-ui/)
+	cd $(ROOT)/install-ui && npm ci && npm run build
 
 wait-assets: ## Wait until assets are built
 	$(PHP_CONT_WITH_LOGIN) ./tools/assets/wait-build.sh

@@ -150,6 +150,7 @@ class ReleaseCreator
         '\.php_cs\.dist$',
         'tools/assets$',
         '\.webpack$',
+        'install-ui$',
         '^phpstan/',
         '^(?!.*vendor).*phpstan.*\.neon',
         // Filter AI tools (MD files are alredy filtered via a generic rule above)
