@@ -70,6 +70,24 @@
             <?php echo $this->translator->trans('Select the modules to install', [], 'Install') ?>
           </label>
         </li>
+        <li>
+          <label>
+            <input style="vertical-align: top;" value="<?php echo static::MODULES_NONE; ?>" name="module-action" type="radio" autocomplete="off" <?php if ($this->moduleAction === static::MODULES_NONE): ?> checked="checked"<?php endif; ?>/>
+            <?php echo $this->translator->trans('Install no modules', [], 'Install') ?>
+          </label>
+        </li>
+        <li>
+          <label>
+            <input style="vertical-align: top;" value="<?php echo static::MODULES_BO_ONLY; ?>" name="module-action" type="radio" autocomplete="off" <?php if ($this->moduleAction === static::MODULES_BO_ONLY): ?> checked="checked"<?php endif; ?>/>
+            <?php echo $this->translator->trans('Back-office modules only (Administration)', [], 'Install') ?>
+          </label>
+        </li>
+        <li>
+          <label>
+            <input style="vertical-align: top;" value="<?php echo static::MODULES_FO_ONLY; ?>" name="module-action" type="radio" autocomplete="off" <?php if ($this->moduleAction === static::MODULES_FO_ONLY): ?> checked="checked"<?php endif; ?>/>
+            <?php echo $this->translator->trans('Front-office modules only (exclude Administration)', [], 'Install') ?>
+          </label>
+        </li>
       </ul>
     </div>
 

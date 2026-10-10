@@ -178,11 +178,16 @@ class InstallControllerHttpDatabase extends InstallControllerHttp implements Htt
                 $parameters = Yaml::parse(file_get_contents(_PS_ROOT_DIR_ . '/app/config/parameters.yml.dist'));
             }
 
-            $this->database_server = $parameters['parameters']['database_host'];
+            $databaseHost = (string) $parameters['parameters']['database_host'];
+            if ($databaseHost === '127.0.0.1') {
+                $databaseHost = 'localhost';
+            }
+            $this->database_server = $databaseHost;
             if (!empty($parameters['parameters']['database_port'])) {
                 $this->database_server .= ':' . $parameters['parameters']['database_port'];
             }
-            $this->database_name = $parameters['parameters']['database_name'];
+            // Installer first-load: empty DB name (ignore dist default for the form).
+            $this->database_name = '';
             $this->database_login = $parameters['parameters']['database_user'];
             $this->database_password = $parameters['parameters']['database_password'];
             $this->database_engine = $parameters['parameters']['database_engine'];

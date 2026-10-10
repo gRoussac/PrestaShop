@@ -9,12 +9,15 @@ $(function() {
   const $selectAllButton = $('input[name="select-all"]');
   const $searchInput = $('#search-for-module');
 
+  // MODULES_SELECTED === 1: show the checkbox list only for that mode.
+  const MODULES_SELECTED = 1;
+
   $('input[name="module-action"]').on('change', function() {
     if ($(this).prop('checked') === false) {
       return;
     }
 
-    if (parseInt($(this).val(), 10) === 1) {
+    if (parseInt($(this).val(), 10) === MODULES_SELECTED) {
       $modulesContainer.fadeIn();
     } else {
       $modulesContainer.fadeOut();

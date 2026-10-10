@@ -163,7 +163,7 @@ class Datas
         ],
         'fixtures' => [
             'name' => 'fixtures',
-            'default' => '1',
+            'default' => '0',
             'validate' => 'isInt',
             'help' => 'enable fixtures installation',
         ],
