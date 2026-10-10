@@ -54,11 +54,12 @@ runs:
           chmod +x mkcert-v*-linux-amd64
           sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
           ## Generate certificate
-          mkcert -key-file ${{ inputs.PRESTASHOP_DIR }}/docker/ssl.key -cert-file ${{ inputs.PRESTASHOP_DIR }}/docker/ssl.crt localhost
+          mkdir -p ${{ inputs.PRESTASHOP_DIR }}/docker/apache/certs
+          mkcert -key-file ${{ inputs.PRESTASHOP_DIR }}/docker/apache/certs/localhost.key -cert-file ${{ inputs.PRESTASHOP_DIR }}/docker/apache/certs/localhost.crt localhost
           ## Link certificate to Chrome Trust Store
           mkdir -p $HOME/.pki/nssdb
           certutil -d $HOME/.pki/nssdb -N
-          certutil -d sql:$HOME/.pki/nssdb -n localhost -A -t "TCu,Cu,Tu" -i ${{ inputs.PRESTASHOP_DIR }}/docker/ssl.crt
+          certutil -d sql:$HOME/.pki/nssdb -n localhost -A -t "TCu,Cu,Tu" -i ${{ inputs.PRESTASHOP_DIR }}/docker/apache/certs/localhost.crt
           ## Add self-signed certificate to Chrome Trust Store
           mkcert -install
 
@@ -72,29 +73,31 @@ runs:
     - name: Build and Run shop with docker (wait for ${{ env.URL_PING }})
       shell: bash
       env:
-        DISABLE_MAKE: ${{ (inputs.DISABLE_MAKE == 'true') && '1' || '0' }}
         PS_ENABLE_SSL: ${{ (inputs.ENABLE_SSL == 'true') && '1' || '0' }}
         PS_INSTALL_AUTO: ${{ (inputs.INSTALL_AUTO == 'true') && '1' || '0' }}
         PS_USE_DOCKER_MAILDEV: 0
-        VERSION: ${{ inputs.PHP_VERSION }}-apache
-        NODE_VERSION: ${{ inputs.NODE_VERSION }}
         URL_FO: ${{ (inputs.ENABLE_SSL == 'false') && 'http://localhost:8001/' || 'https://localhost:8002/' }}
         URL_PING: ${{ (inputs.INSTALL_AUTO == 'true') && 'en/' || 'install-dev/' }}
         PS_DOMAIN: ${{ (inputs.ENABLE_SSL == 'false') && 'localhost:8001' || 'localhost:8002' }}
         PS_DEV_MODE: ${{ (inputs.DEV_MODE == 'false') && '0' || '1' }}
-        DB_SERVER: ${{ inputs.DB_SERVER }}
+        DB_SERVER: mysql
         DB_NAME: "prestashop"
         DB_PREFIX: "tst_"
         DB_USER: "root"
         DB_PASSWD: "prestashop"
         PS_LANGUAGE: "en"
         ADMIN_PASSWD: "Pr3st4Sh0P"
-        TIMEZONE: "Europe/Paris"
       run: |
         cd ${{ inputs.PRESTASHOP_DIR }}
+        COMPOSE=(docker compose -f docker/docker-compose.yml)
+        if [[ "${{ inputs.DB_SERVER }}" = "mariadb" ]]; then
+          COMPOSE+=(-f docker/compose.mariadb.yml)
+        fi
+        COMPOSE+=(--project-directory .)
+        "${COMPOSE[@]}" up -d --build
+        if [[ "${{ inputs.INSTALL_AUTO }}" = "true" ]]; then
+          "${COMPOSE[@]}" exec -T php sh docker/install/database.sh
+        fi
         if [[ "${{ inputs.DOCKER_DAEMON }}" = "true" ]]; then
-          USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose -f ${{ (inputs.DB_SERVER == 'mysql') && 'docker/docker-compose.yml' || 'docker/docker-compose.mariadb.yml' }} --project-directory . up -d prestashop-git --build
-          bash -c 'while [[ "$(curl -L -s -o /dev/null -w %{http_code} ${{ env.URL_FO }}${{ env.URL_PING }})" != "200" ]]; do sleep 5; done'
-        else
-          USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose -f ${{ (inputs.DB_SERVER == 'mysql') && 'docker/docker-compose.yml' || 'docker/docker-compose.mariadb.yml' }} --project-directory . up prestashop-git --build
+          bash -c 'while [[ "$(curl -L -k -s -o /dev/null -w %{http_code} ${{ env.URL_FO }}${{ env.URL_PING }})" != "200" ]]; do sleep 5; done'
         fi

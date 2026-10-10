@@ -28,7 +28,7 @@ use Tests\Resources\DatabaseDump;
  *   7. Inactive shop theme rows are never included in the catalogue
  *
  * Run:
- *   docker compose exec prestashop-git php ./vendor/phpunit/phpunit/phpunit \
+ *   docker compose exec php php ./vendor/phpunit/phpunit/phpunit \
  *     -c tests/Integration/phpunit.xml \
  *     tests/Integration/PrestaShopBundle/Translation/Loader/SqlTranslationLoaderTest.php
  */

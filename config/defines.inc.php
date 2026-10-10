@@ -184,9 +184,6 @@ define('_PS_USE_SQL_SLAVE_', false);
 /* PS Technical configuration */
 define('_PS_ADMIN_PROFILE_', 1);
 
-/* Cache */
-define('_PS_CACHEFS_DIRECTORY_', _PS_ROOT_DIR_.'/cache/cachefs/');
-
 /* Geolocation */
 define('_PS_GEOLOCATION_NO_CATALOG_', 0);
 define('_PS_GEOLOCATION_NO_ORDER_', 1);

@@ -1,0 +1,15 @@
+# Overlay: phpMyAdmin on :8080
+#   docker compose -f docker/docker-compose.yml -f docker/compose.phpmyadmin.yml --project-directory . up -d
+
+services:
+  phpmyadmin:
+    image: phpmyadmin:5
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_PASSWD:-prestashop}
+    restart: unless-stopped
+    depends_on:
+      - mysql
