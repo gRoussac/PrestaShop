@@ -4,12 +4,12 @@ name: CI UI code
 
 on:
   push:
-    branches: [dev]
+    branches: [ dev ]
     paths:
       - 'tests/UI/**'
       - '.github/workflows/ci-ui-code.yml'
   pull_request:
-    branches: [dev]
+    branches: [ dev ]
     paths:
       - 'tests/UI/**'
       - '.github/workflows/ci-ui-code.yml'
