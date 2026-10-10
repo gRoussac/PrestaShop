@@ -3,7 +3,7 @@
 # FO: http://localhost:8001 / https://localhost:8002
 # Maildev UI: http://localhost:1080
 
-name: prestashop
+name: gregoshop
 
 services:
   mysql:

@@ -142,11 +142,6 @@ jobs:
     name: Admin Security Attribute Linter
     runs-on: ubuntu-26.04
     steps:
-      - name: Prepare docker prefix with repository name lower cased
-        run: |
-          REPOSITORY_NAME=${{ github.event.repository.name }}
-          echo "DOCKER_PREFIX=${REPOSITORY_NAME@L}" >> $GITHUB_ENV
-
       - uses: actions/checkout@v7
 
       # First install the shop to that the modules controllers are also scanned (not the case without installation)
@@ -161,7 +156,6 @@ jobs:
       - name: Setup Environment failure
         uses: ./.github/actions/setup-env-export-logs
         with:
-          DOCKER_PREFIX: ${{ env.DOCKER_PREFIX }}
           ARTIFACT_NAME: setup-symfony-console-${{ matrix.app-id }}
           ENABLE_SSL: "true"
           INSTALL_AUTO: "true"
@@ -170,4 +164,4 @@ jobs:
       - name: Run Admin Security Attribute Linter (inside the docker so installed modules are also scanned)
         run: |
           echo Searching for routes without security
-          docker exec ${{ env.DOCKER_PREFIX }}-prestashop-git-1 php bin/console prestashop:linter:security-attribute find-missing
+          docker compose -f docker/docker-compose.yml --project-directory . exec -T php php bin/console prestashop:linter:security-attribute find-missing

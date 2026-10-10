@@ -25,11 +25,6 @@ jobs:
     name: Symfony Console
     runs-on: ubuntu-26.04
     steps:
-      - name: Prepare docker prefix with repository name lower cased
-        run: |
-          REPOSITORY_NAME=${{ github.event.repository.name }}
-          echo "DOCKER_PREFIX=${REPOSITORY_NAME@L}" >> $GITHUB_ENV
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -113,17 +108,17 @@ jobs:
       - name: Setup Environment failure
         uses: ./.github/actions/setup-env-export-logs
         with:
-          DOCKER_PREFIX: ${{ env.DOCKER_PREFIX }}
           ARTIFACT_NAME: setup-symfony-console-${{ matrix.app-id }}
           ENABLE_SSL: 'true'
           INSTALL_AUTO: 'false'
         if: failure()
 
-      # Retest the console after shop install
+      # Retest the console after shop install (compose project: gregoshop, service: php)
       - name: Check bin/console and cache:clear can run after shop install
         run: |
-          docker exec ${{ env.DOCKER_PREFIX }}-prestashop-git-1 php ./bin/console --app-id=${{ matrix.app-id }}
-          docker exec ${{ env.DOCKER_PREFIX }}-prestashop-git-1 php -d memory_limit=-1 ./bin/console cache:clear --env=dev --app-id=${{ matrix.app-id }}
-          docker exec ${{ env.DOCKER_PREFIX }}-prestashop-git-1 php -d memory_limit=-1 ./bin/console cache:clear --env=prod --app-id=${{ matrix.app-id }}
-          docker exec ${{ env.DOCKER_PREFIX }}-prestashop-git-1 php ./bin/console cache:clear --env=dev --no-warmup --app-id=${{ matrix.app-id }}
-          docker exec ${{ env.DOCKER_PREFIX }}-prestashop-git-1 php ./bin/console cache:clear --env=prod --no-warmup --app-id=${{ matrix.app-id }}
+          COMPOSE=(docker compose -f docker/docker-compose.yml --project-directory .)
+          "${COMPOSE[@]}" exec -T php php ./bin/console --app-id=${{ matrix.app-id }}
+          "${COMPOSE[@]}" exec -T php php -d memory_limit=-1 ./bin/console cache:clear --env=dev --app-id=${{ matrix.app-id }}
+          "${COMPOSE[@]}" exec -T php php -d memory_limit=-1 ./bin/console cache:clear --env=prod --app-id=${{ matrix.app-id }}
+          "${COMPOSE[@]}" exec -T php php ./bin/console cache:clear --env=dev --no-warmup --app-id=${{ matrix.app-id }}
+          "${COMPOSE[@]}" exec -T php php ./bin/console cache:clear --env=prod --no-warmup --app-id=${{ matrix.app-id }}
