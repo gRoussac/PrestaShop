@@ -80,7 +80,7 @@ jobs:
         working-directory: ${{ env.RELEASE_DIR }}
 
       - name: Auth Cloud Sdk
-        uses: google-github-actions/auth@v1
+        uses: google-github-actions/auth@v3
         with:
           credentials_json: ${{ env.GC_SERVICE_KEY }}
           project_id: ${{ env.GC_PROJECT_ID }}
