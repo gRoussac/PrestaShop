@@ -13,7 +13,9 @@ RUN apt-get update \
   && sed -i \
     -e 's/^user = www-data/user = 1000/' \
     -e 's/^group = www-data/group = 1000/' \
-    /usr/local/etc/php-fpm.d/www.conf
+    /usr/local/etc/php-fpm.d/www.conf \
+  && (getent group 1000 >/dev/null || groupadd --gid 1000 app) \
+  && (id -u 1000 >/dev/null 2>&1 || useradd --uid 1000 --gid 1000 --home-dir /var/www --shell /bin/bash app)
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
