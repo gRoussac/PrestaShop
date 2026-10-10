@@ -5,30 +5,27 @@ const props = defineProps({
   bootstrap: { type: Object, required: true },
 });
 
-const emitSubmitName = ref("");
 const nextDisabled = ref(!props.bootstrap.nextButton);
-const showNext = ref(true);
+const nextDisplay = ref("");
 
 const stepList = computed(() => props.bootstrap.steps || []);
 const menuSteps = computed(() => props.bootstrap.menuSteps || []);
-
-function setSubmitName(name) {
-  emitSubmitName.value = name;
-}
-
-function onFormSubmit(event) {
-  const submitName =
-    emitSubmitName.value || (event.submitter && event.submitter.name) || "";
-  if (submitName !== "submitPrevious") {
-    showNext.value = false;
-  }
-}
 
 function setNextDisabled(disabled) {
   nextDisabled.value = disabled;
 }
 
-defineExpose({ setNextDisabled });
+/**
+ * Same as legacy install.js: $('#btNext').hide() on forward submit.
+ * Keep the input in the DOM so submitNext stays in the POST body
+ * (Vue v-if removal would drop it).
+ */
+function onFormSubmit(event) {
+  const submitName = (event.submitter && event.submitter.name) || "";
+  if (submitName !== "submitPrevious") {
+    nextDisplay.value = "none";
+  }
+}
 
 onMounted(() => {
   window.__INSTALL_UI__ = {
@@ -46,6 +43,7 @@ onMounted(() => {
     <form id="mainForm" action="index.php" method="post" @submit="onFormSubmit">
       <div class="mainForm__header">
         <h1>{{ bootstrap.strings.installationAssistant }}</h1>
+
         <ul id="stepList_1" class="stepList">
           <li
             v-for="step in stepList"
@@ -76,8 +74,20 @@ onMounted(() => {
             <noscript>
               <h4 class="errorBlock" style="margin-bottom: 10px">
                 {{ bootstrap.strings.needJavascript }}
+                <a
+                  href="https://enable-javascript.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    :src="'theme/img/help.png'"
+                    style="height: 16px; width: 16px"
+                    alt=""
+                  />
+                </a>
               </h4>
             </noscript>
+
             <div>
               <slot />
             </div>
@@ -87,7 +97,7 @@ onMounted(() => {
 
       <div id="buttons" class="mainForm__footer">
         <input
-          v-if="!bootstrap.isLastStep && showNext"
+          v-if="!bootstrap.isLastStep"
           id="btNext"
           class="button little"
           :class="{ disabled: nextDisabled }"
@@ -95,7 +105,7 @@ onMounted(() => {
           name="submitNext"
           :value="bootstrap.strings.next"
           :disabled="nextDisabled"
-          @click="setSubmitName('submitNext')"
+          :style="nextDisplay ? { display: nextDisplay } : undefined"
         />
         <input
           v-if="!bootstrap.isFirstStep && bootstrap.previousButton"
@@ -104,7 +114,6 @@ onMounted(() => {
           type="submit"
           name="submitPrevious"
           :value="bootstrap.strings.back"
-          @click="setSubmitName('submitPrevious')"
         />
       </div>
     </form>
