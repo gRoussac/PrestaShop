@@ -3,8 +3,62 @@
  * LICENSE file that was distributed with this source code.
  */
 
+const DATABASE_DRAFT_KEY = 'gregoshop.install.database';
+
+function loadDatabaseDraft() {
+	try {
+		return JSON.parse(localStorage.getItem(DATABASE_DRAFT_KEY) || '{}') || {};
+	} catch (e) {
+		return {};
+	}
+}
+
+function saveDatabaseDraft(partial) {
+	try {
+		localStorage.setItem(
+			DATABASE_DRAFT_KEY,
+			JSON.stringify(Object.assign(loadDatabaseDraft(), partial)),
+		);
+	} catch (e) {
+		// Ignore quota / private mode.
+	}
+}
+
+function restoreDatabaseDraft() {
+	const draft = loadDatabaseDraft();
+	if (!draft || Object.keys(draft).length === 0) {
+		return;
+	}
+	['dbServer', 'dbName', 'dbLogin', 'dbPassword', 'db_prefix'].forEach(function(id) {
+		const $el = $('#' + id);
+		if ($el.length && !$el.val() && draft[id]) {
+			$el.val(draft[id]);
+		}
+	});
+	if (typeof draft.db_clear !== 'undefined') {
+		$('#db_clear').prop('checked', !!draft.db_clear);
+	}
+}
+
+function bindDatabaseDraftPersistence() {
+	const persist = function() {
+		saveDatabaseDraft({
+			dbServer: $('#dbServer').val(),
+			dbName: $('#dbName').val(),
+			dbLogin: $('#dbLogin').val(),
+			dbPassword: $('#dbPassword').val(),
+			db_prefix: $('#db_prefix').val(),
+			db_clear: $('#db_clear').prop('checked'),
+		});
+	};
+	$('#dbPart').on('input change', 'input', persist);
+}
+
 $(function()
 {
+	restoreDatabaseDraft();
+	bindDatabaseDraftPersistence();
+
 	// Check rewrite engine availability
 	$.ajax({
 		url: 'sandbox/anything.php',
