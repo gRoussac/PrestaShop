@@ -34,10 +34,9 @@ function loadConfigureDraft() {
 
 function saveConfigureDraft(partial) {
   try {
-    localStorage.setItem(
-      CONFIGURE_DRAFT_KEY,
-      JSON.stringify($.extend({}, loadConfigureDraft(), partial || {})),
-    );
+    var draft = $.extend({}, loadConfigureDraft(), partial || {});
+    delete draft.admin_password_confirm;
+    localStorage.setItem(CONFIGURE_DRAFT_KEY, JSON.stringify(draft));
   } catch (e) {
     // Ignore quota / private mode.
   }
@@ -57,7 +56,7 @@ function collectConfigureDraft() {
     admin_lastname: $('#infosName').val(),
     admin_email: $('#infosEmail').val(),
     admin_password: $('#infosPassword').val(),
-    admin_password_confirm: $('#infosPasswordRepeat').val(),
+    // Never persist "Re-type to confirm".
   };
 }
 
@@ -73,7 +72,6 @@ function restoreConfigureDraft() {
     infosName: 'admin_lastname',
     infosEmail: 'admin_email',
     infosPassword: 'admin_password',
-    infosPasswordRepeat: 'admin_password_confirm',
   };
 
   $.each(textFields, function(id, key) {
