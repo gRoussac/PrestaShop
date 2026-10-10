@@ -5,8 +5,18 @@
 
 $(function()
 {
-	$('#mainForm').on('submit', function() {
-		$('#btNext').hide();
+	$('#mainForm').on('click', 'input[type="submit"]', function() {
+		$('#mainForm').data('submitName', this.name);
+	});
+
+	$('#mainForm').on('submit', function(e) {
+		var submitName = $('#mainForm').data('submitName')
+			|| (e.originalEvent && e.originalEvent.submitter && e.originalEvent.submitter.name)
+			|| '';
+		// Only hide Next when moving forward; Back must not strand the footer.
+		if (submitName !== 'submitPrevious') {
+			$('#btNext').hide();
+		}
 	});
 
 	// Ajax animation

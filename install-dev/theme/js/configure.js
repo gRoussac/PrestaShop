@@ -4,29 +4,34 @@
  */
 
 // Initialize zxcvbn-ts with language packages
-(function() {
-  if (typeof zxcvbnts !== 'undefined' && zxcvbnts.core && zxcvbnts['language-common'] && zxcvbnts['language-en']) {
+(function () {
+  if (
+    typeof zxcvbnts !== "undefined" &&
+    zxcvbnts.core &&
+    zxcvbnts["language-common"] &&
+    zxcvbnts["language-en"]
+  ) {
     const options = {
-      translations: zxcvbnts['language-en'].translations,
-      graphs: zxcvbnts['language-common'].adjacencyGraphs,
+      translations: zxcvbnts["language-en"].translations,
+      graphs: zxcvbnts["language-common"].adjacencyGraphs,
       dictionary: {
-        ...zxcvbnts['language-common'].dictionary,
-        ...zxcvbnts['language-en'].dictionary,
+        ...zxcvbnts["language-common"].dictionary,
+        ...zxcvbnts["language-en"].dictionary,
       },
     };
     zxcvbnts.core.zxcvbnOptions.setOptions(options);
     // Create global zxcvbn function for backward compatibility
-    window.zxcvbn = function(password) {
+    window.zxcvbn = function (password) {
       return zxcvbnts.core.zxcvbn(password);
     };
   }
 })();
 
-var CONFIGURE_DRAFT_KEY = 'gregoshop.install.configure';
+var CONFIGURE_DRAFT_KEY = "gregoshop.install.configure";
 
 function loadConfigureDraft() {
   try {
-    return JSON.parse(localStorage.getItem(CONFIGURE_DRAFT_KEY) || '{}') || {};
+    return JSON.parse(localStorage.getItem(CONFIGURE_DRAFT_KEY) || "{}") || {};
   } catch (e) {
     return {};
   }
@@ -43,19 +48,24 @@ function saveConfigureDraft(partial) {
 }
 
 function isBlankInstallValue(value) {
-  return value === null || value === undefined || String(value).trim() === '' || value === '0';
+  return (
+    value === null ||
+    value === undefined ||
+    String(value).trim() === "" ||
+    value === "0"
+  );
 }
 
 function collectConfigureDraft() {
   return {
-    shop_name: $('#infosShop').val(),
-    shop_country: $('#infosCountry').val(),
-    shop_timezone: $('#infosTimezone').val(),
-    enable_ssl: $('input[name="enable_ssl"]:checked').val() === '1',
-    admin_firstname: $('#infosFirstname').val(),
-    admin_lastname: $('#infosName').val(),
-    admin_email: $('#infosEmail').val(),
-    admin_password: $('#infosPassword').val(),
+    shop_name: $("#infosShop").val(),
+    shop_country: $("#infosCountry").val(),
+    shop_timezone: $("#infosTimezone").val(),
+    enable_ssl: $('input[name="enable_ssl"]:checked').val() === "1",
+    admin_firstname: $("#infosFirstname").val(),
+    admin_lastname: $("#infosName").val(),
+    admin_email: $("#infosEmail").val(),
+    admin_password: $("#infosPassword").val(),
     // Never persist "Re-type to confirm".
   };
 }
@@ -67,125 +77,155 @@ function restoreConfigureDraft() {
   }
 
   var textFields = {
-    infosShop: 'shop_name',
-    infosFirstname: 'admin_firstname',
-    infosName: 'admin_lastname',
-    infosEmail: 'admin_email',
-    infosPassword: 'admin_password',
+    infosShop: "shop_name",
+    infosFirstname: "admin_firstname",
+    infosName: "admin_lastname",
+    infosEmail: "admin_email",
+    infosPassword: "admin_password",
   };
 
-  $.each(textFields, function(id, key) {
-    var $el = $('#' + id);
-    if ($el.length && isBlankInstallValue($el.val()) && !isBlankInstallValue(draft[key])) {
+  $.each(textFields, function (id, key) {
+    var $el = $("#" + id);
+    if (
+      $el.length &&
+      isBlankInstallValue($el.val()) &&
+      !isBlankInstallValue(draft[key])
+    ) {
       $el.val(draft[key]);
     }
   });
 
-  var $country = $('#infosCountry');
-  if ($country.length && isBlankInstallValue($country.val()) && draft.shop_country) {
-    $country.val(draft.shop_country).trigger('liszt:updated').trigger('chosen:updated');
+  var $country = $("#infosCountry");
+  if (
+    $country.length &&
+    isBlankInstallValue($country.val()) &&
+    draft.shop_country
+  ) {
+    $country
+      .val(draft.shop_country)
+      .trigger("liszt:updated")
+      .trigger("chosen:updated");
   }
 
-  var $timezone = $('#infosTimezone');
+  var $timezone = $("#infosTimezone");
   if ($timezone.length && !isBlankInstallValue(draft.shop_timezone)) {
     if (isBlankInstallValue($timezone.val())) {
-      $timezone.val(draft.shop_timezone).trigger('liszt:updated').trigger('chosen:updated');
+      $timezone
+        .val(draft.shop_timezone)
+        .trigger("liszt:updated")
+        .trigger("chosen:updated");
     }
-    if (in_array($country.val(), ['br', 'us', 'ca', 'ru', 'me', 'au', 'id'])) {
-      $('#timezone_div').show();
+    if (in_array($country.val(), ["br", "us", "ca", "ru", "me", "au", "id"])) {
+      $("#timezone_div").show();
     }
   }
 
   // On HTTPS, always prefer Enable SSL = Yes (page is already SSL).
-  if (window.location.protocol === 'https:') {
-    $('input[name="enable_ssl"][value="1"]').prop('checked', true);
-  } else if (typeof draft.enable_ssl !== 'undefined') {
-    $('input[name="enable_ssl"][value="' + (draft.enable_ssl ? '1' : '0') + '"]').prop('checked', true);
+  if (window.location.protocol === "https:") {
+    $('input[name="enable_ssl"][value="1"]').prop("checked", true);
+  } else if (typeof draft.enable_ssl !== "undefined") {
+    $(
+      'input[name="enable_ssl"][value="' +
+        (draft.enable_ssl ? "1" : "0") +
+        '"]',
+    ).prop("checked", true);
   }
 }
 
 function bindConfigureDraftPersistence() {
-  var persist = function() {
+  var persist = function () {
     saveConfigureDraft(collectConfigureDraft());
   };
 
   // Form wraps the step; bind several events so typing / paste / chosen all persist.
-  $('#mainForm').on('input change keyup paste', 'input, select, textarea', persist);
-  $(window).on('beforeunload', persist);
+  $("#mainForm").on(
+    "input change keyup paste",
+    "input, select, textarea",
+    persist,
+  );
+  $(window).on("beforeunload", persist);
 }
 
-$(function() {
+$(function () {
   restoreConfigureDraft();
   bindConfigureDraftPersistence();
   // Persist whatever is already on screen (including PHP session values) for the next reload.
   saveConfigureDraft(collectConfigureDraft());
 
   // Only auto-pick timezone from country when none is set yet (session or draft).
-  if (!$('#infosTimezone').val() || $('#infosTimezone').val() === '0') {
-    checkTimeZone($('#infosCountry'));
+  if (!$("#infosTimezone").val() || $("#infosTimezone").val() === "0") {
+    checkTimeZone($("#infosCountry"));
   }
   // When a country is changed
-  $('#infosCountry').on('change', function()
-	{
-	  checkTimeZone(this);
+  $("#infosCountry").on("change", function () {
+    checkTimeZone(this);
   });
 
-  watchPasswordStrength($('#infosPassword'), '#btNext');
-  if ($('#infosPassword').val()) {
-    $('#infosPassword').trigger('keyup');
+  watchPasswordStrength($("#infosPassword"), "#btNext");
+  if ($("#infosPassword").val()) {
+    $("#infosPassword").trigger("keyup");
   }
 
-  // Safety net: prevent submit (e.g. via Enter key) when password does not meet requirements.
-  // The button is already disabled by watchPasswordStrength, but Enter key can bypass that.
-  $('#mainForm').on('submit', function(e) {
+  // Safety net: block Next (and Enter) when password is weak. Never block Back.
+  $("#mainForm").on("click", 'input[type="submit"]', function () {
+    $("#mainForm").data("submitName", this.name);
+  });
+  $("#mainForm").on("submit", function (e) {
     saveConfigureDraft(collectConfigureDraft());
-    const $passwordInput = $('#infosPassword');
+    var submitName =
+      ($("#mainForm").data("submitName") ||
+        (e.originalEvent &&
+          e.originalEvent.submitter &&
+          e.originalEvent.submitter.name) ||
+        "");
+    if (submitName === "submitPrevious") {
+      return;
+    }
+    const $passwordInput = $("#infosPassword");
     if ($passwordInput.length === 0 || !$passwordInput.val()) {
       return;
     }
     if (!isPasswordInputValid($passwordInput)) {
       e.preventDefault();
       e.stopImmediatePropagation();
+      $("#btNext").show();
       return false;
     }
   });
 });
 
-function checkTimeZone(elt)
-{
+function checkTimeZone(elt) {
   var iso = $(elt).val();
 
   // Get timezone by iso
   $.ajax({
-	url: 'index.php',
-	data: 'timezoneByIso=true&iso='+iso,
-	dataType: 'json',
-	cache: true,
-	success: function(json) {
-	  if (json.success) {
-		$('#infosTimezone').val(json.message).trigger("liszt:updated");
-		if (in_array(iso, ['br','us','ca','ru','me','au','id']))
-		{
-		  if ($('#infosTimezone:visible').length == 0 && $('#infosTimezone_chosen').length == 0)
-		  {
-			$('#infosTimezone:hidden').show();
-			$('#timezone_div').show();
-			$('#infosTimezone').chosen();
-		  }
-		  $('#timezone_div').show();
-		}
-		else
-		  $('#timezone_div').hide();
-	  }
-	}
+    url: "index.php",
+    data: "timezoneByIso=true&iso=" + iso,
+    dataType: "json",
+    cache: true,
+    success: function (json) {
+      if (json.success) {
+        $("#infosTimezone").val(json.message).trigger("liszt:updated");
+        if (in_array(iso, ["br", "us", "ca", "ru", "me", "au", "id"])) {
+          if (
+            $("#infosTimezone:visible").length == 0 &&
+            $("#infosTimezone_chosen").length == 0
+          ) {
+            $("#infosTimezone:hidden").show();
+            $("#timezone_div").show();
+            $("#infosTimezone").chosen();
+          }
+          $("#timezone_div").show();
+        } else $("#timezone_div").hide();
+      }
+    },
   });
 }
 
 function in_array(needle, haystack) {
   var length = haystack.length;
   for (var i = 0; i < length; i++) {
-    if (haystack[i] == needle)
-	  return true;
+    if (haystack[i] == needle) return true;
   }
   return false;
 }
@@ -203,12 +243,14 @@ function isPasswordInputValid($input) {
     return false;
   }
   const result = zxcvbn(passwordValue);
-  const minScore = $input.data('minscore');
-  const minLength = $input.data('minlength');
-  const maxLength = $input.data('maxlength');
-  return result.score >= minScore
-    && passwordValue.length >= minLength
-    && passwordValue.length <= maxLength;
+  const minScore = $input.data("minscore");
+  const minLength = $input.data("minlength");
+  const maxLength = $input.data("maxlength");
+  return (
+    result.score >= minScore &&
+    passwordValue.length >= minLength &&
+    passwordValue.length <= maxLength
+  );
 }
 
 /**
@@ -220,56 +262,74 @@ function isPasswordInputValid($input) {
  * @param {string} [submitButtonSelector] optional selector for the form submit button to disable when password is invalid.
  */
 function watchPasswordStrength(element, submitButtonSelector) {
-  element.on('keyup', function checkPasswordStrength() {
+  element.on("keyup", function checkPasswordStrength() {
     const $passwordInput = $(this);
-    const $fieldPassword = $passwordInput.closest('.field-password');
-    $fieldPassword.find('.js-password-client-error').hide();
+    const $fieldPassword = $passwordInput.closest(".field-password");
+    $fieldPassword.find(".js-password-client-error").hide();
     const passwordValue = $passwordInput.val();
-    const popoverElement = $('.field-password .popover');
-    let $feedbackContainer = $passwordInput.parent().find('.password-strength-feedback');
+    const popoverElement = $(".field-password .popover");
+    let $feedbackContainer = $passwordInput
+      .parent()
+      .find(".password-strength-feedback");
 
     if ($feedbackContainer.length === 0) {
-      $passwordInput.parent().append($('#password-feedback').html());
-      $feedbackContainer = $passwordInput.parent().find('.password-strength-feedback');
+      $passwordInput.parent().append($("#password-feedback").html());
+      $feedbackContainer = $passwordInput
+        .parent()
+        .find(".password-strength-feedback");
     }
 
-    const passwordRequirementsLength = $feedbackContainer.find('.password-requirements-length');
-    passwordRequirementsLength.find('span').text(
-      sprintf(
-        passwordRequirementsLength.data('translation'),
-        $passwordInput.data('minlength'),
-        $passwordInput.data('maxlength'),
-      ),
+    const passwordRequirementsLength = $feedbackContainer.find(
+      ".password-requirements-length",
     );
+    passwordRequirementsLength
+      .find("span")
+      .text(
+        sprintf(
+          passwordRequirementsLength.data("translation"),
+          $passwordInput.data("minlength"),
+          $passwordInput.data("maxlength"),
+        ),
+      );
 
-    const passwordRequirementsScore = $feedbackContainer.find('.password-requirements-score');
-    passwordRequirementsScore.find('span').text(
-      sprintf(
-        passwordRequirementsScore.data('translation'),
-        $feedbackContainer.data('translations')[$passwordInput.data('minscore')],
-      ),
+    const passwordRequirementsScore = $feedbackContainer.find(
+      ".password-requirements-score",
     );
+    passwordRequirementsScore
+      .find("span")
+      .text(
+        sprintf(
+          passwordRequirementsScore.data("translation"),
+          $feedbackContainer.data("translations")[
+            $passwordInput.data("minscore")
+          ],
+        ),
+      );
 
-    if (passwordValue === '') {
-      $feedbackContainer.toggleClass('d-none', true);
-      popoverElement.toggleClass('d-none', true);
+    if (passwordValue === "") {
+      $feedbackContainer.toggleClass("d-none", true);
+      popoverElement.toggleClass("d-none", true);
       if (submitButtonSelector) {
-        $(submitButtonSelector).prop('disabled', false);
+        $(submitButtonSelector).prop("disabled", false);
       }
     } else {
       const result = zxcvbn(passwordValue);
       displayFeedback($passwordInput, $feedbackContainer, result);
-      $feedbackContainer.removeClass('d-none');
+      $feedbackContainer.removeClass("d-none");
 
       const isValid = isPasswordInputValid($passwordInput);
 
       if (submitButtonSelector) {
-        $(submitButtonSelector).prop('disabled', !isValid);
+        $(submitButtonSelector).prop("disabled", !isValid);
       }
       if (!isValid) {
-        const errorMessage = $fieldPassword.data('passwordMustBeStrong')
-          || 'The password must be strong (see requirements above).';
-        $fieldPassword.find('.js-password-client-error').show().text(errorMessage);
+        const errorMessage =
+          $fieldPassword.data("passwordMustBeStrong") ||
+          "The password must be strong (see requirements above).";
+        $fieldPassword
+          .find(".js-password-client-error")
+          .show()
+          .text(errorMessage);
       }
     }
   });
@@ -284,20 +344,18 @@ function watchPasswordStrength(element, submitButtonSelector) {
  *
  * @private
  */
-function displayFeedback(
-  $passwordInput,
-  $outputContainer,
-  result,
-) {
+function displayFeedback($passwordInput, $outputContainer, result) {
   const feedback = getPasswordStrengthFeedback(result.score);
-  const translations = $outputContainer.data('translations');
+  const translations = $outputContainer.data("translations");
   const popoverContent = [];
-  const popoverElement = $('.field-password .popover');
-  const popoverBody = $('.popover-body', popoverElement);
+  const popoverElement = $(".field-password .popover");
+  const popoverBody = $(".popover-body", popoverElement);
 
-  $outputContainer.find('.password-strength-text').text(translations[result.score]);
+  $outputContainer
+    .find(".password-strength-text")
+    .text(translations[result.score]);
 
-  if (result.feedback.warning !== '') {
+  if (result.feedback.warning !== "") {
     if (result.feedback.warning in translations) {
       popoverContent.push(translations[result.feedback.warning]);
     }
@@ -309,39 +367,42 @@ function displayFeedback(
     }
   });
 
-  popoverBody.html(popoverContent.join('<br>'));
+  popoverBody.html(popoverContent.join("<br>"));
 
   const passwordLength = $passwordInput.val().length;
 
-  popoverElement.toggleClass('d-none', popoverContent.length <= 0);
+  popoverElement.toggleClass("d-none", popoverContent.length <= 0);
 
-  const passwordLengthValid = passwordLength >= $passwordInput.data('minlength')
-    && passwordLength <= $passwordInput.data('maxlength');
-  $outputContainer.find('.password-requirements-length svg').toggleClass(
-    'text-success',
-    passwordLengthValid,
-  );
+  const passwordLengthValid =
+    passwordLength >= $passwordInput.data("minlength") &&
+    passwordLength <= $passwordInput.data("maxlength");
+  $outputContainer
+    .find(".password-requirements-length svg")
+    .toggleClass("text-success", passwordLengthValid);
 
-  const passwordScoreValid = $passwordInput.data('minscore') <= result.score;
-  $outputContainer.find('.password-requirements-score svg').toggleClass(
-    'text-success',
-    passwordScoreValid,
-  );
+  const passwordScoreValid = $passwordInput.data("minscore") <= result.score;
+  $outputContainer
+    .find(".password-requirements-score svg")
+    .toggleClass("text-success", passwordScoreValid);
 
   $passwordInput
     .removeClass()
-    .addClass(passwordScoreValid && passwordLengthValid ? 'border-success' : 'border-danger')
-    .addClass('form-control border');
+    .addClass(
+      passwordScoreValid && passwordLengthValid
+        ? "border-success"
+        : "border-danger",
+    )
+    .addClass("form-control border");
 
   // Calculate the pourcentage of the bar, depending on the score.
-  const percentage = (result.score * 20) + 20;
+  const percentage = result.score * 20 + 20;
 
   // increase and decrease progress bar
   $outputContainer
-    .find('.progress-bar')
+    .find(".progress-bar")
     .width(`${percentage}%`)
-    .css('visibility', 'visible')
-    .css('background-color', feedback.color);
+    .css("visibility", "visible")
+    .css("background-color", feedback.color);
 }
 
 /**
@@ -352,36 +413,34 @@ function displayFeedback(
  *
  * @private
  */
-function getPasswordStrengthFeedback(
-  strength
-) {
+function getPasswordStrengthFeedback(strength) {
   switch (strength) {
-  case 0:
-    return {
-      color: '#BA151A',
-    };
+    case 0:
+      return {
+        color: "#BA151A",
+      };
 
-  case 1:
-    return {
-      color: '#BA151A',
-    };
+    case 1:
+      return {
+        color: "#BA151A",
+      };
 
-  case 2:
-    return {
-      color: '#FFA000',
-    };
+    case 2:
+      return {
+        color: "#FFA000",
+      };
 
-  case 3:
-    return {
-      color: '#207F4B',
-    };
+    case 3:
+      return {
+        color: "#207F4B",
+      };
 
-  case 4:
-    return {
-      color: '#207F4B',
-    };
+    case 4:
+      return {
+        color: "#207F4B",
+      };
 
-  default:
-    throw new Error('Invalid password strength indicator.');
+    default:
+      throw new Error("Invalid password strength indicator.");
   }
 }
