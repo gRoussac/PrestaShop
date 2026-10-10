@@ -144,6 +144,8 @@
 html {
   box-sizing: border-box;
   font-size: 16px;
+  height: 100%;
+  min-height: 100vh;
 }
 
 *, *:before, *:after {
@@ -170,8 +172,12 @@ img {
 **************************************************************************** */
 #container {
   position: relative;
+  display: flex;
+  flex-direction: column;
   margin: 0 auto;
   width: 990px;
+  min-height: 100vh;
+  min-height: 100dvh;
   background: var(--cdk-white);
 }
 
@@ -207,6 +213,7 @@ img {
 #mainForm {
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
   gap: var(--cdk-size-32);
   padding: var(--cdk-size-40);
 }
@@ -220,6 +227,7 @@ img {
 
 .mainForm__content {
   display: flex;
+  flex: 1 1 auto;
   gap: var(--cdk-size-16);
 }
 
@@ -227,6 +235,7 @@ img {
   display: flex;
   flex-direction: row-reverse;
   gap: var(--cdk-size-16);
+  margin-top: auto;
 }
 
 #btBack {
@@ -247,9 +256,12 @@ img {
 }
 
 #footer {
-  margin-block: var(--cdk-size-16);
+  margin: 0;
+  padding-block: var(--cdk-size-16);
+  margin-top: auto;
   list-style-type: none;
   text-align: center;
+  color: var(--cdk-white);
 }
 
 div#phone_help {
@@ -268,6 +280,9 @@ body {
   line-height: var(--cdk-size-18);
   color: var(--cdk-primary-800);
   background: var(--cdk-primary-400);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 /* title */
@@ -737,11 +752,12 @@ select:focus {
 #footer a:active,
 #footer a:visited {
   font-weight: bold;
-  color: var(--cdk-blue-500);
+  color: var(--cdk-white);
   text-decoration: none;
 }
 #footer a:hover {
-  text-decoration: underline;
+  color: var(--cdk-white);
+  text-decoration: none;
 }
 
 /* ****************************************************************************
