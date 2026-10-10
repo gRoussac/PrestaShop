@@ -7,7 +7,6 @@ declare(strict_types=1);
  */
 
 use PrestaShopBundle\Install\Install;
-use PrestaShopBundle\Install\XmlLoader;
 use PrestaShop\PrestaShop\Core\Addon\Theme\Theme;
 use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
 use PrestaShop\PrestaShop\Core\Context\ContextBuilderPreparer;
@@ -73,9 +72,6 @@ class InstallControllerHttpProcess extends InstallControllerHttp implements Http
         }
 
         try {
-            $validateFixturesInstallation = $this->session->content_install_fixtures;
-            $fixturesInstalled = !empty($this->session->process_validated['installFixtures']);
-
             if (Tools::getValue('generateSettingsFile')) {
                 $this->processGenerateSettingsFile();
             } elseif (Tools::getValue('installDatabase') && !empty($this->session->process_validated['generateSettingsFile'])) {
@@ -90,13 +86,11 @@ class InstallControllerHttpProcess extends InstallControllerHttp implements Http
                     ->setProcessFOThemes([Theme::getDefaultTheme()])
                     ->process();
                 $this->processConfigureShop();
-            } elseif (Tools::getValue('installModules') && (!empty($this->session->process_validated['configureShop']) || !$validateFixturesInstallation)) {
+            } elseif (Tools::getValue('installModules') && !empty($this->session->process_validated['configureShop'])) {
                 $this->processInstallModules();
             } elseif (Tools::getValue('installTheme') && !empty($this->session->process_validated['installModules'])) {
                 $this->processInstallTheme();
-            } elseif (Tools::getValue('installFixtures') && !empty($this->session->process_validated['installTheme'])) {
-                $this->processInstallFixtures();
-            } elseif (Tools::getValue('postInstall') && (!$validateFixturesInstallation || $fixturesInstalled)) {
+            } elseif (Tools::getValue('postInstall') && !empty($this->session->process_validated['installTheme'])) {
                 $this->processPostInstall();
             } elseif (Tools::getValue('finalize') && !empty($this->session->process_validated['postInstall'])) {
                 $this->processFinalize();
@@ -269,24 +263,6 @@ class InstallControllerHttpProcess extends InstallControllerHttp implements Http
     }
 
     /**
-     * PROCESS : installFixtures
-     * Install fixtures (E.g. demo products)
-     */
-    public function processInstallFixtures()
-    {
-        $this->initializeContext();
-
-        $this->model_install->xml_loader_ids = $this->session->xml_loader_ids;
-        if (!$this->model_install->installFixtures(Tools::getValue('entity', null), ['shop_country' => $this->session->shop_country]) || $this->model_install->getErrors()) {
-            $this->ajaxJsonAnswer(false, $this->model_install->getErrors());
-        }
-        $this->session->xml_loader_ids = $this->model_install->xml_loader_ids;
-        $this->session->process_validated = array_merge($this->session->process_validated, ['installFixtures' => true]);
-
-        $this->ajaxJsonAnswer(true);
-    }
-
-    /**
      * PROCESS : installTheme
      * Install theme
      */
@@ -323,46 +299,10 @@ class InstallControllerHttpProcess extends InstallControllerHttp implements Http
         // We need to install modules first, then enable the theme which may in turn enable/disable some modules
         $this->process_steps[] = ['key' => 'installModules', 'lang' => $this->translator->trans('Install modules', [], 'Install')];
         $this->process_steps[] = ['key' => 'installTheme', 'lang' => $this->translator->trans('Install theme', [], 'Install')];
-
-        if ($this->session->content_install_fixtures) {
-            $fixtures_step = ['key' => 'installFixtures', 'lang' => $this->translator->trans('Install demonstration data', [], 'Install')];
-            if ($this->hasLargeFixtures()) {
-                $fixtures_step['subtasks'] = [];
-                $xml_loader = new XmlLoader();
-                $xml_loader->setTranslator($this->translator);
-                $xml_loader->setFixturesPath();
-
-                foreach ($xml_loader->getSortedEntities() as $entity) {
-                    $fixtures_step['subtasks'][] = ['entity' => $entity];
-                }
-            }
-            $this->process_steps[] = $fixtures_step;
-        }
-
         $this->process_steps[] = ['key' => 'postInstall', 'lang' => $this->translator->trans('Post installation scripts', [], 'Install')];
         $this->process_steps[] = ['key' => 'finalize', 'lang' => $this->translator->trans('Finalization', [], 'Install')];
 
         $this->displayContent('process');
-    }
-
-    /**
-     * Check if the fixtures directory is large
-     *
-     * return bool
-     */
-    private function hasLargeFixtures()
-    {
-        $size = 0;
-        $fixtureDir = _PS_INSTALL_FIXTURES_PATH_ . 'fashion/data/';
-        $dh = opendir($fixtureDir);
-        if ($dh) {
-            while (($xmlFile = readdir($dh)) !== false) {
-                $size += filesize($fixtureDir . $xmlFile);
-            }
-            closedir($dh);
-        }
-
-        return $size > Tools::getOctets('10M');
     }
 
     private function clearConfigXML()

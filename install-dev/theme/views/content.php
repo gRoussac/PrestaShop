@@ -40,21 +40,6 @@
   <?php endif; ?>
 
   <div class="field clearfix">
-    <label class="aligned"><?php echo $this->translator->trans('Installation of demo products', [], 'Install'); ?></label>
-    <div class="contentinput radio-inline">
-      <label>
-        <input value="1" type="radio" name="install-fixtures" style="vertical-align: middle;" <?php if ($this->session->content_install_fixtures): ?>checked="checked"<?php endif; ?> autocomplete="off" />
-        <?php echo $this->translator->trans('Yes', [], 'Install'); ?>
-      </label>
-      <label>
-        <input value="0" type="radio" name="install-fixtures" style="vertical-align: middle;" <?php if (!$this->session->content_install_fixtures): ?>checked="checked"<?php endif; ?> autocomplete="off" />
-        <?php echo $this->translator->trans('No', [], 'Install'); ?>
-      </label>
-    </div>
-    <p class="userInfos aligned"><?php echo $this->translator->trans('Demo products are a good way to learn how to use PrestaShop. You should install them if you are not familiar with it.', [], 'Install'); ?></p>
-  </div>
-
-  <div class="field clearfix">
     <label class="aligned"><?php echo $this->translator->trans('Installation of modules', [], 'Install'); ?></label>
     <div class="contentinput">
       <ul class="modules-select-type">

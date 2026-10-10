@@ -93,7 +93,6 @@ if (!Language::translationPackIsInCache('fr-FR')) {
 Language::installSfLanguagePack('fr-FR');
 checkInstallationErrors($install, $logger);
 
-$install->installFixtures();
 Category::regenerateEntireNtree();
 Tab::resetStaticCache();
 checkInstallationErrors($install, $logger);

@@ -6,7 +6,6 @@ const bootstrap = inject("bootstrap");
 const data = bootstrap.stepData || {};
 
 const theme = ref(data.theme || (data.themes?.[0]?.name ?? ""));
-const installFixtures = ref(data.installFixtures ? "1" : "0");
 const moduleAction = ref(data.moduleAction ?? 0);
 const selectedModules = ref([...(data.selectedModules || [])]);
 const selectAll = ref(!!data.selectAll);
@@ -90,33 +89,6 @@ function onModuleToggle() {
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="field clearfix">
-      <label class="aligned">{{ data.fixturesLabel }}</label>
-      <div class="contentinput radio-inline">
-        <label>
-          <input
-            v-model="installFixtures"
-            type="radio"
-            name="install-fixtures"
-            value="1"
-            autocomplete="off"
-          />
-          {{ data.yes }}
-        </label>
-        <label>
-          <input
-            v-model="installFixtures"
-            type="radio"
-            name="install-fixtures"
-            value="0"
-            autocomplete="off"
-          />
-          {{ data.no }}
-        </label>
-      </div>
-      <p class="userInfos aligned">{{ data.fixturesHelp }}</p>
     </div>
 
     <div class="field clearfix">

@@ -42,7 +42,7 @@ class Datas
         'step' => [
             'default' => 'all',
             'validate' => 'isGenericName',
-            'help' => 'all / database,fixtures,theme,modules,postInstall',
+            'help' => 'all / database,theme,modules,postInstall,finalize',
         ],
         'language' => [
             'default' => 'en',
@@ -167,7 +167,7 @@ class Datas
             'name' => 'fixtures',
             'default' => '0',
             'validate' => 'isInt',
-            'help' => 'enable fixtures installation',
+            'help' => 'ignored (no demonstration catalog is shipped)',
         ],
         'modules' => [
             'name' => 'modules',
