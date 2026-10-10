@@ -2,9 +2,6 @@ name: Export logs from the setup env action
 description: Export logs from the setup env action, usually on failure
 
 inputs:
-  DOCKER_PREFIX:
-    required: true
-    description: Docker prefix for prestashop containers
   ARTIFACT_NAME:
     required: false
     description: Artifact exported name

@@ -35,11 +35,6 @@ jobs:
       matrix: ${{ fromJSON(needs.workflow_matrix_generator.outputs.dynamic_matrix) }}
       fail-fast: false
     steps:
-      - name: Prepare docker prefix with repository name lower cased
-        run: |
-          REPOSITORY_NAME=${{ github.event.repository.name }}
-          echo "DOCKER_PREFIX=${REPOSITORY_NAME@L}" >> $GITHUB_ENV
-
       - uses: actions/checkout@v7
 
       - name: Setup Environment
@@ -54,7 +49,6 @@ jobs:
       - name: Setup Environment failure
         uses: ./.github/actions/setup-env-export-logs
         with:
-          DOCKER_PREFIX: ${{ env.DOCKER_PREFIX }}
           ARTIFACT_NAME: setup-sanity-${{ matrix.php }}-${{ matrix.browser }}-${{ matrix.db }}
           DB_SERVER: ${{ matrix.db }}
           ENABLE_SSL: 'true'
@@ -72,8 +66,12 @@ jobs:
         if: failure()
         run: |
           mkdir -p ./var/docker-logs
-          docker logs prestashop-${{ matrix.db }}-1 > ./var/docker-logs/${{ matrix.db }}.log
-          docker logs ${{ inputs.DOCKER_PREFIX }}-prestashop-git-1 > ./var/docker-logs/prestashop.log
+          COMPOSE=(docker compose -f docker/docker-compose.yml --project-directory .)
+          if [[ "${{ matrix.db }}" = "mariadb" ]]; then
+            COMPOSE+=(-f docker/compose.mariadb.yml)
+          fi
+          "${COMPOSE[@]}" logs "${{ matrix.db }}" > ./var/docker-logs/${{ matrix.db }}.log || true
+          "${COMPOSE[@]}" logs php apache > ./var/docker-logs/prestashop.log || true
 
       - name: Upload Screenshots and logs
         uses: actions/upload-artifact@v7
