@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "854dfc7e94b67d9c4121d868a718c999",
+    "content-hash": "e39a7f3253fcade94da387bd1bf1c0f3",
     "packages": [
         {
             "name": "api-platform/core",
@@ -5895,58 +5895,6 @@
                 "source": "https://github.com/PrestaShop/ps_dataprivacy/tree/v2.1.1"
             },
             "time": "2023-01-18T15:19:08+00:00"
-        },
-        {
-            "name": "prestashop/ps_distributionapiclient",
-            "version": "v2.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PrestaShop/ps_distributionapiclient.git",
-                "reference": "258ffa15da6beae017d5d43555fd7bc7b5f24219"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PrestaShop/ps_distributionapiclient/zipball/258ffa15da6beae017d5d43555fd7bc7b5f24219",
-                "reference": "258ffa15da6beae017d5d43555fd7bc7b5f24219",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/cache": "^2.1",
-                "php": ">=8.1",
-                "prestashop/circuit-breaker": "^4.0",
-                "symfony/http-client": "6.4.*"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^1.4",
-                "phpunit/phpunit": "^10",
-                "prestashop/php-dev-tools": "^4.2"
-            },
-            "type": "prestashop-module",
-            "autoload": {
-                "psr-4": {
-                    "PrestaShop\\Module\\DistributionApiClient\\": "src/"
-                },
-                "classmap": [
-                    "ps_distributionapiclient.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "AFL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "PrestaShop SA",
-                    "email": "contact@prestashop.com"
-                }
-            ],
-            "description": "PrestaShop - Modules from distribution API",
-            "homepage": "https://github.com/PrestaShop/ps_distributionapiclient",
-            "support": {
-                "issues": "https://github.com/PrestaShop/ps_distributionapiclient/issues",
-                "source": "https://github.com/PrestaShop/ps_distributionapiclient/tree/v2.1.1"
-            },
-            "time": "2026-01-07T13:47:18+00:00"
         },
         {
             "name": "prestashop/ps_emailalerts",
@@ -16874,59 +16822,6 @@
                 }
             ],
             "time": "2026-01-27T05:48:37+00:00"
-        },
-        {
-            "name": "prestashop/header-stamp",
-            "version": "v3.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PrestaShopCorp/header-stamp.git",
-                "reference": "936c4526eb1b7fe0468ec52a1fe2bdea013c9039"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PrestaShopCorp/header-stamp/zipball/936c4526eb1b7fe0468ec52a1fe2bdea013c9039",
-                "reference": "936c4526eb1b7fe0468ec52a1fe2bdea013c9039",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/php-parser": "^4.10",
-                "php": "^8.0 || ^7.2",
-                "symfony/console": "^3.4 || ~4.0 || ~5.0 || ~6.0",
-                "symfony/finder": "^3.4 || ~4.0 || ~5.0 || ~6.0",
-                "symfony/yaml": "^3.4 || ~4.0 || ~5.0 || ~6.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^1.12",
-                "phpunit/phpunit": "^8.5",
-                "prestashop/php-dev-tools": "1.*"
-            },
-            "bin": [
-                "bin/header-stamp"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PrestaShop\\HeaderStamp\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "AFL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "PrestaShop SA",
-                    "email": "contact@prestashop.com"
-                }
-            ],
-            "description": "Rewrite your file headers to add the license or to make them up-to-date",
-            "homepage": "https://github.com/PrestaShopCorp/header-stamp",
-            "support": {
-                "issues": "https://github.com/PrestaShopCorp/header-stamp/issues",
-                "source": "https://github.com/PrestaShopCorp/header-stamp/tree/v3.1.0"
-            },
-            "time": "2026-02-16T17:28:00+00:00"
         },
         {
             "name": "sebastian/cli-parser",
