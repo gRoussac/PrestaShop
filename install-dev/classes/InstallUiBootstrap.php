@@ -173,6 +173,11 @@ class InstallUiBootstrap
             'passwordHelp' => $this->trans('Must be at least 8 characters'),
             'passwordMustBeStrong' => $this->trans('The password is incorrect (must be Strong)'),
             'passwordTranslations' => json_decode((string) $c->translatedStrings, true) ?: [],
+            'passwordMinLength' => 8,
+            'passwordMaxLength' => 72,
+            'passwordMinScore' => 3,
+            'passwordLengthTranslation' => $this->trans('Enter a password between %d and %d characters'),
+            'passwordScoreTranslation' => $this->trans('The minimum score must be: %s'),
             'labels' => [
                 'shopName' => $this->trans('Store name'),
                 'country' => $this->trans('Country'),

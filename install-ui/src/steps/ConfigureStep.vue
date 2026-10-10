@@ -20,13 +20,12 @@ import {
 
 const DRAFT_KEY = "gregoshop.install.configure";
 const TIMEZONE_ISOS = ["br", "us", "ca", "ru", "me", "au", "id"];
-const MIN_SCORE = 3;
-const MIN_LENGTH = 8;
-const MAX_LENGTH = 72;
-
 const bootstrap = inject("bootstrap");
 const data = bootstrap.stepData || {};
 const translations = data.passwordTranslations || {};
+const minLength = Number(data.passwordMinLength) || 8;
+const maxLength = Number(data.passwordMaxLength) || 72;
+const minScore = Number(data.passwordMinScore) || 3;
 
 const form = reactive({
   shop_name: data.shopName || "",
@@ -43,6 +42,9 @@ const form = reactive({
 const showTimezone = ref(TIMEZONE_ISOS.includes(form.shop_country));
 const passwordScore = ref(0);
 const passwordError = ref("");
+const passwordLengthOk = ref(false);
+const passwordScoreOk = ref(false);
+const popoverHtml = ref("");
 const fieldErrors = data.fieldErrors || {};
 
 zxcvbnOptions.setOptions({
@@ -54,24 +56,53 @@ zxcvbnOptions.setOptions({
   },
 });
 
+function sprintfLike(template, ...args) {
+  let i = 0;
+  return String(template).replace(/%[sd]/g, () => String(args[i++]));
+}
+
+function strengthColorFor(score) {
+  if (score <= 1) return "#BA151A";
+  if (score === 2) return "#FFA000";
+  return "#207F4B";
+}
+
 const passwordValid = computed(() => {
   if (!form.admin_password) {
     return true;
   }
-  const result = zxcvbn(form.admin_password);
-  return (
-    result.score >= MIN_SCORE &&
-    form.admin_password.length >= MIN_LENGTH &&
-    form.admin_password.length <= MAX_LENGTH
-  );
+  return passwordScoreOk.value && passwordLengthOk.value;
 });
 
-const strengthLabel = computed(() => translations[passwordScore.value] || "");
+const strengthLabel = computed(
+  () =>
+    translations[String(passwordScore.value)] ||
+    translations[passwordScore.value] ||
+    "",
+);
 
-const strengthColor = computed(() => {
-  if (passwordScore.value <= 1) return "#BA151A";
-  if (passwordScore.value === 2) return "#FFA000";
-  return "#207F4B";
+const strengthColor = computed(() => strengthColorFor(passwordScore.value));
+
+const strengthPercent = computed(() => passwordScore.value * 20 + 20);
+
+const lengthRequirementText = computed(() =>
+  sprintfLike(data.passwordLengthTranslation || "", minLength, maxLength),
+);
+
+const scoreRequirementText = computed(() =>
+  sprintfLike(
+    data.passwordScoreTranslation || "",
+    translations[String(minScore)] || translations[minScore] || "",
+  ),
+);
+
+const passwordInputClass = computed(() => {
+  if (!form.admin_password) {
+    return "text required";
+  }
+  return passwordValid.value
+    ? "form-control border border-success"
+    : "form-control border border-danger";
 });
 
 function persist() {
@@ -141,15 +172,35 @@ async function onCountryChange() {
 }
 
 function evaluatePassword() {
-  if (!form.admin_password) {
+  const passwordValue = form.admin_password;
+  if (!passwordValue) {
     passwordScore.value = 0;
     passwordError.value = "";
+    passwordLengthOk.value = false;
+    passwordScoreOk.value = false;
+    popoverHtml.value = "";
     window.__INSTALL_UI__?.setNextDisabled(false);
     return;
   }
-  const result = zxcvbn(form.admin_password);
+
+  const result = zxcvbn(passwordValue);
   passwordScore.value = result.score;
-  const valid = passwordValid.value;
+  passwordLengthOk.value =
+    passwordValue.length >= minLength && passwordValue.length <= maxLength;
+  passwordScoreOk.value = result.score >= minScore;
+
+  const tips = [];
+  if (result.feedback.warning && result.feedback.warning in translations) {
+    tips.push(translations[result.feedback.warning]);
+  }
+  (result.feedback.suggestions || []).forEach((suggestion) => {
+    if (suggestion in translations) {
+      tips.push(translations[suggestion]);
+    }
+  });
+  popoverHtml.value = tips.join("<br>");
+
+  const valid = passwordScoreOk.value && passwordLengthOk.value;
   passwordError.value = valid ? "" : data.passwordMustBeStrong;
   window.__INSTALL_UI__?.setNextDisabled(!valid);
 }
@@ -372,33 +423,80 @@ onBeforeUnmount(() => {
         >{{ data.labels.password }}<sup class="required">*</sup></label
       >
       <div class="contentinput">
+        <div
+          class="popover fade bs-popover-top"
+          :class="{ 'd-none': !popoverHtml }"
+          role="tooltip"
+          x-placement="top"
+        >
+          <div class="arrow"></div>
+          <h3 class="popover-header"></h3>
+          <div class="popover-body" v-html="popoverHtml"></div>
+        </div>
+
         <input
           id="infosPassword"
           v-model="form.admin_password"
           autocomplete="off"
           type="password"
-          class="text required"
           name="admin_password"
-          :class="
-            form.admin_password
-              ? passwordValid
-                ? 'border-success'
-                : 'border-danger'
-              : ''
-          "
+          :data-minlength="minLength"
+          :data-maxlength="maxLength"
+          :data-minscore="minScore"
+          :class="passwordInputClass"
         />
-        <div v-if="form.admin_password" class="password-strength-feedback">
+
+        <div
+          class="password-strength-feedback"
+          :class="{ 'd-none': !form.admin_password }"
+        >
           <div class="progress-container">
             <div
               class="progress-bar"
               :style="{
-                width: passwordScore * 20 + 20 + '%',
+                width: strengthPercent + '%',
                 backgroundColor: strengthColor,
                 visibility: 'visible',
               }"
-            ></div>
+            >
+              <div></div>
+            </div>
           </div>
           <div class="password-strength-text">{{ strengthLabel }}</div>
+          <div class="password-requirements">
+            <p class="password-requirements-length">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 0 24 24"
+                width="24px"
+                :class="{ 'text-success': passwordLengthOk }"
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  fill="currentColor"
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                />
+              </svg>
+              <span>{{ lengthRequirementText }}</span>
+            </p>
+            <p class="password-requirements-score">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 0 24 24"
+                width="24px"
+                :class="{ 'text-success': passwordScoreOk }"
+              >
+                <path d="M0 0h24v24H0z" fill="none" />
+                <path
+                  fill="currentColor"
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                />
+              </svg>
+              <span>{{ scoreRequirementText }}</span>
+            </p>
+          </div>
         </div>
       </div>
       <p v-if="!fieldErrors.admin_password" class="userInfos aligned">
