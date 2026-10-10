@@ -63,9 +63,8 @@ class InstallControllerHttpContent extends InstallControllerHttp implements Http
         $this->model = new Install();
         $this->modules = $this->model->getModulesOnDisk();
         $this->themes = $this->model->getThemesOnDisk();
-        if ($this->session->content_install_fixtures === null) {
-            $this->session->content_install_fixtures = false;
-        }
+        // Empty-shop install: no demonstration catalog is shipped.
+        $this->session->content_install_fixtures = false;
     }
 
     /**
@@ -87,9 +86,7 @@ class InstallControllerHttpContent extends InstallControllerHttp implements Http
         );
         $this->session->moduleAction = $moduleAction;
         $this->session->content_theme = Tools::getValue('theme', null);
-        if (Tools::getIsset('install-fixtures')) {
-            $this->session->content_install_fixtures = (string) Tools::getValue('install-fixtures') === '1';
-        }
+        $this->session->content_install_fixtures = false;
     }
 
     /**

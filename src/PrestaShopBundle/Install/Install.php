@@ -1092,84 +1092,11 @@ class Install extends AbstractInstall
 
     /**
      * PROCESS : installFixtures
-     * Install fixtures (E.g. demo products).
+     * No demonstration catalog is shipped; empty-shop install only.
      */
     public function installFixtures($entity = null, array $data = [])
     {
-        $this->getLogger()->logInfo('Installing fixtures');
-
-        $fixtures_path = _PS_INSTALL_FIXTURES_PATH_ . 'fashion/';
-        $fixtures_name = 'fashion';
-        $zip_file = _PS_ROOT_DIR_ . '/download/fixtures.zip';
-        $temp_dir = _PS_ROOT_DIR_ . '/download/fixtures/';
-
-        // Load class (use fixture class if one exists, or use InstallXmlLoader)
-        if (file_exists($fixtures_path . '/install.php')) {
-            require_once $fixtures_path . '/install.php';
-            $class = 'InstallFixtures' . Tools::toCamelCase($fixtures_name);
-            if (!class_exists($class, false)) {
-                $this->setError($this->translator->trans('Fixtures class "%class%" not found', ['%class%' => $class], 'Install'));
-
-                return false;
-            }
-
-            $xml_loader = new $class();
-            if (!$xml_loader instanceof XmlLoader) {
-                $this->setError($this->translator->trans('"%class%" must be an instance of "InstallXmlLoader"', ['%class%' => $class], 'Install'));
-
-                return false;
-            }
-        } else {
-            $xml_loader = new XmlLoader();
-        }
-        $xml_loader->setTranslator($this->translator);
-
-        // Install XML data (data/xml/ folder)
-        $xml_loader->setFixturesPath($fixtures_path);
-        if ($this->xml_loader_ids) {
-            $xml_loader->setIds($this->xml_loader_ids);
-        }
-
-        $languages = [];
-        foreach (EntityLanguage::getLanguages(false) as $lang) {
-            $languages[$lang['id_lang']] = $lang['iso_code'];
-        }
-        $xml_loader->setLanguages($languages);
-
-        if ($entity) {
-            $this->callWithUnityAutoincrement(function () use ($xml_loader, $entity) {
-                $xml_loader->populateEntity($entity);
-            });
-        } else {
-            $this->callWithUnityAutoincrement(function () use ($xml_loader) {
-                $xml_loader->populateFromXmlFiles();
-            });
-            Tools::deleteDirectory($temp_dir, true);
-            @unlink($zip_file);
-        }
-
-        if ($errors = $xml_loader->getErrors()) {
-            $this->setError($errors);
-
-            return false;
-        }
-
-        // IDS from xmlLoader are stored in order to use them for fixtures
-        $this->xml_loader_ids = $xml_loader->getIds();
-        unset($xml_loader);
-
-        if ($entity === 'category' || $entity === null) {
-            Category::regenerateEntireNtree();
-        }
-
-        if ($entity === null) {
-            Search::indexation(true);
-        }
-
-        // Update fixtures lang
-        foreach ($languages as $lang) {
-            LanguageLegacy::updateMultilangTable($lang);
-        }
+        $this->getLogger()->logInfo('Skipping fixtures: no demonstration catalog is shipped');
 
         return true;
     }

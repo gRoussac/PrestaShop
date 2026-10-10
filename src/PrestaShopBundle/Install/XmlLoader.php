@@ -97,7 +97,8 @@ class XmlLoader
     public function setFixturesPath($path = null)
     {
         if ($path === null) {
-            $path = _PS_INSTALL_FIXTURES_PATH_ . 'fashion/';
+            // No demonstration catalog is shipped; callers must pass an explicit path.
+            return;
         }
 
         $this->path_type = 'fixture';

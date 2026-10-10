@@ -15,8 +15,6 @@ class CheckTranslationFixtures extends Command
 {
     protected const DATA_BASE_FILE = 'install-dev/langs/en/data';
 
-    protected const DATA_FIXTURE_FILE = 'install-dev/fixtures/fashion/langs/en/data';
-
     protected const LANG_KEYS = 'classes/lang/KeysReference/%sLang.php';
 
     protected const LANG_FILE = 'classes/lang/%sLang.php';
@@ -37,7 +35,7 @@ class CheckTranslationFixtures extends Command
         // Fetch files from directories
         $finder = new Finder();
         $finderFiles = $finder->files()
-            ->in([self::DATA_BASE_FILE, self::DATA_FIXTURE_FILE])
+            ->in([self::DATA_BASE_FILE])
             ->name('*.xml');
         $files = [];
         foreach ($finderFiles as $k => $file) {

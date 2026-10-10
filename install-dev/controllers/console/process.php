@@ -108,7 +108,7 @@ class InstallControllerConsoleProcess extends InstallControllerConsole implement
         $this->clearConfigXML() && $this->clearConfigThemes();
         $steps = explode(',', $this->datas->step);
         if (in_array('all', $steps)) {
-            $steps = ['database', 'modules', 'theme', 'fixtures', 'postInstall', 'finalize'];
+            $steps = ['database', 'modules', 'theme', 'postInstall', 'finalize'];
         }
         if (!file_exists(PS_INSTALLATION_LOCK_FILE)) {
             // Set the install lock file
@@ -172,12 +172,6 @@ class InstallControllerConsoleProcess extends InstallControllerConsole implement
         if (in_array('theme', $steps)) {
             if (!$this->processInstallTheme()) {
                 $this->printErrors('processInstallTheme');
-            }
-        }
-
-        if (in_array('fixtures', $steps) && $this->datas->fixtures) {
-            if (!$this->processInstallFixtures()) {
-                $this->printErrors('processInstallFixtures');
             }
         }
 
@@ -317,25 +311,6 @@ class InstallControllerConsoleProcess extends InstallControllerConsole implement
         $modules = (new InstallModuleListResolver())->resolveFromCliSpec($spec, $modulesOnDisk);
 
         return $this->model_install->installModules($modules);
-    }
-
-    /**
-     * PROCESS : installFixtures
-     * Install fixtures (E.g. demo products)
-     */
-    public function processInstallFixtures()
-    {
-        $this->initializeContext();
-
-        if ((!$this->datas->xml_loader_ids || !is_array($this->datas->xml_loader_ids)) && ($xml_ids = json_decode(Configuration::get('PS_INSTALL_XML_LOADERS_ID'), true))) {
-            $this->datas->xml_loader_ids = $xml_ids;
-        }
-
-        $this->model_install->xml_loader_ids = $this->datas->xml_loader_ids;
-        $result = $this->model_install->installFixtures(null, ['shop_country' => $this->datas->shop_country]);
-        $this->datas->xml_loader_ids = $this->model_install->xml_loader_ids;
-
-        return $result;
     }
 
     /**

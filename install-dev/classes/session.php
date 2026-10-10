@@ -40,7 +40,7 @@ declare(strict_types=1);
  * Content step:
  * @property array|null $content_modules Module names to install (resolved server-side)
  * @property string|null $content_theme
- * @property bool|null $content_install_fixtures Demo catalog (fashion fixtures); default false
+ * @property bool|null $content_install_fixtures Always false (no demonstration catalog)
  * @property int|null $moduleAction InstallControllerHttpContent::MODULES_* constant
  *
  * License / agreements:
