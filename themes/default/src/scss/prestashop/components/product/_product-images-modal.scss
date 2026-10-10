@@ -1,0 +1,16 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+$component-name: product-images-modal;
+
+.#{$component-name} {
+  &__body {
+    padding: 0.5rem;
+  }
+
+  &__carousel {
+    overflow: hidden;
+    border-radius: var(--bs-border-radius-sm);
+  }
+}

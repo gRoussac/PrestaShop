@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf6093a6d94b5a507202e2effcbb7682",
+    "content-hash": "ee1f6e7f7b3ed3b87d047dfe431cfac7",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2289,7 +2289,7 @@
             "version": "v4.7.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/PrestaShop/PHP-SQL-Parser.git",
+                "url": "git@github.com:PrestaShop/PHP-SQL-Parser.git",
                 "reference": "7a44c4f83c78ce3634580307ed7037a94572a0e8"
             },
             "dist": {
@@ -5070,46 +5070,6 @@
             "time": "2025-11-24T07:24:20+00:00"
         },
         {
-            "name": "prestashop/hummingbird",
-            "version": "v2.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PrestaShop/hummingbird.git",
-                "reference": "4e52b64d3c772f19d9974409b73d55fb532e9e22"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PrestaShop/hummingbird/zipball/4e52b64d3c772f19d9974409b73d55fb532e9e22",
-                "reference": "4e52b64d3c772f19d9974409b73d55fb532e9e22",
-                "shasum": ""
-            },
-            "require-dev": {
-                "prestashop/autoindex": "^2.1",
-                "prestashop/header-stamp": "^3.1"
-            },
-            "type": "prestashop-theme",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "AFL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "PrestaShop SA",
-                    "email": "contact@prestashop.com"
-                },
-                {
-                    "name": "PrestaShop Community",
-                    "homepage": "https://contributors.prestashop-project.org/"
-                }
-            ],
-            "description": "Hummingbird development theme for PrestaShop",
-            "support": {
-                "issues": "https://github.com/PrestaShop/hummingbird/issues",
-                "source": "https://github.com/PrestaShop/hummingbird/tree/v2.1.2"
-            },
-            "time": "2026-09-24T16:57:55+00:00"
-        },
-        {
             "name": "prestashop/pagesnotfound",
             "version": "v4.0.0",
             "source": {
@@ -5201,7 +5161,7 @@
             "version": "v0.9.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/PrestaShop/ps_apiresources.git",
+                "url": "git@github.com:PrestaShop/ps_apiresources.git",
                 "reference": "b5f4e8758005cdfc262014557932de755e3f79bf"
             },
             "dist": {

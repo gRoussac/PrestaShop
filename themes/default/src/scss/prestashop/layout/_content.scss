@@ -1,0 +1,23 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+$component-name: (
+  container: columns-container,
+  left-column: left-column,
+  center-column: center-column,
+  right-column: right-column,
+);
+
+@include media-breakpoint-up(md) {
+  .layout-left-column,
+  .layout-right-column {
+    .#{map-get($component-name, container)} {
+      --bs-gutter-x: 2.5rem;
+
+      > .row {
+        --bs-gutter-x: 2.5rem;
+      }
+    }
+  }
+}

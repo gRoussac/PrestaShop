@@ -67,7 +67,6 @@
         "prestashop/graphnvd3": "^2",
         "prestashop/gridhtml": "^2",
         "prestashop/gsitemap": "^5",
-        "prestashop/hummingbird": "^2.1",
         "prestashop/pagesnotfound": "^4",
         "prestashop/productcomments": "^9.0",
         "prestashop/ps_apiresources": "^0.9.0",
@@ -262,12 +261,8 @@
         "symfony-web-dir": "."
     },
     "scripts": {
-        "post-install-cmd": [
-            "@php tools/build/rename-fo-theme-to-default.php"
-        ],
-        "post-update-cmd": [
-            "@php tools/build/rename-fo-theme-to-default.php"
-        ],
+        "post-install-cmd": [],
+        "post-update-cmd": [],
         "api-module-tests": [
             "@composer create-test-db",
             "@composer dump-autoload --dev --working-dir=modules/ps_apiresources",

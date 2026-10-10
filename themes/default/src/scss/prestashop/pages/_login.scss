@@ -1,0 +1,18 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+.login {
+  .forgot-password,
+  &-create {
+    text-align: center;
+  }
+
+  hr {
+    margin: 1rem auto;
+  }
+
+  .forgot-password {
+    margin-bottom: 1.25rem;
+  }
+}

@@ -1,0 +1,35 @@
+{**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ *}
+{extends file=$layout}
+
+{block name='breadcrumb'}{/block}
+
+{block name='content_columns'}
+  {block name='left_column'}{/block}
+
+  {block name='content_wrapper'}
+    <div id="center-column" class="center-column page">
+      {hook h="displayContentWrapperTop"}
+
+      {block name='content'}
+        {block name='page_content_container'}
+          <div id="content" class="page-content page-content--home">
+            {block name='page_content_top'}{/block}
+
+            {block name='page_content'}
+              {block name='hook_home'}
+                {$HOOK_HOME nofilter}
+              {/block}
+            {/block}
+          </div>
+        {/block}
+      {/block}
+
+      {hook h="displayContentWrapperBottom"}
+    </div>
+  {/block}
+
+  {block name='right_column'}{/block}
+{/block}

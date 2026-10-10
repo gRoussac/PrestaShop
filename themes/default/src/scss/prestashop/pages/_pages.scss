@@ -1,0 +1,29 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+$component-name: "page";
+
+.#{$component-name} {
+  &:not(body) {
+    padding-bottom: 2rem;
+  }
+
+  &-header {
+    margin-bottom: 2rem;
+  }
+
+  &-content {
+    &--home {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2.5rem;
+    }
+  }
+
+  &-category {
+    .wrapper__left-column {
+      padding-inline-end: 2rem;
+    }
+  }
+}

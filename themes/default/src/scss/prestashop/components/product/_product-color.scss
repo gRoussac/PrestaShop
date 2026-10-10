@@ -1,0 +1,37 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+$component-name: input-color;
+
+.#{$component-name} {
+  &__input {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    pointer-events: none;
+
+    &:focus-visible {
+      + .#{$component-name}__label {
+        .color {
+          outline: 0.125rem solid var(--bs-link-hover-color);
+        }
+      }
+    }
+
+    &:checked:focus-visible + .#{$component-name}__label {
+      border-radius: var(--bs-border-radius-sm);
+      outline: 0;
+      box-shadow: var(--bs-focus-ring-x, 0) var(--bs-focus-ring-y, 0) var(--bs-focus-ring-blur, 0)
+        var(--bs-focus-ring-width) var(--bs-focus-ring-color);
+    }
+  }
+
+  &__label {
+    display: block;
+    line-height: 0;
+  }
+
+  .color {
+    @include color-swatch;
+  }
+}

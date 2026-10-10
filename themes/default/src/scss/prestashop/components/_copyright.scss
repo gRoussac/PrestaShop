@@ -1,0 +1,25 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+$component-name: copyright;
+
+.#{$component-name} {
+  padding-block-start: 1rem;
+  font-size: 0.875rem;
+  color: var(--bs-gray-300);
+  text-align: center;
+
+  a {
+    color: var(--bs-gray-300);
+
+    &:hover {
+      color: var(--bs-white);
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    padding-block-start: 2rem;
+    font-size: 1rem;
+  }
+}

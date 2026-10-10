@@ -1,0 +1,40 @@
+$component-name: product-variant;
+
+.#{$component-name} {
+  &__legend,
+  &__selected {
+    display: inline-block;
+    width: auto;
+    margin-block-end: 0;
+    font-size: var(--bs-body-font-size);
+    line-height: var(--bs-body-line-height);
+  }
+
+  &__attributes {
+    margin-block-start: 0.5rem;
+  }
+
+  // Radios
+  &__radios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  &__radio {
+    margin: 0;
+
+    label {
+      cursor: pointer;
+    }
+  }
+
+  // Colors
+  &__colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-block-end: 0;
+  }
+}

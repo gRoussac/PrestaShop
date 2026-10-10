@@ -1,0 +1,67 @@
+{**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ *}
+
+<div class="ps-emailalerts ps-emailalerts--product"
+  data-ps-ref="emailalerts"
+  data-ps-component="gdpr"
+  data-url="{url entity='module' name='ps_emailalerts' controller='actions' params=['process' => 'add']}">
+  {if empty($has_notification)}
+    <div class="ps-emailalerts__content" data-ps-ref="emailalerts-content">
+      <p class="h4 mb-0">
+        {l s='Notify me when available' d='Modules.Emailalerts.Shop'}
+      </p>
+
+      {if isset($email) AND $email}
+        <p class="mb-0">
+          {l s='Interested in this product? Drop us an email and we will let you know when it\'s available for order.' d='Modules.Emailalerts.Shop'}
+        </p>
+
+        <input class="form-control"
+          type="email"
+          name="email"
+          data-ps-ref="emailalerts-email"
+          placeholder="{l s='Your email address' d='Modules.Emailalerts.Shop'}"
+          aria-label="{l s='Your email address' d='Modules.Emailalerts.Shop'}"
+          autocomplete="email"
+        >
+      {else}
+        <p class="mb-0">
+          {l s='Interested in this product? Click below and we will let you know when it\'s available for order.' d='Modules.Emailalerts.Shop'}
+        </p>
+      {/if}
+
+      {capture name='subscribeData'}{strip}{ldelim}
+        "id_product": "{$product.id_product|intval}",
+        "id_product_attribute": "{$product.id_product_attribute|intval}"
+      {rdelim}{/strip}{/capture}
+
+      <button data-ps-action="emailalerts-subscribe"
+        data-ps-ref="gdpr-submit"
+        data-ps-data="{$smarty.capture.subscribeData}"
+        class="btn btn-primary"
+        rel="nofollow"
+        role="button"
+      >
+        {l s='Notify me when available' d='Modules.Emailalerts.Shop'}
+      </button>
+
+      {if !empty($id_module)}
+        {capture name='gdprContent'}{hook h='displayGDPRConsent' id_module=$id_module}{/capture}
+
+        {if $smarty.capture.gdprContent}
+          <div class="fs-6 text-body-secondary">
+            {$smarty.capture.gdprContent nofilter}
+          </div>
+        {/if}
+      {/if}
+    </div>
+
+    <div class="d-none" data-ps-target="emailalerts-alerts" aria-live="assertive"></div>
+  {else}
+    <div class="alert alert-info" role="alert">
+      {l s='You will be notified when this product is available.' d='Modules.Emailalerts.Shop'}
+    </div>
+  {/if}
+</div>

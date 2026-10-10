@@ -1,0 +1,328 @@
+/**
+ * For the full copyright and license information, please view the
+ * LICENSE.md file that was distributed with this source code.
+ */
+
+import selectorsMap from '@constants/selectors-map';
+import debounce from '@helpers/debounce';
+import {sprintf} from 'sprintf-js';
+
+const {passwordPolicy: PasswordPolicyMap} = selectorsMap;
+
+export interface PasswordPolicyReturn {
+  element: HTMLElement
+  cleanup: () => void
+}
+
+// Utility function to safely parse JSON
+const safeParseJSON = (jsonString: string): Record<string, string> => {
+  try {
+    return JSON.parse(jsonString);
+  } catch {
+    return {};
+  }
+};
+
+// Utility function to update requirement icons
+const updateRequirementIcons = (
+  feedbackContainer: HTMLElement,
+  lengthValid: boolean,
+  strengthValid: boolean,
+): void => {
+  const lengthIcon = feedbackContainer.querySelector(PasswordPolicyMap.requirementLengthIcon);
+  const scoreIcon = feedbackContainer.querySelector(PasswordPolicyMap.requirementScoreIcon);
+
+  // Password length validation
+  if (lengthIcon) {
+    lengthIcon.classList.toggle('text-success', lengthValid);
+    lengthIcon.classList.toggle('text-danger', !lengthValid);
+  }
+
+  // Password strength validation
+  if (scoreIcon) {
+    scoreIcon.classList.toggle('text-success', strengthValid);
+    scoreIcon.classList.toggle('text-danger', !strengthValid);
+  }
+};
+
+// Utility function to update progress bar
+const updateProgressBar = (
+  feedbackContainer: HTMLElement,
+  strength: number,
+  requirementsMet: boolean,
+): void => {
+  const strengthFeedback = getProgressBarInfo(strength, requirementsMet);
+  const progressBar = feedbackContainer.querySelector<HTMLElement>(PasswordPolicyMap.progressBar);
+
+  if (progressBar) {
+    progressBar.style.width = `${strengthFeedback.percentage}%`;
+    progressBar.classList.remove('bg-success', 'bg-danger');
+    progressBar.classList.add(strengthFeedback.color);
+  }
+};
+
+// Utility function to build validation message
+const buildValidationMessage = (
+  feedbackContainer: HTMLElement,
+  result: {feedback: {warning: string, suggestions: string[]}},
+  hints: Record<string, string>,
+  lengthValid: boolean,
+  strengthValid: boolean,
+): string => {
+  let message = '';
+
+  // Get base message
+  if (!lengthValid) {
+    const invalidElement = feedbackContainer.querySelector(PasswordPolicyMap.lengthMessage) as HTMLElement;
+    message = `${invalidElement?.dataset?.psData || 'Your password length is invalid'}\n`;
+  } else if (!strengthValid) {
+    const invalidElement = feedbackContainer.querySelector(PasswordPolicyMap.invalidMessage) as HTMLElement;
+    message = `${invalidElement?.dataset?.psData || 'Your password is too weak'}\n`;
+  }
+
+  // Get hints suggestions
+  if (result.feedback.warning && result.feedback.warning in hints) {
+    message += `\n${hints[result.feedback.warning]}\n`;
+  }
+
+  if (result.feedback.suggestions) {
+    result.feedback.suggestions.forEach((suggestion: string) => {
+      if (suggestion && suggestion in hints) {
+        message += message ? `\n${hints[suggestion]}` : hints[suggestion];
+      }
+    });
+  }
+
+  return message;
+};
+
+// Utility function to get password strength feedback
+// The color must stay consistent with the requirement icons: the bar is green
+// only when the password meets the whole policy (length AND score) configured
+// in the back office.
+export const getProgressBarInfo = (strength: number, requirementsMet: boolean): {color: string, percentage: number} => {
+  const strengthPercentages = {
+    0: 20,
+    1: 40,
+    2: 60,
+    3: 80,
+    4: 100,
+  };
+
+  const validKeys = Object.keys(strengthPercentages).map(Number);
+  const safeStrength = validKeys.includes(strength) ? strength : 0;
+
+  return {
+    color: requirementsMet ? 'bg-success' : 'bg-danger',
+    percentage: strengthPercentages[safeStrength as keyof typeof strengthPercentages],
+  };
+};
+
+const passwordValidation = async (
+  elementInput: HTMLInputElement,
+  feedbackContainer: HTMLElement,
+  hints: Record<string, string>,
+): Promise<void> => {
+  const passwordValue = elementInput.value;
+
+  if (passwordValue === '') {
+    feedbackContainer.classList.add('d-none');
+    return;
+  }
+
+  try {
+    const {prestashop} = window;
+    const result = await prestashop.checkPasswordScore(passwordValue);
+    const minScore = parseInt(elementInput.dataset.minscore || '3', 10);
+
+    // Show feedback container
+    feedbackContainer.classList.remove('d-none');
+
+    // Calculate validation states
+    const lengthValid = !elementInput.validity.tooShort && !elementInput.validity.tooLong;
+    const scoreValid = minScore <= result.score;
+
+    // Update UI components
+    updateRequirementIcons(feedbackContainer, lengthValid, scoreValid);
+    updateProgressBar(feedbackContainer, result.score, lengthValid && scoreValid);
+
+    // Set custom validity
+    const announceValidity = feedbackContainer.querySelector<HTMLElement>(PasswordPolicyMap.announceValidity);
+    const validMessage = feedbackContainer.querySelector<HTMLElement>(PasswordPolicyMap.validMessage);
+
+    if (scoreValid && lengthValid) {
+      elementInput.setCustomValidity('');
+      elementInput.reportValidity();
+
+      if (announceValidity && validMessage) {
+        const message = validMessage.dataset.psData;
+
+        if (message && message !== '') {
+          announceValidity.textContent = message;
+        }
+      }
+    } else {
+      const message = buildValidationMessage(feedbackContainer, result, hints, lengthValid, scoreValid);
+      elementInput.setCustomValidity(message);
+
+      if (announceValidity) {
+        announceValidity.textContent = message;
+      }
+    }
+  } catch (error) {
+    console.error('Password validation error:', error);
+  }
+};
+
+// Set custom validity announce for accessibility
+const debouncedAnnounce = debounce(async (...args) => {
+  const element = args[0] as HTMLElement;
+
+  if (element) element.setAttribute('aria-live', 'polite');
+}, 250);
+
+// Function to setup requirement text translations
+const setupRequirementTexts = (
+  feedbackContainer: HTMLElement,
+  elementInput: HTMLInputElement,
+  hints: Record<string, string>,
+): void => {
+  const passwordRequirementsLength = feedbackContainer.querySelector<HTMLElement>(
+    PasswordPolicyMap.requirementLength,
+  );
+  const passwordRequirementsScore = feedbackContainer.querySelector<HTMLElement>(
+    PasswordPolicyMap.requirementScore,
+  );
+  const passwordLengthMessage = feedbackContainer.querySelector<HTMLElement>(
+    PasswordPolicyMap.requirementLengthMessage,
+  );
+  const passwordRequirementsMessage = feedbackContainer.querySelector<HTMLElement>(
+    PasswordPolicyMap.requirementScoreMessage,
+  );
+
+  if (passwordLengthMessage && passwordRequirementsLength?.dataset.translation) {
+    const minLength = elementInput.getAttribute('minlength') || '8';
+    const maxLength = elementInput.getAttribute('maxlength') || '72';
+    passwordLengthMessage.innerText = sprintf(
+      passwordRequirementsLength.dataset.translation,
+      minLength,
+      maxLength,
+    );
+  }
+
+  if (passwordRequirementsMessage && passwordRequirementsScore?.dataset.translation) {
+    const minScore = elementInput.dataset.minscore || '3';
+    const scoreText = hints[minScore] || 'Strong';
+    passwordRequirementsMessage.innerText = sprintf(
+      passwordRequirementsScore.dataset.translation,
+      scoreText,
+    );
+  }
+};
+
+// Validates and retrieves DOM elements, throwing error if not found
+const queryElement = <T extends HTMLElement>(
+  selector: string,
+  errorMessage: string,
+  parent: Element | null = null,
+): T => {
+  const element = (parent?.querySelector(selector) as T) ?? document.querySelector(selector);
+
+  if (!element) {
+    throw new Error(errorMessage);
+  }
+
+  return element;
+};
+
+// Helper function to setup validation event listeners
+const setupValidationListeners = (
+  elementInput: HTMLInputElement,
+  feedbackContainer: HTMLElement,
+  hints: Record<string, string>,
+) => {
+  const inputHandler = () => passwordValidation(elementInput, feedbackContainer, hints);
+  elementInput.addEventListener('input', inputHandler);
+
+  const form = elementInput.closest('form');
+  let formSubmitHandler: ((event: Event) => Promise<void>) | null = null;
+
+  if (form) {
+    formSubmitHandler = async () => {
+      await passwordValidation(elementInput, feedbackContainer, hints);
+    };
+    form.addEventListener('submit', formSubmitHandler);
+  }
+
+  const announceValidity = feedbackContainer.querySelector<HTMLElement>(PasswordPolicyMap.announceValidity);
+
+  if (announceValidity) {
+    debouncedAnnounce(announceValidity);
+  }
+
+  return {inputHandler, formSubmitHandler, form};
+};
+
+const usePasswordPolicy = (): PasswordPolicyReturn | undefined => {
+  let element;
+  try {
+    element = queryElement(
+      PasswordPolicyMap.field,
+      `The element "${PasswordPolicyMap.field}" for password policy is not found.`,
+    );
+  } catch {
+    return undefined;
+  }
+
+  const elementInput = queryElement<HTMLInputElement>(
+    PasswordPolicyMap.input,
+    `The input element "${PasswordPolicyMap.input}" for password policy is not found.`,
+    element,
+  );
+  const targetElement = queryElement<HTMLElement>(
+    PasswordPolicyMap.feedbackTarget,
+    `The target element "${PasswordPolicyMap.feedbackTarget}" for password policy is not found.`,
+    element,
+  );
+  const feedbackTemplate = queryElement<HTMLTemplateElement>(
+    PasswordPolicyMap.template,
+    `The feedback template "${PasswordPolicyMap.template}" for password policy is not found.`,
+  );
+
+  targetElement.innerHTML = feedbackTemplate.innerHTML;
+
+  const feedbackContainer = queryElement<HTMLElement>(
+    PasswordPolicyMap.feedbackContainer,
+    `The feedback container element "${PasswordPolicyMap.feedbackContainer}" for password policy is not found.`,
+    targetElement,
+  );
+  const hintElement = queryElement<HTMLElement>(
+    PasswordPolicyMap.hint,
+    `The hint element "${PasswordPolicyMap.hint}" for password policy is not found.`,
+    element,
+  );
+  const hints = safeParseJSON(hintElement.innerHTML);
+
+  // Setup requirement texts
+  setupRequirementTexts(feedbackContainer, elementInput, hints);
+
+  // Setup event listeners
+  const {inputHandler, formSubmitHandler, form} = setupValidationListeners(elementInput, feedbackContainer, hints);
+
+  // Initial validation if field has content
+  if (elementInput.value !== '') {
+    passwordValidation(elementInput, feedbackContainer, hints);
+  }
+
+  // Return cleanup function
+  const cleanup = () => {
+    elementInput.removeEventListener('input', inputHandler);
+    if (form && formSubmitHandler) {
+      form.removeEventListener('submit', formSubmitHandler);
+    }
+  };
+
+  return {element, cleanup};
+};
+
+export default usePasswordPolicy;
