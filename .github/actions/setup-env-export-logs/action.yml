@@ -40,8 +40,8 @@ runs:
       run: |
         cd ${{ inputs.PRESTASHOP_DIR }}
         mkdir -p ./var/docker-logs
-        docker logs ${{ inputs.DOCKER_PREFIX }}-${{ inputs.DB_SERVER }}-1 > ./var/docker-logs/${{ inputs.DB_SERVER }}.log
-        docker logs ${{ inputs.DOCKER_PREFIX }}-prestashop-git-1 > ./var/docker-logs/prestashop.log
+        docker compose -f docker/docker-compose.yml --project-directory . logs ${{ inputs.DB_SERVER }} > ./var/docker-logs/${{ inputs.DB_SERVER }}.log || true
+        docker compose -f docker/docker-compose.yml --project-directory . logs php apache > ./var/docker-logs/prestashop.log || true
       shell: bash
 
     - name: Export front output
