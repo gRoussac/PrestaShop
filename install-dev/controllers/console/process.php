@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * For the full copyright and license information, please view the
  * LICENSE file that was distributed with this source code.
@@ -41,18 +43,18 @@ class InstallControllerConsoleProcess extends InstallControllerConsole implement
     /**
      * @see HttpConfigureInterface::processNextStep()
      */
-    public function processNextStep()
+    public function processNextStep(): void
     {
     }
 
-    public function display()
+    public function display(): void
     {
     }
 
     /**
      * @see HttpConfigureInterface::validate()
      */
-    public function validate()
+    public function validate(): bool
     {
         return false;
     }
@@ -305,16 +307,14 @@ class InstallControllerConsoleProcess extends InstallControllerConsole implement
 
     /**
      * PROCESS : installModules
-     * Install all modules in ~/modules/ directory
+     * Install selected modules (CLI --modules: none|all|bo|fo|name list)
      */
     public function processInstallModules()
     {
         $this->initializeContext();
-        if (is_string($this->datas->modules)) {
-            $modules = explode(',', $this->datas->modules);
-        } else {
-            $modules = array_keys($this->model_install->getModulesOnDisk());
-        }
+        $modulesOnDisk = array_values($this->model_install->getModulesOnDisk());
+        $spec = is_string($this->datas->modules) ? $this->datas->modules : '';
+        $modules = (new InstallModuleListResolver())->resolveFromCliSpec($spec, $modulesOnDisk);
 
         return $this->model_install->installModules($modules);
     }

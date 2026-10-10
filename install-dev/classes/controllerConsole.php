@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * For the full copyright and license information, please view the
  * LICENSE file that was distributed with this source code.
@@ -62,7 +64,7 @@ abstract class InstallControllerConsole
     /**
      * Validate current step.
      */
-    abstract public function validate();
+    abstract public function validate(): bool;
 
     final public static function execute($argc, $argv)
     {

@@ -23,8 +23,6 @@ class InstallControllerHttpContent extends InstallControllerHttp implements Http
     public const MODULES_BO_ONLY = 3;
     public const MODULES_FO_ONLY = 4;
 
-    private const MODULE_CATEGORY_ADMINISTRATION = 'Administration';
-
     /**
      * Modules present on the disk
      *
@@ -80,7 +78,13 @@ class InstallControllerHttpContent extends InstallControllerHttp implements Http
             $moduleAction = static::MODULES_ALL;
         }
 
-        $this->session->content_modules = $this->resolveContentModules($moduleAction);
+        $selected = Tools::getValue('modules', []);
+        $selectedModules = is_array($selected) ? $selected : [];
+        $this->session->content_modules = (new InstallModuleListResolver())->resolveFromHttpAction(
+            $moduleAction,
+            $this->modules,
+            $selectedModules
+        );
         $this->session->moduleAction = $moduleAction;
         $this->session->content_theme = Tools::getValue('theme', null);
         if (Tools::getIsset('install-fixtures')) {
@@ -179,59 +183,6 @@ class InstallControllerHttpContent extends InstallControllerHttp implements Http
             static::MODULES_BO_ONLY,
             static::MODULES_FO_ONLY,
         ];
-    }
-
-    /**
-     * Resolve module names for the chosen install mode (server-side for non-SELECTED modes).
-     *
-     * @return list<string>
-     */
-    private function resolveContentModules(int $moduleAction): array
-    {
-        if ($moduleAction === static::MODULES_NONE) {
-            return [];
-        }
-
-        if ($moduleAction === static::MODULES_SELECTED) {
-            $selected = Tools::getValue('modules', []);
-
-            return is_array($selected) ? array_values($selected) : [];
-        }
-
-        $allNames = [];
-        foreach ($this->modules as $module) {
-            $allNames[] = $module->get('name');
-        }
-
-        if ($moduleAction === static::MODULES_ALL) {
-            return $allNames;
-        }
-
-        $administrationNames = $this->getModuleNamesInCategory(self::MODULE_CATEGORY_ADMINISTRATION);
-
-        if ($moduleAction === static::MODULES_BO_ONLY) {
-            return $administrationNames;
-        }
-
-        return array_values(array_diff($allNames, $administrationNames));
-    }
-
-    /**
-     * @return list<string>
-     */
-    private function getModuleNamesInCategory(string $categoryName): array
-    {
-        $names = [];
-        $categories = $this->getModulesPerCategories();
-        if (!isset($categories[$categoryName]) || empty($categories[$categoryName]->modules)) {
-            return [];
-        }
-
-        foreach ($categories[$categoryName]->modules as $module) {
-            $names[] = $module->get('name');
-        }
-
-        return $names;
     }
 
     private function findParentCategoryNameByTab(string $tab): ?string

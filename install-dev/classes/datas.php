@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * For the full copyright and license information, please view the
  * LICENSE file that was distributed with this source code.
@@ -29,9 +31,9 @@
  * @property string $theme
  * @property int $enable_ssl
  * @property int $rewrite_engine
- * @property string $fixtures
+ * @property string $fixtures Demo catalog flag (0/1); default 0
  * @property array $xml_loader_ids
- * @property string|array $modules
+ * @property string $modules empty/none|all|bo|fo|comma-separated names
  */
 class Datas
 {
@@ -168,8 +170,9 @@ class Datas
             'help' => 'enable fixtures installation',
         ],
         'modules' => [
-            'default' => [],
-            'help' => 'Modules to install, separated by comma',
+            'name' => 'modules',
+            'default' => '',
+            'help' => 'Modules to install: empty/none (default), all, bo, fo, or comma-separated names',
         ],
     ];
 
