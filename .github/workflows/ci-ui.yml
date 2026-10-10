@@ -4,9 +4,9 @@ name: CI UI
 
 on:
   push:
-    branches: [dev]
+    branches: [ dev ]
   pull_request:
-    branches: [dev]
+    branches: [ dev ]
 permissions:
   contents: read   #   to fetch code (actions/checkout)
 

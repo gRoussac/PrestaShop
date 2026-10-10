@@ -3,9 +3,9 @@
 name: CI API Module
 on:
   push:
-    branches: [dev]
+    branches: [ dev ]
   pull_request:
-    branches: [dev]
+    branches: [ dev ]
 permissions:
   contents: read   #   to clone the repos and get release assets (shivammathur/setup-php)
 concurrency:
