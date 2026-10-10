@@ -1562,7 +1562,6 @@ ul#optional_update li.ok {
 }
 
 #modules-container {
-  display: none;
   padding: var(--cdk-size-16);
   width: 100%;
   height: calc(var(--cdk-size-240) * 2);
