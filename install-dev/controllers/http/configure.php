@@ -215,6 +215,11 @@ class InstallControllerHttpConfigure extends InstallControllerHttp implements Ht
             }
         }
 
+        // If the assistant itself is served over HTTPS, default Enable SSL to Yes.
+        if ($this->session->enable_ssl === null && Tools::usingSecureMode()) {
+            $this->session->enable_ssl = true;
+        }
+
         $this->translatedStrings = json_encode([
             'Straight rows of keys are easy to guess' => $this->translator->trans('Straight rows of keys are easy to guess'),
             'Short keyboard patterns are easy to guess' => $this->translator->trans('Short keyboard patterns are easy to guess'),
