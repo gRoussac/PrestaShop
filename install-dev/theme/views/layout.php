@@ -32,8 +32,12 @@
     <script src="theme/js/zxcvbn-language-en.js"></script>
 
     <script type="text/javascript" src="theme/js/install.js"></script>
-    <?php if (file_exists(_PS_INSTALL_PATH_ . 'theme/js/' . self::getSteps()->current()->getName() . '.js')) { ?>
-      <script type="text/javascript" src="theme/js/<?php echo self::getSteps()->current()->getName(); ?>.js?version=<?php echo _PS_VERSION_; ?>"></script>
+    <?php
+    $stepJs = _PS_INSTALL_PATH_ . 'theme/js/' . self::getSteps()->current()->getName() . '.js';
+    if (file_exists($stepJs)) {
+        $stepJsVersion = _PS_VERSION_ . '.' . (string) filemtime($stepJs);
+        ?>
+      <script type="text/javascript" src="theme/js/<?php echo self::getSteps()->current()->getName(); ?>.js?version=<?php echo rawurlencode($stepJsVersion); ?>"></script>
     <?php } ?>
     <script type="text/javascript">
       var ps_base_uri = '<?php echo addslashes(__PS_BASE_URI__); ?>';

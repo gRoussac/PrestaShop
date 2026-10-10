@@ -3,7 +3,7 @@
  * LICENSE file that was distributed with this source code.
  */
 
-const DATABASE_DRAFT_KEY = 'gregoshop.install.database';
+var DATABASE_DRAFT_KEY = 'gregoshop.install.database';
 
 function loadDatabaseDraft() {
 	try {
@@ -17,20 +17,31 @@ function saveDatabaseDraft(partial) {
 	try {
 		localStorage.setItem(
 			DATABASE_DRAFT_KEY,
-			JSON.stringify(Object.assign(loadDatabaseDraft(), partial)),
+			JSON.stringify($.extend({}, loadDatabaseDraft(), partial || {})),
 		);
 	} catch (e) {
 		// Ignore quota / private mode.
 	}
 }
 
+function collectDatabaseDraft() {
+	return {
+		dbServer: $('#dbServer').val(),
+		dbName: $('#dbName').val(),
+		dbLogin: $('#dbLogin').val(),
+		dbPassword: $('#dbPassword').val(),
+		db_prefix: $('#db_prefix').val(),
+		db_clear: $('#db_clear').prop('checked'),
+	};
+}
+
 function restoreDatabaseDraft() {
-	const draft = loadDatabaseDraft();
-	if (!draft || Object.keys(draft).length === 0) {
+	var draft = loadDatabaseDraft();
+	if (!draft || !Object.keys(draft).length) {
 		return;
 	}
 	['dbServer', 'dbName', 'dbLogin', 'dbPassword', 'db_prefix'].forEach(function(id) {
-		const $el = $('#' + id);
+		var $el = $('#' + id);
 		if ($el.length && !$el.val() && draft[id]) {
 			$el.val(draft[id]);
 		}
@@ -41,23 +52,18 @@ function restoreDatabaseDraft() {
 }
 
 function bindDatabaseDraftPersistence() {
-	const persist = function() {
-		saveDatabaseDraft({
-			dbServer: $('#dbServer').val(),
-			dbName: $('#dbName').val(),
-			dbLogin: $('#dbLogin').val(),
-			dbPassword: $('#dbPassword').val(),
-			db_prefix: $('#db_prefix').val(),
-			db_clear: $('#db_clear').prop('checked'),
-		});
+	var persist = function() {
+		saveDatabaseDraft(collectDatabaseDraft());
 	};
-	$('#dbPart').on('input change', 'input', persist);
+	$('#mainForm').on('input change keyup paste', 'input', persist);
+	$(window).on('beforeunload', persist);
 }
 
 $(function()
 {
 	restoreDatabaseDraft();
 	bindDatabaseDraftPersistence();
+	saveDatabaseDraft(collectDatabaseDraft());
 
 	// Check rewrite engine availability
 	$.ajax({
