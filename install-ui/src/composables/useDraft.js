@@ -1,10 +1,11 @@
 /**
- * localStorage draft helpers (never store passwords).
+ * sessionStorage draft helpers (never store passwords).
+ * Session-scoped only: cleared when the browser tab/session ends.
  */
 
 export function loadDraft(key) {
   try {
-    return JSON.parse(localStorage.getItem(key) || '{}') || {};
+    return JSON.parse(sessionStorage.getItem(key) || '{}') || {};
   } catch {
     return {};
   }
@@ -16,7 +17,7 @@ export function saveDraft(key, partial, omitKeys = []) {
     omitKeys.forEach((omitKey) => {
       delete draft[omitKey];
     });
-    localStorage.setItem(key, JSON.stringify(draft));
+    sessionStorage.setItem(key, JSON.stringify(draft));
   } catch {
     // Ignore quota / private mode.
   }
