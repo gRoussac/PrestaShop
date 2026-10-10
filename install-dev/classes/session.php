@@ -4,42 +4,55 @@
  * LICENSE file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
- * Manage session for install script
+ * Session bag for the HTTP installer (PHP session or Cookie fallback).
  *
+ * Wizard navigation:
  * @property string $last_step
+ * @property string $step
  * @property string|null $lang
  * @property array $process_validated
- * @property string $install_type
- * @property bool $database_clear
- * @property string $step
+ *
+ * Database step:
  * @property string $database_server
  * @property string $database_login
  * @property string $database_password
  * @property string $database_name
  * @property string $database_prefix
  * @property string $database_engine
+ * @property bool $database_clear Drop existing tables (default true on first load)
+ * @property int $rewrite_engine
+ *
+ * Configure step (store + admin account):
  * @property string $shop_name
- * @property array $xml_loader_ids
  * @property string $shop_country
+ * @property string $shop_timezone
+ * @property bool|null $enable_ssl
  * @property string $admin_firstname
  * @property string $admin_lastname
  * @property string $admin_password
  * @property string $admin_password_confirm
  * @property string $admin_email
- * @property string $shop_timezone
- * @property bool $configuration_agrement
+ * @property string $adminFolderName
+ *
+ * Content step:
+ * @property array|null $content_modules Module names to install (resolved server-side)
+ * @property string|null $content_theme
+ * @property bool|null $content_install_fixtures Demo catalog (fashion fixtures); default false
+ * @property int|null $moduleAction InstallControllerHttpContent::MODULES_* constant
+ *
+ * License / agreements:
  * @property bool $licence_agrement
- * @property bool $enable_ssl
- * @property int $rewrite_engine
+ * @property bool $configuration_agrement
+ *
+ * Misc / legacy:
+ * @property string $install_type
+ * @property array $xml_loader_ids
  * @property bool $use_smtp
  * @property string $smtp_encryption
  * @property int $smtp_port
- * @property array $content_modules
- * @property string $content_theme
- * @property bool $content_install_fixtures
- * @property int $moduleAction
- * @property string $adminFolderName
  */
 class InstallSession
 {
@@ -47,7 +60,7 @@ class InstallSession
     protected static $_cookie_mode = false;
     protected static $_cookie = false;
 
-    public static function getInstance()
+    public static function getInstance(): self
     {
         if (!static::$_instance) {
             static::$_instance = new static();
@@ -71,7 +84,7 @@ class InstallSession
         }
     }
 
-    public function clean()
+    public function clean(): void
     {
         if (static::$_cookie_mode) {
             static::$_cookie->logout();
@@ -120,9 +133,9 @@ class InstallSession
     {
         if (static::$_cookie_mode) {
             return isset(static::$_cookie->{$varname});
-        } else {
-            return isset($_SESSION[$varname]);
         }
+
+        return isset($_SESSION[$varname]);
     }
 
     public function __unset($varname)
