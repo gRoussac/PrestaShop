@@ -204,7 +204,7 @@ jobs:
           mv ./mochawesome-report/mochawesome.json ${{ env.REPORTS_DIR_PATH }}/${{ env.TEST_CAMPAIGN_ARTIFACT }}.json
 
       - name: Upload report
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: reports_${{ env.GH_BRANCH }}_${{ env.TEST_CAMPAIGN_ARTIFACT }}
           path: ${{ env.REPORTS_DIR }}
