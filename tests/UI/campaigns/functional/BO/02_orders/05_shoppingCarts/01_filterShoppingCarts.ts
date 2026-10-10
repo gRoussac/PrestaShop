@@ -2,7 +2,7 @@
 import testContext from '@utils/testContext';
 
 // Import commonTests
-import createShoppingCart from '@commonTests/FO/hummingbird/shoppingCart';
+import createShoppingCart from '@commonTests/FO/default/shoppingCart';
 import {createCustomerTest, deleteCustomerTest} from '@commonTests/BO/customers/customer';
 
 import {expect} from 'chai';

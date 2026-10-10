@@ -2,7 +2,7 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 // Import common tests
-import {createOrderByCustomerTest} from '@commonTests/FO/hummingbird/order';
+import {createOrderByCustomerTest} from '@commonTests/FO/default/order';
 import {enableMerchandiseReturns, disableMerchandiseReturns} from '@commonTests/BO/customerService/merchandiseReturns';
 import {setupSmtpConfigTest, resetSmtpConfigTest} from '@commonTests/BO/advancedParameters/smtp';
 

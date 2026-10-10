@@ -146,7 +146,7 @@ override/*
 !override/modules/
 !override/modules/**
 themes/*/
-themes/classic
+themes/hummingbird
 !themes/_core
 !themes/_libraries
 

@@ -3,7 +3,7 @@ import {expect} from 'chai';
 
 // Import common tests
 import {bulkDeleteCartRuleTest} from '@commonTests/BO/catalog/cartRule';
-import {createOrderByCustomerTest} from '@commonTests/FO/hummingbird/order';
+import {createOrderByCustomerTest} from '@commonTests/FO/default/order';
 
 import {
   boCartRulesPage,

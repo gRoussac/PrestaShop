@@ -30,9 +30,9 @@ if test $# -gt 0; then
       echo ">>> Waiting for core theme assets..."
       buildLocks="$PROJECT_PATH/themes/buildLock"
     ;;
-    front-classic)
-      echo ">>> Waiting for classic theme assets..."
-      buildLocks="$PROJECT_PATH/themes/classic/_dev/buildLock"
+    front-default)
+      echo ">>> Waiting for FO default theme assets..."
+      buildLocks="$PROJECT_PATH/themes/default/buildLock"
     ;;
     composer)
       echo ">>> Waiting for composer install..."
@@ -40,7 +40,7 @@ if test $# -gt 0; then
     ;;
     all)
       echo ">>> Waiting for all assets..."
-      buildLocks="$ADMIN_DIR/themes/default/buildLock $ADMIN_DIR/themes/new-theme/buildLock $PROJECT_PATH/themes/classic/_dev/buildLock $PROJECT_PATH/themes/buildLock"
+      buildLocks="$ADMIN_DIR/themes/default/buildLock $ADMIN_DIR/themes/new-theme/buildLock $PROJECT_PATH/themes/default/buildLock $PROJECT_PATH/themes/buildLock"
       neededFiles="$PROJECT_PATH/vendor/autoload.php"
     ;;
     *)
@@ -50,7 +50,7 @@ if test $# -gt 0; then
   esac
 else
   echo ">>> Waiting for all assets..."
-  buildLocks="$ADMIN_DIR/themes/default/buildLock $ADMIN_DIR/themes/new-theme/buildLock $PROJECT_PATH/themes/classic/_dev/buildLock $PROJECT_PATH/themes/buildLock"
+  buildLocks="$ADMIN_DIR/themes/default/buildLock $ADMIN_DIR/themes/new-theme/buildLock $PROJECT_PATH/themes/default/buildLock $PROJECT_PATH/themes/buildLock"
   neededFiles="$PROJECT_PATH/vendor/autoload.php"
 fi
 

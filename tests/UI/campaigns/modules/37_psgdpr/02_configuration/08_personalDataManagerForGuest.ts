@@ -1,6 +1,6 @@
 import testContext from '@utils/testContext';
 import {expect} from 'chai';
-import {createOrderByGuestTest} from '@commonTests/FO/hummingbird/order';
+import {createOrderByGuestTest} from '@commonTests/FO/default/order';
 
 import {
   boDashboardPage,

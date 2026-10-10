@@ -21,7 +21,7 @@ class MailPartialTemplateRendererTest extends TestCase
     {
         parent::setUp();
         $requiredConstants = [
-            '_PS_THEME_DIR_' => _PS_ROOT_DIR_ . '/themes/classic/',
+            '_PS_THEME_DIR_' => _PS_ROOT_DIR_ . '/themes/default/',
             '_PS_MAIL_DIR_' => _PS_CORE_DIR_ . '/mails/',
         ];
         foreach ($requiredConstants as $constant => $value) {
