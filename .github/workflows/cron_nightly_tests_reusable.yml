@@ -88,12 +88,9 @@ jobs:
           - 'functional:BO:advanced-parameters:07-10'
           - 'functional:BO:advanced-parameters:11-12'
           - 'functional:BO:header'
-          - 'functional:FO:classic:01-03'
-          - 'functional:FO:classic:04-07'
-          - 'functional:FO:classic:08-12'
-          - 'functional:FO:hummingbird:01-03'
-          - 'functional:FO:hummingbird:04-07'
-          - 'functional:FO:hummingbird:08-12'
+          - 'functional:FO:default:01-03'
+          - 'functional:FO:default:04-07'
+          - 'functional:FO:default:08-12'
           - 'functional:productV2'
           - 'functional:API'
           - 'functional:WS'
@@ -110,9 +107,9 @@ jobs:
           - BRANCH: 8.2.x
             CAMPAIGN: 'functional:BO:advanced-parameters:11-12'
           - BRANCH: 8.2.x
-            CAMPAIGN: 'functional:FO:hummingbird:04-07'
+            CAMPAIGN: 'functional:FO:default:04-07'
           - BRANCH: 8.2.x
-            CAMPAIGN: 'functional:FO:hummingbird:08-12'
+            CAMPAIGN: 'functional:FO:default:08-12'
           - BRANCH: 8.2.x
             CAMPAIGN: 'modules:01-09'
           - BRANCH: 8.2.x

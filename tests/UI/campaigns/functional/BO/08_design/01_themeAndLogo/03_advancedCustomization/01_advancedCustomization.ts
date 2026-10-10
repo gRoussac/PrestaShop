@@ -24,7 +24,7 @@ Pre-condition:
 Scenario:
 - Download a child theme and check the theme is well uploaded
 - Use the child theme
-- Use the hummingbird theme and remove the child theme
+- Use the default theme and remove the child theme
 - Check the How to use parents/child themes link
  */
 
@@ -34,8 +34,8 @@ describe('BO - Design - Theme & Logo - Advanced Customization', async () => {
   // Variable used to create temporary theme file
   let filePath: string|null;
 
-  // Variable used to create child_hummingbird.zip file
-  const renamedFilePath: string = 'child_hummingbird.zip';
+  // Variable used to create child_default.zip file
+  const renamedFilePath: string = 'child_default.zip';
   // Variable used for the themes folder
   const themesPath: string = 'themes/';
 
@@ -187,7 +187,7 @@ describe('BO - Design - Theme & Logo - Advanced Customization', async () => {
     it('should use the child theme', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'useChildTheme', baseContext);
 
-      const successResult = await boThemeAndLogoPage.useTheme(page, 'child_hummingbird');
+      const successResult = await boThemeAndLogoPage.useTheme(page, 'child_default');
       expect(successResult).to.be.equal(boThemeAndLogoPage.successfulUpdateMessage);
     });
 
@@ -211,19 +211,19 @@ describe('BO - Design - Theme & Logo - Advanced Customization', async () => {
     });
   });
 
-  // 3 - Use the hummingbird theme and remove the child theme
+  // 3 - Use the default theme and remove the child theme
   describe('Remove the child theme', async () => {
-    it('should use the hummingbird theme', async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'useHummingbirdTheme', baseContext);
+    it('should use the default theme', async function () {
+      await testContext.addContextItem(this, 'testIdentifier', 'useDefaultTheme', baseContext);
 
-      const successResult = await boThemeAndLogoPage.useTheme(page, 'hummingbird');
+      const successResult = await boThemeAndLogoPage.useTheme(page, 'default');
       expect(successResult).to.be.equal(boThemeAndLogoPage.successfulUpdateMessage);
     });
 
     it('should delete the child theme', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'deleteChildTheme', baseContext);
 
-      const successResult = await boThemeAndLogoPage.deleteTheme(page, 'child_hummingbird');
+      const successResult = await boThemeAndLogoPage.deleteTheme(page, 'child_default');
       expect(successResult).to.be.equal(boThemeAndLogoPage.successfulDeleteMessage);
     });
   });

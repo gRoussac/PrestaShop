@@ -25,14 +25,13 @@ class Theme implements AddonInterface
      *  - .env.dist PS_FF_DEFAULT_THEME variable (if file is present)
      *  - Theme::DEFAULT_THEME private const (last fallback when no env variable is defined)
      */
-    private const DEFAULT_THEME = 'hummingbird';
+    private const DEFAULT_THEME = 'default';
 
     /**
      * List of core native themes.
      */
     public const CORE_THEMES = [
-        'classic',
-        'hummingbird',
+        'default',
     ];
 
     /**

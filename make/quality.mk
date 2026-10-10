@@ -12,10 +12,10 @@ phpstan: ## Run PHPStan
 scss-fixer: ## Run SCSS fixers
 	$(PHP_CONT_WITH_LOGIN) -c "cd admin-dev/themes/new-theme && (test -d node_modules || npm install) && npm run scss-fix"
 	$(PHP_CONT_WITH_LOGIN) -c "cd admin-dev/themes/default && (test -d node_modules || npm install) && npm run scss-fix"
-	$(PHP_CONT_WITH_LOGIN) -c "cd themes/classic/_dev && (test -d node_modules || npm install) && npm run scss-fix"
+	$(PHP_CONT_WITH_LOGIN) -c "cd themes/default && (test -d node_modules || npm install) && npm run scss-fix"
 
 es-linter: ## Run ES lint-fix
 	$(PHP_CONT_WITH_LOGIN) -c "cd admin-dev/themes/new-theme && (test -d node_modules || npm install) && npm run lint-fix"
 	$(PHP_CONT_WITH_LOGIN) -c "cd admin-dev/themes/default && (test -d node_modules || npm install) && npm run lint-fix"
-	$(PHP_CONT_WITH_LOGIN) -c "cd themes/classic/_dev && (test -d node_modules || npm install) && npm run lint-fix"
+	$(PHP_CONT_WITH_LOGIN) -c "cd themes/default && (test -d node_modules || npm install) && npm run lint-fix"
 	$(PHP_CONT_WITH_LOGIN) -c "cd themes && (test -d node_modules || npm install) && npm run lint-fix"

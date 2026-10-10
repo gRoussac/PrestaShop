@@ -5,37 +5,37 @@
       <trans-unit id="31b920bfe179e602e215842387ab8feb">
         <source>Add name</source>
         <target>Add name</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/create.tpl [Line: 11]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/create.tpl [Line: 11]</note>
       </trans-unit>
       <trans-unit id="2d96bb66d8541a89620d3c158ceef42b">
         <source>Add to wishlist</source>
         <target>Add to wishlist</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/add-to-wishlist.tpl [Line: 20]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/add-to-wishlist.tpl [Line: 20]</note>
       </trans-unit>
       <trans-unit id="ea4788705e6873b424c65e91c2846b19">
         <source>Cancel</source>
         <target>Cancel</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/share.tpl [Line: 12]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/share.tpl [Line: 12]</note>
       </trans-unit>
       <trans-unit id="d3d2e617335f08df83599665eef8a418">
         <source>Close</source>
         <target>Close</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/add-to-wishlist.tpl [Line: 26]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/add-to-wishlist.tpl [Line: 26]</note>
       </trans-unit>
       <trans-unit id="6d6db52799620de23c1e87d00abde8c4">
         <source>Copied!</source>
         <target>Copied!</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/share.tpl [Line: 10]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/share.tpl [Line: 10]</note>
       </trans-unit>
       <trans-unit id="b603b043e8b03095685f200bdd8b2283">
         <source>Copy text</source>
         <target>Copy text</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/share.tpl [Line: 13]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/share.tpl [Line: 13]</note>
       </trans-unit>
       <trans-unit id="2f745c01f53c6a617fbff3bc18028e33">
         <source>Create wishlist</source>
         <target>Create wishlist</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/create.tpl [Line: 13]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/create.tpl [Line: 13]</note>
       </trans-unit>
       <trans-unit id="63a78ed4647f7c63c2929e35ec1c95e3">
         <source>Customize</source>
@@ -45,12 +45,12 @@
       <trans-unit id="f2a6c498fb90ee345d997f888fce3b18">
         <source>Delete</source>
         <target>Delete</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/delete.tpl [Line: 19]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/delete.tpl [Line: 19]</note>
       </trans-unit>
       <trans-unit id="1beb403d31c2e510c90d78c71460c088">
         <source>Delete wishlist</source>
         <target>Delete wishlist</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/delete.tpl [Line: 15]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/delete.tpl [Line: 15]</note>
       </trans-unit>
       <trans-unit id="b36a888fbccabeeb2195204efe670e1a">
         <source>Error saving the new list</source>
@@ -90,7 +90,7 @@
       <trans-unit id="ff54fda7befc2debddd893cb7bc65c68">
         <source>List title is too short</source>
         <target>List title is too short</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/create.tpl [Line: 14]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/create.tpl [Line: 14]</note>
       </trans-unit>
       <trans-unit id="e1edc16e7403500e72f9fc0cdc982cb5">
         <source>Missing name parameter</source>
@@ -105,7 +105,7 @@
       <trans-unit id="31323452eb311e8fbef81c75d3062659">
         <source>No list found.</source>
         <target>No list found.</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/add-to-wishlist.tpl [Line: 38]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/add-to-wishlist.tpl [Line: 38]</note>
       </trans-unit>
       <trans-unit id="b9af8635591dc44009ccd8e5389722ec">
         <source>No products found</source>
@@ -155,12 +155,12 @@
       <trans-unit id="1063e38cb53d94d386f21227fcd84717">
         <source>Remove</source>
         <target>Remove</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/delete.tpl [Line: 18]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/delete.tpl [Line: 18]</note>
       </trans-unit>
       <trans-unit id="a1cfe7cbeafd513db812282da3f01704">
         <source>Remove product from wishlist</source>
         <target>Remove product from wishlist</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/delete.tpl [Line: 14]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/delete.tpl [Line: 14]</note>
       </trans-unit>
       <trans-unit id="904a8304056d77e4547744781b7ceb50">
         <source>Rename</source>
@@ -170,7 +170,7 @@
       <trans-unit id="3f122c673ce2e03b7ed71889b17ec119">
         <source>Rename wishlist</source>
         <target>Rename wishlist</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/rename.tpl [Line: 13]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/rename.tpl [Line: 13]</note>
       </trans-unit>
       <trans-unit id="331d764872260ecaec822a6768871e97">
         <source>Request is missing one or multiple parameters</source>
@@ -195,7 +195,7 @@
       <trans-unit id="50f67a17a3a4c58de43d4b9abf7ccab7">
         <source>Share link</source>
         <target>Share link</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/share.tpl [Line: 11]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/share.tpl [Line: 11]</note>
       </trans-unit>
       <trans-unit id="5ebe4538a270b8fd171db95c79a7e841">
         <source>Share link copied!</source>
@@ -205,7 +205,7 @@
       <trans-unit id="8f02ed5e74022ada127d2bd206049a36">
         <source>Share wishlist</source>
         <target>Share wishlist</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/share.tpl [Line: 9]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/share.tpl [Line: 9]</note>
       </trans-unit>
       <trans-unit id="f66707580b8d486dfa68766544243619">
         <source>Showing %min% - %max% of %total% item(s)</source>
@@ -215,7 +215,7 @@
       <trans-unit id="b6d4223e60986fa4c9af77ee5f7149c5">
         <source>Sign in</source>
         <target>Sign in</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/login.tpl [Line: 21]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/login.tpl [Line: 21]</note>
       </trans-unit>
       <trans-unit id="cd50954edb2355b8b81c2efc37a619cb">
         <source>The list has been properly created</source>
@@ -235,7 +235,7 @@
       <trans-unit id="7bd9ca3a2784a710caef154068db87b8">
         <source>The product will be removed from "%nameofthewishlist%".</source>
         <target>The product will be removed from "%nameofthewishlist%".</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/delete.tpl [Line: 16]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/delete.tpl [Line: 16]</note>
       </trans-unit>
       <trans-unit id="f65c1970ed542e6372e8e88e1dd3327b">
         <source>There was an error adding the product</source>
@@ -280,7 +280,7 @@
       <trans-unit id="972d48662f3cf5d0514a3cbba209837a">
         <source>Wishlist name</source>
         <target>Wishlist name</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/rename.tpl [Line: 11]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/rename.tpl [Line: 11]</note>
       </trans-unit>
       <trans-unit id="2c8f550ad35c10bf2276eeec014087bd">
         <source>Wishlist name modified!</source>
@@ -300,7 +300,7 @@
       <trans-unit id="30ca097d6f7ac158bc3d02dfb18979a1">
         <source>You need to be logged in to save products in your wishlist.</source>
         <target>You need to be logged in to save products in your wishlist.</target>
-        <note>File: themes/hummingbird/modules/blockwishlist/views/templates/components/modals/login.tpl [Line: 31]</note>
+        <note>File: themes/default/modules/blockwishlist/views/templates/components/modals/login.tpl [Line: 31]</note>
       </trans-unit>
       <trans-unit id="3a9037f4f377fb6ff22367d375897faa">
         <source>You're not allowed to manage this list.</source>

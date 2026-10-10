@@ -7,7 +7,7 @@ import OrderWS from '@webservices/order/orderWs';
 
 // Import commonTests
 import {addWebserviceKey, removeWebserviceKey, setWebserviceStatus} from '@commonTests/BO/advancedParameters/ws';
-import createShoppingCart from '@commonTests/FO/hummingbird/shoppingCart';
+import createShoppingCart from '@commonTests/FO/default/shoppingCart';
 
 // Import data
 import getOrderXml from '@data/xml/order';

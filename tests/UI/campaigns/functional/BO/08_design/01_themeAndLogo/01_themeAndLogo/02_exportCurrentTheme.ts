@@ -25,7 +25,7 @@ describe('BO - Design - Theme & Logo : Export current theme', async () => {
   after(async () => {
     await utilsPlaywright.closeBrowserContext(browserContext);
 
-    await utilsFile.deleteFile('../../themes/hummingbird.zip');
+    await utilsFile.deleteFile('../../themes/default.zip');
   });
 
   it('should login in BO', async function () {
@@ -62,7 +62,7 @@ describe('BO - Design - Theme & Logo : Export current theme', async () => {
   it('should check that the theme is exported successfully', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'checkTheme', baseContext);
 
-    const found = await utilsFile.doesFileExist('../../themes/hummingbird.zip');
+    const found = await utilsFile.doesFileExist('../../themes/default.zip');
     expect(found).to.equal(true);
   });
 });

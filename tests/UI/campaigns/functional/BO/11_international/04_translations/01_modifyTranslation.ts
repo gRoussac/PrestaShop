@@ -1,7 +1,6 @@
 import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
-import {enableTheme, disableTheme} from '@commonTests/BO/design/hummingbird';
 import {setupSmtpConfigTest, resetSmtpConfigTest} from '@commonTests/BO/advancedParameters/smtp';
 
 import {
@@ -16,7 +15,6 @@ import {
   dataLanguages,
   dataModules,
   FakerCustomer,
-  foClassicHomePage,
   foHummingbirdContactUsPage,
   foHummingbirdCreateAccountPage,
   foHummingbirdHomePage,
@@ -133,63 +131,7 @@ describe('BO - International - Translation : Modify translation', async () => {
     });
   });
 
-  // Pre-condition : Enable classic
-  enableTheme('classic', `${baseContext}_preTest_2`);
-
-  describe('Case 2 - Front office translations with classic theme', async () => {
-    it('should go to \'International > Translations\' page', async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'goToTranslationsPage2', baseContext);
-
-      await boDashboardPage.goToSubMenu(
-        page,
-        boDashboardPage.internationalParentLink,
-        boDashboardPage.translationsLink,
-      );
-
-      const pageTitle = await boTranslationsPage.getPageTitle(page);
-      expect(pageTitle).to.contains(boTranslationsPage.pageTitle);
-    });
-
-    it(`should choose the translation 'Front office' and the language '${dataLanguages.french.name}'`, async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'modifyTranslation2', baseContext);
-
-      await boTranslationsPage.modifyTranslation(page, 'Front office Translations', 'classic', dataLanguages.french.name);
-
-      const pageTitle = await boTranslationsPage.getPageTitle(page);
-      expect(pageTitle).to.contains(boTranslationsPage.pageTitle);
-    });
-
-    it('should search \'Popular Products\' expression and modify the french translation', async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'translateExpression2', baseContext);
-
-      await boTranslationsPage.searchTranslation(page, 'Popular Products');
-
-      const textResult = await boTranslationsPage.translateExpression(page, 'translate');
-      expect(textResult).to.equal(boTranslationsPage.validationMessage);
-    });
-
-    it('should go to FO page and change the language to French', async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'goToFO1', baseContext);
-
-      page = await boTranslationsPage.viewMyShop(page);
-      await foClassicHomePage.changeLanguage(page, 'fr');
-
-      const isHomePage = await foClassicHomePage.isHomePage(page);
-      expect(isHomePage).to.eq(true);
-    });
-
-    it('should check the translation', async function () {
-      await testContext.addContextItem(this, 'testIdentifier', 'checkTranslation', baseContext);
-
-      const title = await foClassicHomePage.getBlockTitle(page, 'popularproducts');
-      expect(title).to.contain('translate');
-    });
-  });
-
-  // Post-condition : Disable classic
-  disableTheme('classic', `${baseContext}_postTest_1`);
-
-  describe('Case 3 - Front office translations with hummingbird theme', async () => {
+  describe('Case 2 - Front office translations with default theme', async () => {
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo', baseContext);
 
@@ -213,11 +155,11 @@ describe('BO - International - Translation : Modify translation', async () => {
       expect(pageTitle).to.contains(boTranslationsPage.pageTitle);
     });
 
-    it(`should choose the translation 'Front office with hummingbird theme' and the language '${dataLanguages.english.name}'`,
+    it(`should choose the translation 'Front office with default theme' and the language '${dataLanguages.english.name}'`,
       async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'modifyTranslation3', baseContext);
 
-        await boTranslationsPage.modifyTranslation(page, 'Front office Translations', 'hummingbird', dataLanguages.english.name);
+        await boTranslationsPage.modifyTranslation(page, 'Front office Translations', 'default', dataLanguages.english.name);
 
         const pageTitle = await boTranslationsPage.getPageTitle(page);
         expect(pageTitle).to.contains(boTranslationsPage.pageTitle);
@@ -289,7 +231,7 @@ describe('BO - International - Translation : Modify translation', async () => {
       await boTranslationsPage.modifyTranslation(
         page,
         'Installed modules translations',
-        'hummingbird',
+        'default',
         dataLanguages.english.name,
         dataModules.contactForm.name,
       );
@@ -356,7 +298,7 @@ describe('BO - International - Translation : Modify translation', async () => {
       await boTranslationsPage.modifyTranslation(
         page,
         'Email translations',
-        'hummingbird',
+        'default',
         dataLanguages.english.name,
         '',
         'Subject',
@@ -454,7 +396,7 @@ describe('BO - International - Translation : Modify translation', async () => {
     it(`should choose the translation 'Other' and the language '${dataLanguages.english.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'modifyTranslation6', baseContext);
 
-      await boTranslationsPage.modifyTranslation(page, 'Other translations', 'hummingbird', dataLanguages.english.name);
+      await boTranslationsPage.modifyTranslation(page, 'Other translations', 'default', dataLanguages.english.name);
 
       const pageTitle = await boTranslationsPage.getPageTitle(page);
       expect(pageTitle).to.contains(boTranslationsPage.pageTitle);

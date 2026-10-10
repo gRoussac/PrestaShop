@@ -2,7 +2,7 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 // Import commonTests
-import {createOrderByCustomerTest} from '@commonTests/FO/hummingbird/order';
+import {createOrderByCustomerTest} from '@commonTests/FO/default/order';
 
 import {
   boDashboardPage,

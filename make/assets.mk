@@ -1,4 +1,4 @@
-.PHONY: assets wait-assets admin front admin-default admin-new-theme front-core front-classic front-hummingbird
+.PHONY: assets wait-assets admin front admin-default admin-new-theme front-core front-default
 
 assets: ## Build all assets
 	$(PHP_CONT_WITH_LOGIN) ./tools/assets/build.sh all --force
@@ -12,8 +12,7 @@ admin: ## Build all admin assets
 
 front: ## Build all front assets
 	$(PHP_CONT_WITH_LOGIN) ./tools/assets/build.sh front-core --force
-	$(PHP_CONT_WITH_LOGIN) ./tools/assets/build.sh front-classic --force
-	$(PHP_CONT_WITH_LOGIN) ./tools/assets/build.sh front-hummingbird --force
+	$(PHP_CONT_WITH_LOGIN) ./tools/assets/build.sh front-default --force
 
 admin-default: ## Build default admin theme assets
 	$(PHP_CONT_WITH_LOGIN) ./tools/assets/build.sh admin-default --force
@@ -24,8 +23,5 @@ admin-new-theme: ## Build new admin theme assets
 front-core: ## Build core theme assets
 	$(PHP_CONT_WITH_LOGIN) ./tools/assets/build.sh front-core --force
 
-front-classic: ## Build classic theme assets
-	$(PHP_CONT_WITH_LOGIN) ./tools/assets/build.sh front-classic --force
-
-front-hummingbird: ## Build hummingbird theme assets
-	$(PHP_CONT_WITH_LOGIN) ./tools/assets/build.sh front-hummingbird --force
+front-default: ## Build FO default theme assets
+	$(PHP_CONT_WITH_LOGIN) ./tools/assets/build.sh front-default --force

@@ -3,7 +3,7 @@
 ###
 # This script rebuilds all the static assets, running npm install-clean as needed
 # Usage: ./tools/assets/build.sh [asset-name] [--force]
-#   asset-name: admin-default, admin-new-theme, front-core, front-classic, front-hummingbird, or all
+#   asset-name: admin-default, admin-new-theme, front-core, front-default, or all
 #   --force: Force rebuild even if assets already exist
 #
 
@@ -75,11 +75,8 @@ should_build_asset() {
     front-core)
       [[ ! -f "$PROJECT_PATH/themes/core.js" ]]
       ;;
-    front-classic)
-      [[ ! -f "$PROJECT_PATH/themes/classic/assets/css/theme.css" ]]
-      ;;
-    front-hummingbird)
-      [[ ! -f "$PROJECT_PATH/themes/hummingbird/assets/css/theme.css" ]]
+    front-default)
+      [[ ! -f "$PROJECT_PATH/themes/default/assets/css/theme.css" ]]
       ;;
     *)
       return 0
@@ -113,28 +110,20 @@ build_asset() {
         echo "> Front core already exists (use --force to rebuild)"
       fi
     ;;
-    front-classic)
-      if should_build_asset "front-classic"; then
-        echo ">>> Building classic theme assets..."
-        build "$PROJECT_PATH/themes/classic/_dev"
+    front-default)
+      if should_build_asset "front-default"; then
+        echo ">>> Building FO default theme assets..."
+        build "$PROJECT_PATH/themes/default"
       else
-        echo "> Front classic already exists (use --force to rebuild)"
-      fi
-    ;;
-    front-hummingbird)
-      if should_build_asset "front-hummingbird"; then
-        echo ">>> Building hummingbird theme assets..."
-        build "$PROJECT_PATH/themes/hummingbird"
-      else
-        echo "> Front hummingbird already exists (use --force to rebuild)"
+        echo "> Front default already exists (use --force to rebuild)"
       fi
     ;;
     all)
-      build_asset admin-default & build_asset admin-new-theme & build_asset front-core & build_asset front-classic & build_asset front-hummingbird
+      build_asset admin-default & build_asset admin-new-theme & build_asset front-core & build_asset front-default
     ;;
     *)
       echo "Unknown asset to build $1"
-      echo "Available assets: admin-default, admin-new-theme, front-core, front-classic, front-hummingbird, all"
+      echo "Available assets: admin-default, admin-new-theme, front-core, front-default, all"
       echo "Use --force to rebuild even if assets already exist"
       ;;
   esac

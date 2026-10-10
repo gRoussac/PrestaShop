@@ -3,7 +3,7 @@ import testContext from '@utils/testContext';
 
 // Import commonTests
 import {requestAccessToken} from '@commonTests/BO/advancedParameters/authServer';
-import {createOrderByCustomerTest} from '@commonTests/FO/hummingbird/order';
+import {createOrderByCustomerTest} from '@commonTests/FO/default/order';
 import {createAddressTest} from '@commonTests/BO/customers/address';
 import {createCustomerTest, deleteCustomerTest} from '@commonTests/BO/customers/customer';
 

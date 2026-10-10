@@ -41,7 +41,7 @@ class ImageGetCoverShopScopeTest extends KernelTestCase
         $secondGroupId = (int) $db->Insert_ID();
         $db->insert('shop', [
             'id_shop_group' => $secondGroupId, 'name' => 'test_shop_img', 'color' => '',
-            'id_category' => 2, 'theme_name' => 'classic', 'active' => 1, 'deleted' => 0,
+            'id_category' => 2, 'theme_name' => 'default', 'active' => 1, 'deleted' => 0,
         ]);
         self::$secondShopId = (int) $db->Insert_ID();
         LegacyShop::resetStaticCache();

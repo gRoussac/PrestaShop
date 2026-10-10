@@ -300,7 +300,7 @@
       <trans-unit id="b4467fe25466af11a606a43505ca709b">
         <source>There are %d% errors:</source>
         <target>There are %d% errors:</target>
-        <note>File: themes/hummingbird/templates/_partials/form-errors.tpl [Line: 11]</note>
+        <note>File: themes/default/templates/_partials/form-errors.tpl [Line: 11]</note>
       </trans-unit>
       <trans-unit id="a923575984949608ce04c4984806ec2a">
         <source>There are not enough products in stock</source>
@@ -510,7 +510,7 @@
       <trans-unit id="15ef0f1f63c1e8a9fb8abad024939262">
         <source>You have no merchandise return authorizations.</source>
         <target>You have no merchandise return authorizations.</target>
-        <note>File: themes/hummingbird/templates/customer/order-follow.tpl [Line: 62]</note>
+        <note>File: themes/default/templates/customer/order-follow.tpl [Line: 62]</note>
       </trans-unit>
       <trans-unit id="98bc3b9df6852d17661209b9c969128b">
         <source>You have reached the maximum number of downloads allowed.</source>
@@ -545,7 +545,7 @@
       <trans-unit id="ea34b5c6cf6511c7c9e23cf7bf5d6792">
         <source>Your address is incomplete, please update it.</source>
         <target>Your address is incomplete, please update it.</target>
-        <note>File: themes/hummingbird/templates/checkout/_partials/steps/addresses.tpl [Line: 102]</note>
+        <note>File: themes/default/templates/checkout/_partials/steps/addresses.tpl [Line: 102]</note>
       </trans-unit>
     </body>
   </file>

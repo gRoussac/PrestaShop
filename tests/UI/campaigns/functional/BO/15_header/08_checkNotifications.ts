@@ -2,7 +2,7 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 import {faker} from '@faker-js/faker';
 
-import {createOrderByCustomerTest, createOrderByGuestTest} from '@commonTests/FO/hummingbird/order';
+import {createOrderByCustomerTest, createOrderByGuestTest} from '@commonTests/FO/default/order';
 
 import {
   boCustomerServicePage,

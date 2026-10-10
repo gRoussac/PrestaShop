@@ -58,7 +58,6 @@
         "prestashop/blockreassurance": "^6",
         "prestashop/blockwishlist": "^4.0",
         "prestashop/circuit-breaker": "^4.0",
-        "prestashop/classic": "~3.1.0",
         "prestashop/contactform": "^5",
         "prestashop/dashactivity": "^2",
         "prestashop/dashgoals": "^2",
@@ -263,6 +262,12 @@
         "symfony-web-dir": "."
     },
     "scripts": {
+        "post-install-cmd": [
+            "@php tools/build/rename-fo-theme-to-default.php"
+        ],
+        "post-update-cmd": [
+            "@php tools/build/rename-fo-theme-to-default.php"
+        ],
         "api-module-tests": [
             "@composer create-test-db",
             "@composer dump-autoload --dev --working-dir=modules/ps_apiresources",
