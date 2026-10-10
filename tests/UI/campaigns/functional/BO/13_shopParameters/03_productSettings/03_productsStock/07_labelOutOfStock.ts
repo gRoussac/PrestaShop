@@ -2,6 +2,12 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultProductPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
@@ -9,9 +15,6 @@ import {
   boProductSettingsPage,
   type BrowserContext,
   FakerProduct,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -166,7 +169,7 @@ describe('BO - Shop Parameters - product Settings : Set label out-of-stock with 
 
         page = await boProductSettingsPage.viewMyShop(page);
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage, 'Home page was not opened').to.eq(true);
       });
 
@@ -179,10 +182,10 @@ describe('BO - Shop Parameters - product Settings : Set label out-of-stock with 
         );
 
         // Search and go to product page
-        await foHummingbirdHomePage.searchProduct(page, productData.name);
-        await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+        await foDefaultHomePage.searchProduct(page, productData.name);
+        await foDefaultSearchResultsPage.goToProductPage(page, 1);
 
-        const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+        const pageTitle = await foDefaultProductPage.getPageTitle(page);
         expect(pageTitle).to.contains(productData.name);
       });
 
@@ -197,14 +200,14 @@ describe('BO - Shop Parameters - product Settings : Set label out-of-stock with 
         const hasLabel: boolean = arg.label.trim() !== '';
 
         // Check quantity and availability label
-        const lastQuantityIsVisible = await foHummingbirdProductPage.isAddToCartButtonEnabled(page);
+        const lastQuantityIsVisible = await foDefaultProductPage.isAddToCartButtonEnabled(page);
         expect(lastQuantityIsVisible).to.be.equal(arg.enable);
 
-        const hasProductAvailabilityLabel = await foHummingbirdProductPage.hasProductAvailabilityLabel(page);
+        const hasProductAvailabilityLabel = await foDefaultProductPage.hasProductAvailabilityLabel(page);
         expect(hasProductAvailabilityLabel).to.equals(hasLabel);
 
         if (hasLabel) {
-          const availabilityLabel = await foHummingbirdProductPage.getProductAvailabilityLabel(page);
+          const availabilityLabel = await foDefaultProductPage.getProductAvailabilityLabel(page);
           expect(availabilityLabel).to.contains(arg.label);
         }
       });
@@ -212,7 +215,7 @@ describe('BO - Shop Parameters - product Settings : Set label out-of-stock with 
       it('should go back to BO', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `goBackToBo${index}`, baseContext);
 
-        page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+        page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
         const pageTitle = await boProductSettingsPage.getPageTitle(page);
         expect(pageTitle).to.contains(boProductSettingsPage.pageTitle);

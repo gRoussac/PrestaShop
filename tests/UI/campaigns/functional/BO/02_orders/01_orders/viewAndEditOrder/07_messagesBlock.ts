@@ -5,6 +5,14 @@ import {expect} from 'chai';
 import {createOrderByCustomerTest} from '@commonTests/FO/default/order';
 
 import {
+  foDefaultCheckoutOrderConfirmationPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyOrderHistoryPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boOrdersPage,
@@ -16,11 +24,6 @@ import {
   dataPaymentMethods,
   dataProducts,
   FakerOrder,
-  foHummingbirdCheckoutOrderConfirmationPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyOrderHistoryPage,
   type OrderHistoryMessage,
   type OrderMessage,
   type Page,
@@ -174,56 +177,56 @@ describe('BO - Orders - View and edit order : Check messages block', async () =>
       // Click on view my shop
       page = await boOrdersViewBlockMessagesPage.viewMyShop(page);
       // Change FO language
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPageFoToCheckStatus1', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFo1', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to orders history page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToOrderHistoryPage1', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
-      await foHummingbirdMyAccountPage.goToHistoryAndDetailsPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
+      await foDefaultMyAccountPage.goToHistoryAndDetailsPage(page);
 
-      const pageTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-      expect(pageTitle, 'Fail to open order history page').to.contains(foHummingbirdMyOrderHistoryPage.pageTitle);
+      const pageTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+      expect(pageTitle, 'Fail to open order history page').to.contains(foDefaultMyOrderHistoryPage.pageTitle);
     });
 
     it('should go to the first order in the list and check order message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkOrderMessageBlock1', baseContext);
 
-      await foHummingbirdMyOrderHistoryPage.goToDetailsPage(page, 1);
+      await foDefaultMyOrderHistoryPage.goToDetailsPage(page, 1);
 
-      const isBoxMessagesVisible = await foHummingbirdMyOrderHistoryPage.isBoxMessagesSectionVisible(page);
+      const isBoxMessagesVisible = await foDefaultMyOrderHistoryPage.isBoxMessagesSectionVisible(page);
       expect(isBoxMessagesVisible).to.eq(true);
 
-      const isMessageRowVisible = await foHummingbirdMyOrderHistoryPage.isMessageRowVisible(page);
+      const isMessageRowVisible = await foDefaultMyOrderHistoryPage.isMessageRowVisible(page);
       expect(isMessageRowVisible).to.eq(true);
     });
 
     it('should check the message text', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkOrderMessageBlock2', baseContext);
 
-      const message = await foHummingbirdMyOrderHistoryPage.getMessageRow(page);
+      const message = await foDefaultMyOrderHistoryPage.getMessageRow(page);
       expect(message)
         .to.contain(today)
         .and.to.contain(`${dataEmployees.defaultEmployee.firstName} ${dataEmployees.defaultEmployee.lastName}`)
@@ -233,9 +236,9 @@ describe('BO - Orders - View and edit order : Check messages block', async () =>
     it('should sign out from FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signOutFO2', baseContext);
 
-      await foHummingbirdCheckoutOrderConfirmationPage.logout(page);
+      await foDefaultCheckoutOrderConfirmationPage.logout(page);
 
-      const isCustomerConnected = await foHummingbirdCheckoutOrderConfirmationPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultCheckoutOrderConfirmationPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected').to.eq(false);
     });
   });
@@ -246,7 +249,7 @@ describe('BO - Orders - View and edit order : Check messages block', async () =>
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo1', baseContext);
 
       // Close page and init page objects
-      page = await foHummingbirdCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
+      page = await foDefaultCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boOrdersViewBlockMessagesPage.getPageTitle(page);
       expect(pageTitle).to.contains(boOrdersViewBlockMessagesPage.pageTitle);
@@ -296,47 +299,47 @@ describe('BO - Orders - View and edit order : Check messages block', async () =>
       // Click on view my shop
       page = await boOrdersViewBlockMessagesPage.viewMyShop(page);
       // Change FO language
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPageFoToCheckStatus2', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFo2', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to orders history page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToOrderHistoryPage2', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
-      await foHummingbirdMyAccountPage.goToHistoryAndDetailsPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
+      await foDefaultMyAccountPage.goToHistoryAndDetailsPage(page);
 
-      const pageTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-      expect(pageTitle, 'Fail to open order history page').to.contains(foHummingbirdMyOrderHistoryPage.pageTitle);
+      const pageTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+      expect(pageTitle, 'Fail to open order history page').to.contains(foDefaultMyOrderHistoryPage.pageTitle);
     });
 
     it('should go to the first order in the list and check that new message is not visible', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkOrderMessageBlock3', baseContext);
 
-      await foHummingbirdMyOrderHistoryPage.goToDetailsPage(page, 1);
+      await foDefaultMyOrderHistoryPage.goToDetailsPage(page, 1);
 
       // New message is on the first row
-      const message = await foHummingbirdMyOrderHistoryPage.getMessageRow(page, 1);
+      const message = await foDefaultMyOrderHistoryPage.getMessageRow(page, 1);
       expect(message, 'Second message is not visible!').to.not.contain(secondMessageData.message);
     });
   });
@@ -346,15 +349,15 @@ describe('BO - Orders - View and edit order : Check messages block', async () =>
     it('should send message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sendMessage2', baseContext);
 
-      const alertMessage = await foHummingbirdMyOrderHistoryPage.sendMessage(page, messageToSendData);
-      expect(alertMessage, 'Success message is not displayed!').to.equal(foHummingbirdMyOrderHistoryPage.messageSuccessSent);
+      const alertMessage = await foDefaultMyOrderHistoryPage.sendMessage(page, messageToSendData);
+      expect(alertMessage, 'Success message is not displayed!').to.equal(foDefaultMyOrderHistoryPage.messageSuccessSent);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo2', baseContext);
 
       // Close page and init page objects
-      page = await foHummingbirdMyOrderHistoryPage.closePage(browserContext, page, 0);
+      page = await foDefaultMyOrderHistoryPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boOrdersViewBlockMessagesPage.getPageTitle(page);
       expect(pageTitle, 'Fail to go back to BO!').to.contains(boOrdersViewBlockMessagesPage.pageTitle);

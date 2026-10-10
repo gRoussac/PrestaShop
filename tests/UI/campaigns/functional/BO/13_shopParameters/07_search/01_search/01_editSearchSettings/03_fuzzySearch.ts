@@ -3,12 +3,15 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boSearchPage,
   type BrowserContext,
-  foHummingbirdHomePage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -63,39 +66,39 @@ describe('BO - Shop Parameters - Search : Fuzzy search', async () => {
 
     await boSearchPage.goToFo(page);
 
-    const pageTitle = await foHummingbirdHomePage.getPageTitle(page);
-    expect(pageTitle).to.be.eq(foHummingbirdHomePage.pageTitle);
+    const pageTitle = await foDefaultHomePage.getPageTitle(page);
+    expect(pageTitle).to.be.eq(foDefaultHomePage.pageTitle);
   });
 
   it('should check the autocomplete', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'checkAutocompleteWoFuzzy', baseContext);
 
-    const hasSearchResult = await foHummingbirdHomePage.hasAutocompleteSearchResult(page, 'test');
+    const hasSearchResult = await foDefaultHomePage.hasAutocompleteSearchResult(page, 'test');
     expect(hasSearchResult).to.eq(false);
 
-    const inputValue = await foHummingbirdHomePage.getSearchValue(page);
+    const inputValue = await foDefaultHomePage.getSearchValue(page);
     expect(inputValue).equal('test');
   });
 
   it('should check the search page', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'checkSearchPageWoFuzzy', baseContext);
 
-    await foHummingbirdHomePage.searchProduct(page, 'test');
+    await foDefaultHomePage.searchProduct(page, 'test');
 
-    const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-    expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+    const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+    expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-    const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+    const hasResults = await foDefaultSearchResultsPage.hasResults(page);
     expect(hasResults).to.eq(false);
 
-    const searchInputValue = await foHummingbirdSearchResultsPage.getSearchValue(page);
+    const searchInputValue = await foDefaultSearchResultsPage.getSearchValue(page);
     expect(searchInputValue).to.be.equal('test');
   });
 
   it('should go to BO', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'goToBo', baseContext);
 
-    await foHummingbirdSearchResultsPage.goToBO(page);
+    await foDefaultSearchResultsPage.goToBO(page);
 
     const pageTitle = await boDashboardPage.getPageTitle(page);
     expect(pageTitle).to.contains(boDashboardPage.pageTitle);
@@ -126,38 +129,38 @@ describe('BO - Shop Parameters - Search : Fuzzy search', async () => {
 
     await boSearchPage.goToFo(page);
 
-    const pageTitle = await foHummingbirdHomePage.getPageTitle(page);
-    expect(pageTitle).to.be.eq(foHummingbirdHomePage.pageTitle);
+    const pageTitle = await foDefaultHomePage.getPageTitle(page);
+    expect(pageTitle).to.be.eq(foDefaultHomePage.pageTitle);
   });
 
   it('should check the autocomplete', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'checkAutocompleteWFuzzy', baseContext);
 
-    const hasSearchResult = await foHummingbirdHomePage.hasAutocompleteSearchResult(page, 'test');
+    const hasSearchResult = await foDefaultHomePage.hasAutocompleteSearchResult(page, 'test');
     expect(hasSearchResult).to.eq(true);
 
-    const countSearchResult = await foHummingbirdHomePage.countAutocompleteSearchResult(page, 'test');
+    const countSearchResult = await foDefaultHomePage.countAutocompleteSearchResult(page, 'test');
     expect(countSearchResult).to.be.eq(7);
 
-    const inputValue = await foHummingbirdHomePage.getSearchValue(page);
+    const inputValue = await foDefaultHomePage.getSearchValue(page);
     expect(inputValue).equal('test');
   });
 
   it('should check the search page', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'checkSearchPageWFuzzy', baseContext);
 
-    await foHummingbirdHomePage.searchProduct(page, 'test');
+    await foDefaultHomePage.searchProduct(page, 'test');
 
-    const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-    expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+    const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+    expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-    const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+    const hasResults = await foDefaultSearchResultsPage.hasResults(page);
     expect(hasResults).to.eq(true);
 
-    const countResults = await foHummingbirdSearchResultsPage.getSearchResultsNumber(page);
+    const countResults = await foDefaultSearchResultsPage.getSearchResultsNumber(page);
     expect(countResults).to.be.eq(7);
 
-    const searchInputValue = await foHummingbirdSearchResultsPage.getSearchValue(page);
+    const searchInputValue = await foDefaultSearchResultsPage.getSearchValue(page);
     expect(searchInputValue).to.be.equal('test');
   });
 });

@@ -3,11 +3,14 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultModalQuickViewPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataProducts,
-  foHummingbirdHomePage,
-  foHummingbirdModalQuickViewPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -41,41 +44,41 @@ describe('FO - Search Page : Consult product quick view', async () => {
     it('should go to FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFO', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should put \'Mug\' in the search input and check result', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct1', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, 'mug');
+      await foDefaultHomePage.searchProduct(page, 'mug');
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it('should check the search result page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'countResult', baseContext);
 
-      const countResults = await foHummingbirdSearchResultsPage.getSearchResultsNumber(page);
+      const countResults = await foDefaultSearchResultsPage.getSearchResultsNumber(page);
       expect(countResults).to.equal(5);
     });
 
     it('should quick view the first product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'quickViewProduct1', baseContext);
 
-      await foHummingbirdSearchResultsPage.quickViewProduct(page, 1);
+      await foDefaultSearchResultsPage.quickViewProduct(page, 1);
 
-      const isModalVisible = await foHummingbirdModalQuickViewPage.isQuickViewProductModalVisible(page);
+      const isModalVisible = await foDefaultModalQuickViewPage.isQuickViewProductModalVisible(page);
       expect(isModalVisible).to.eq(true);
     });
 
     it('should check product information', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkProductInformation1', baseContext);
 
-      const result = await foHummingbirdModalQuickViewPage.getProductDetailsFromQuickViewModal(page);
+      const result = await foDefaultModalQuickViewPage.getProductDetailsFromQuickViewModal(page);
       await Promise.all([
         expect(result.name).to.equal(dataProducts.demo_14.name),
         expect(result.price).to.equal(dataProducts.demo_14.finalPrice),
@@ -89,7 +92,7 @@ describe('FO - Search Page : Consult product quick view', async () => {
     it('should close the quick view modal', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closeQuickOptionModal', baseContext);
 
-      const isQuickViewModalClosed = await foHummingbirdModalQuickViewPage.closeQuickViewModal(page);
+      const isQuickViewModalClosed = await foDefaultModalQuickViewPage.closeQuickViewModal(page);
       expect(isQuickViewModalClosed).to.equal(true);
     });
   });

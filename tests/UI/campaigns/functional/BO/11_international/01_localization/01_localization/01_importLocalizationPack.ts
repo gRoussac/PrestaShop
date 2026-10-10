@@ -2,6 +2,10 @@
 import testContext from '@utils/testContext';
 
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLanguagesPage,
   boLocalizationPage,
@@ -10,7 +14,6 @@ import {
   type BrowserContext,
   dataCurrencies,
   dataLanguages,
-  foHummingbirdHomePage,
   type ImportContent,
   type Page,
   utilsPlaywright,
@@ -87,7 +90,7 @@ describe('BO - International - Localization : Import a localization pack', async
       // View my shop and int pages
       page = await boCurrenciesPage.viewMyShop(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -95,25 +98,25 @@ describe('BO - International - Localization : Import a localization pack', async
       await testContext.addContextItem(this, 'testIdentifier', 'changeFoCurrency', baseContext);
 
       // Check currency
-      await foHummingbirdHomePage.changeCurrency(page, dataCurrencies.chileanPeso.isoCode, dataCurrencies.chileanPeso.symbol);
+      await foDefaultHomePage.changeCurrency(page, dataCurrencies.chileanPeso.isoCode, dataCurrencies.chileanPeso.symbol);
 
-      const shopCurrency = await foHummingbirdHomePage.getDefaultCurrency(page);
+      const shopCurrency = await foDefaultHomePage.getDefaultCurrency(page);
       expect(shopCurrency).to.contain(dataCurrencies.chileanPeso.isoCode);
     });
 
     it('should change FO language', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'changeFoLanguage', baseContext);
 
-      await foHummingbirdHomePage.changeLanguage(page, dataLanguages.spanish.isoCode);
+      await foDefaultHomePage.changeLanguage(page, dataLanguages.spanish.isoCode);
 
-      const shopLanguage = await foHummingbirdHomePage.getDefaultShopLanguage(page);
+      const shopLanguage = await foDefaultHomePage.getDefaultShopLanguage(page);
       expect(dataLanguages.spanish.name).to.contain(shopLanguage);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo1', baseContext);
 
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boLocalizationPage.getPageTitle(page);
       expect(pageTitle).to.contains(boLocalizationPage.pageTitle);

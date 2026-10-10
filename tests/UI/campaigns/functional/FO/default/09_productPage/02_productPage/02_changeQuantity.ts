@@ -2,12 +2,15 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultHomePage,
+  foDefaultModalBlockCartPage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataProducts,
-  foHummingbirdCartPage,
-  foHummingbirdHomePage,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -39,104 +42,104 @@ describe('FO - Product page : Change quantity', async () => {
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.equal(true);
     });
 
     it('should go to the third product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage', baseContext);
 
-      await foHummingbirdHomePage.goToProductPage(page, 3);
+      await foDefaultHomePage.goToProductPage(page, 3);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle.toUpperCase()).to.contains(dataProducts.demo_6.name.toUpperCase());
     });
 
     it('should change the quantity by using the arrow \'Down\' button', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'decrement', baseContext);
 
-      await foHummingbirdProductPage.setQuantityByArrowUpDown(page, 1, 'decrement');
+      await foDefaultProductPage.setQuantityByArrowUpDown(page, 1, 'decrement');
 
-      const productQuantity = await foHummingbirdProductPage.getProductQuantity(page);
+      const productQuantity = await foDefaultProductPage.getProductQuantity(page);
       expect(productQuantity).to.equal(1);
     });
 
     it('should change the quantity by using the arrow \'Up\' button', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'incrementQuantity', baseContext);
 
-      await foHummingbirdProductPage.setQuantityByArrowUpDown(page, 2, 'increment');
+      await foDefaultProductPage.setQuantityByArrowUpDown(page, 2, 'increment');
 
-      const productQuantity = await foHummingbirdProductPage.getProductQuantity(page);
+      const productQuantity = await foDefaultProductPage.getProductQuantity(page);
       expect(productQuantity).to.equal(2);
     });
 
     it('should click on add to cart button then on continue shopping button', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnAddToCartButton', baseContext);
 
-      await foHummingbirdProductPage.clickOnAddToCartButton(page);
+      await foDefaultProductPage.clickOnAddToCartButton(page);
 
-      const isNotVisible = await foHummingbirdModalBlockCartPage.continueShopping(page);
+      const isNotVisible = await foDefaultModalBlockCartPage.continueShopping(page);
       expect(isNotVisible).to.equal(true);
     });
 
     it('should set the quantity 0 and add to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkAddToCartButtonIsDisabled', baseContext);
 
-      await foHummingbirdProductPage.setQuantity(page, 0);
-      await foHummingbirdProductPage.clickOnAddToCartButton(page);
+      await foDefaultProductPage.setQuantity(page, 0);
+      await foDefaultProductPage.clickOnAddToCartButton(page);
 
-      const isNotVisible = await foHummingbirdModalBlockCartPage.continueShopping(page);
+      const isNotVisible = await foDefaultModalBlockCartPage.continueShopping(page);
       expect(isNotVisible).to.equal(true);
     });
 
     it('should check the cart notifications number', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNotificationsNumber1', baseContext);
 
-      const notificationsNumber = await foHummingbirdProductPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultProductPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.equal(3);
     });
 
     it('should add quantity of the product by setting input value', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'updateQuantityByInput', baseContext);
 
-      await foHummingbirdProductPage.setQuantity(page, 12);
-      await foHummingbirdProductPage.clickOnAddToCartButton(page);
+      await foDefaultProductPage.setQuantity(page, 12);
+      await foDefaultProductPage.clickOnAddToCartButton(page);
 
-      const isVisible = await foHummingbirdModalBlockCartPage.isBlockCartModalVisible(page);
+      const isVisible = await foDefaultModalBlockCartPage.isBlockCartModalVisible(page);
       expect(isVisible).to.equal(true);
     });
 
     it('should click on continue shopping', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnContinueShopping2', baseContext);
 
-      const isNotVisible = await foHummingbirdModalBlockCartPage.continueShopping(page);
+      const isNotVisible = await foDefaultModalBlockCartPage.continueShopping(page);
       expect(isNotVisible).to.equal(true);
     });
 
     it('should check the cart notifications number', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNotificationsNumber', baseContext);
 
-      const notificationsNumber = await foHummingbirdProductPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultProductPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.equal(15);
     });
 
     it('should go to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToCart', baseContext);
 
-      await foHummingbirdProductPage.clickOnHeaderLink(page, 'Cart');
+      await foDefaultProductPage.clickOnHeaderLink(page, 'Cart');
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should remove product from shopping cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'removeProduct', baseContext);
 
-      await foHummingbirdCartPage.deleteProduct(page, 1);
+      await foDefaultCartPage.deleteProduct(page, 1);
 
-      const notificationNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationNumber).to.equal(0);
     });
   });

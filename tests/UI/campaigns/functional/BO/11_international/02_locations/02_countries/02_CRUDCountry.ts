@@ -2,6 +2,14 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyAddressesPage,
+  foDefaultMyAddressesCreatePage,
+} from '@utils/foDefaultPages';
+
+import {
   boCountriesPage,
   boCountriesCreatePage,
   boDashboardPage,
@@ -10,11 +18,6 @@ import {
   type BrowserContext,
   dataCustomers,
   FakerCountry,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyAddressesPage,
-  foHummingbirdMyAddressesCreatePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -141,55 +144,55 @@ describe('BO - International - Countries : CRUD country', async () => {
 
       // View my shop and init pages
       page = await boCountriesPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPageFO_1', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sighInFO_1', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to addresses page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAddressesPage_1', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
-      await foHummingbirdMyAccountPage.goToAddressesPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
+      await foDefaultMyAccountPage.goToAddressesPage(page);
 
-      const pageTitle = await foHummingbirdMyAddressesPage.getPageTitle(page);
-      expect(pageTitle, 'Fail to open addresses page').to.contains(foHummingbirdMyAddressesPage.pageTitle);
+      const pageTitle = await foDefaultMyAddressesPage.getPageTitle(page);
+      expect(pageTitle, 'Fail to open addresses page').to.contains(foDefaultMyAddressesPage.pageTitle);
     });
 
     it(`should check that the new country '${createCountryData.name}' exist`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkIsNewCountryExist', baseContext);
 
-      await foHummingbirdMyAddressesPage.openNewAddressForm(page);
+      await foDefaultMyAddressesPage.openNewAddressForm(page);
 
-      const countryExist = await foHummingbirdMyAddressesCreatePage.countryExist(page, createCountryData.name);
+      const countryExist = await foDefaultMyAddressesCreatePage.countryExist(page, createCountryData.name);
       expect(countryExist, 'Country does not exist').to.eq(true);
     });
 
     it('should sign out from FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sighOutFO_1', baseContext);
 
-      await foHummingbirdMyAddressesPage.logout(page);
+      await foDefaultMyAddressesPage.logout(page);
 
-      const isCustomerConnected = await foHummingbirdMyAddressesPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultMyAddressesPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected').to.eq(false);
     });
 
@@ -197,7 +200,7 @@ describe('BO - International - Countries : CRUD country', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo_1', baseContext);
 
       // Close tab and init other page objects with new current tab
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCountriesPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCountriesPage.pageTitle);
@@ -244,46 +247,46 @@ describe('BO - International - Countries : CRUD country', async () => {
 
       // View my shop and init pages
       page = await boCountriesPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPageFO_2', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sighInFO_2', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to addresses page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAddressesPage_2', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
-      await foHummingbirdMyAccountPage.goToAddressesPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
+      await foDefaultMyAccountPage.goToAddressesPage(page);
 
-      const pageTitle = await foHummingbirdMyAddressesPage.getPageTitle(page);
-      expect(pageTitle, 'Fail to open addresses page').to.contains(foHummingbirdMyAddressesPage.pageTitle);
+      const pageTitle = await foDefaultMyAddressesPage.getPageTitle(page);
+      expect(pageTitle, 'Fail to open addresses page').to.contains(foDefaultMyAddressesPage.pageTitle);
     });
 
     it(`should check that the edited country '${editCountryData.name}' not exist`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkIsCountryNotExist', baseContext);
 
-      await foHummingbirdMyAddressesPage.openNewAddressForm(page);
+      await foDefaultMyAddressesPage.openNewAddressForm(page);
 
-      const countryExist = await foHummingbirdMyAddressesCreatePage.countryExist(page, editCountryData.name);
+      const countryExist = await foDefaultMyAddressesCreatePage.countryExist(page, editCountryData.name);
       expect(countryExist, 'Country exist').to.eq(false);
     });
 
@@ -291,7 +294,7 @@ describe('BO - International - Countries : CRUD country', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo_2', baseContext);
 
       // Close tab and init other page objects with new current tab
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCountriesPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCountriesPage.pageTitle);

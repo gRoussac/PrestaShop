@@ -2,6 +2,10 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
@@ -10,7 +14,6 @@ import {
   boSeoUrlsPage,
   type BrowserContext,
   FakerProduct,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -173,7 +176,7 @@ describe('BO - Shop Parameters - Traffic & SEO : Enable/Disable accented URL', a
         // Go to product page in FO
         page = await boProductsCreatePage.previewProduct(page);
 
-        const url = await foHummingbirdHomePage.getCurrentURL(page);
+        const url = await foDefaultHomePage.getCurrentURL(page);
         expect(url).to.contains(test.args.productNameInURL.toLowerCase());
       });
 
@@ -181,7 +184,7 @@ describe('BO - Shop Parameters - Traffic & SEO : Enable/Disable accented URL', a
         await testContext.addContextItem(this, 'testIdentifier', `goBackToBO${test.args.action}`, baseContext);
 
         // Go back to BO
-        page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+        page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
         const pageTitle = await boProductsCreatePage.getPageTitle(page);
         expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);

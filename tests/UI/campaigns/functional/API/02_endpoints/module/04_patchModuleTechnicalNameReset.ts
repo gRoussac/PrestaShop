@@ -89,7 +89,7 @@ describe('API : PATCH /modules/{technicalName}/reset', async () => {
       const pageTitle = await modBlockwishlistBoMain.getPageTitle(page);
       expect(pageTitle).to.eq(modBlockwishlistBoMain.pageTitle);
 
-      // This module is disabled by Hummingbird 2.0, so the active tab should be "enable"
+      // This module is disabled by the default FO theme, so the active tab should be "enable"
       const isConfigurationTabActive = await modBlockwishlistBoMain.isTabActive(page, 'Configuration');
       expect(isConfigurationTabActive).to.eq(false);
 

@@ -4,11 +4,14 @@ import {expect} from 'chai';
 import {deleteCustomerTest} from '@commonTests/BO/customers/customer';
 
 import {
+  foDefaultCreateAccountPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   FakerCustomer,
-  foHummingbirdCreateAccountPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -35,52 +38,52 @@ describe('FO - Login : Create account', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToShopFO', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPage', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultLoginPage.pageTitle);
     });
 
     it('should go to create account page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToCreateAccountPage', baseContext);
 
-      await foHummingbirdLoginPage.goToCreateAccountPage(page);
+      await foDefaultLoginPage.goToCreateAccountPage(page);
 
-      const pageHeaderTitle = await foHummingbirdCreateAccountPage.getHeaderTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdCreateAccountPage.formTitle);
+      const pageHeaderTitle = await foDefaultCreateAccountPage.getHeaderTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultCreateAccountPage.formTitle);
     });
 
     it('should create new account', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'createAccount', baseContext);
 
-      await foHummingbirdCreateAccountPage.createAccount(page, customerData);
+      await foDefaultCreateAccountPage.createAccount(page, customerData);
 
-      const isCustomerConnected = await foHummingbirdHomePage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultHomePage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Created customer is not connected!').to.eq(true);
     });
 
     it('should check if the page is redirected to home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'isHomePage', baseContext);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Fail to redirect to FO home page!').to.eq(true);
     });
 
     it('should sign out from FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signOutFO', baseContext);
 
-      await foHummingbirdHomePage.logout(page);
+      await foDefaultHomePage.logout(page);
 
-      const isCustomerConnected = await foHummingbirdHomePage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultHomePage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected!').to.eq(false);
     });
   });

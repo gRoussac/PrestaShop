@@ -3,6 +3,13 @@ import {createOrderByCustomerTest} from '@commonTests/FO/default/order';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyOrderHistoryPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boInvoicesPage,
   boLoginPage,
@@ -14,10 +21,6 @@ import {
   dataPaymentMethods,
   dataProducts,
   FakerOrder,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyOrderHistoryPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -119,59 +122,59 @@ describe('FO - User account - Order history : Download invoice from orders list'
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFoToCreateAccount', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage: boolean = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage: boolean = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginFoPage', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageHeaderTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdLoginPage.pageTitle);
+      const pageHeaderTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFo', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdMyAccountPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultMyAccountPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to my account page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAccountPage', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
 
-      const pageTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdMyAccountPage.pageTitle);
+      const pageTitle = await foDefaultMyAccountPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultMyAccountPage.pageTitle);
     });
 
     it('should go to order history page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToOrderHistoryPage', baseContext);
 
-      await foHummingbirdMyAccountPage.goToHistoryAndDetailsPage(page);
+      await foDefaultMyAccountPage.goToHistoryAndDetailsPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyOrderHistoryPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyOrderHistoryPage.pageTitle);
     });
 
     it('should check that the invoice of the first order in list is visible', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkInvoice', baseContext);
 
-      const isVisible = await foHummingbirdMyOrderHistoryPage.isInvoiceVisible(page, 1);
+      const isVisible = await foDefaultMyOrderHistoryPage.isInvoiceVisible(page, 1);
       expect(isVisible, 'The invoice file is not existing!').to.eq(true);
     });
 
     it('should download the invoice and check the invoice ID', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'downloadInvoice', baseContext);
 
-      const downloadFilePath = await foHummingbirdMyOrderHistoryPage.downloadInvoice(page);
+      const downloadFilePath = await foDefaultMyOrderHistoryPage.downloadInvoice(page);
 
       const exist = await utilsFile.isTextInPDF(downloadFilePath, fileName);
       expect(exist).to.eq(true);
@@ -180,7 +183,7 @@ describe('FO - User account - Order history : Download invoice from orders list'
     it('should check that no invoice is visible for the second order in list', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNoInvoice', baseContext);
 
-      const isVisible = await foHummingbirdMyOrderHistoryPage.isInvoiceVisible(page, 2);
+      const isVisible = await foDefaultMyOrderHistoryPage.isInvoiceVisible(page, 2);
       expect(isVisible).to.eq(false);
     });
   });

@@ -5,6 +5,17 @@ import {expect} from 'chai';
 import {resetSmtpConfigTest, setupSmtpConfigTest} from '@commonTests/BO/advancedParameters/smtp';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultCheckoutOrderConfirmationPage,
+  foDefaultHomePage,
+  foDefaultMyAccountPage,
+  foDefaultMyOrderDetailsPage,
+  foDefaultMyOrderHistoryPage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boOrdersPage,
@@ -15,14 +26,6 @@ import {
   dataOrderStatuses,
   dataPaymentMethods,
   FakerProduct,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdCheckoutOrderConfirmationPage,
-  foHummingbirdHomePage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyOrderDetailsPage,
-  foHummingbirdMyOrderHistoryPage,
-  foHummingbirdProductPage,
   type MailDev,
   type MailDevEmail,
   type Page,
@@ -202,9 +205,9 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
 
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
@@ -213,7 +216,7 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
 
       const taxValue = utilsCore.percentage(newProductData.priceTaxExcluded, newProductData.tax);
 
-      const result = await foHummingbirdProductPage.getProductInformation(page);
+      const result = await foDefaultProductPage.getProductInformation(page);
       await Promise.all([
         expect(result.name).to.equal(newProductData.name),
         expect(result.price.toFixed(2)).to.equal((newProductData.priceTaxExcluded + taxValue).toFixed(2)),
@@ -227,9 +230,9 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
         await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
         // Add the product to the cart
-        await foHummingbirdProductPage.addProductToTheCart(page, 1);
+        await foDefaultProductPage.addProductToTheCart(page, 1);
 
-        const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+        const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
         expect(notificationsNumber).to.be.equal(1);
       });
 
@@ -237,18 +240,18 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
         await testContext.addContextItem(this, 'testIdentifier', 'proceedToCheckout', baseContext);
 
         // Proceed to checkout the shopping cart
-        await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+        await foDefaultCartPage.clickOnProceedToCheckout(page);
 
         // Personal information step - Login
-        await foHummingbirdCheckoutPage.clickOnSignIn(page);
-        await foHummingbirdCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
+        await foDefaultCheckoutPage.clickOnSignIn(page);
+        await foDefaultCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
       });
 
       it('should go to payment step', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToPaymentStep', baseContext);
 
         // Address step - Go to delivery step
-        const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+        const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
         expect(isStepAddressComplete, 'Step Address is not complete').eq(true);
       });
 
@@ -256,18 +259,18 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
         await testContext.addContextItem(this, 'testIdentifier', 'payTheOrder', baseContext);
 
         // Payment step - Choose payment step
-        await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
+        await foDefaultCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
 
         // Check the confirmation message
-        const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-        expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+        const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+        expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
       });
 
       it('should go back to BO', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO1', baseContext);
 
         // Go back to BO
-        page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+        page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
         const pageTitle = await boProductsCreatePage.getPageTitle(page);
         expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -299,41 +302,41 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
         // Click on view my shop
         page = await boOrdersPage.viewMyShop(page);
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage, 'Home page is not displayed').eq(true);
       });
 
       it('should go to my account page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToAccountPage', baseContext);
 
-        await foHummingbirdHomePage.goToMyAccountPage(page);
+        await foDefaultHomePage.goToMyAccountPage(page);
 
-        const pageTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdMyAccountPage.pageTitle);
+        const pageTitle = await foDefaultMyAccountPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultMyAccountPage.pageTitle);
       });
 
       it('should go to order history page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToOrderHistoryPage', baseContext);
 
-        await foHummingbirdMyAccountPage.goToHistoryAndDetailsPage(page);
+        await foDefaultMyAccountPage.goToHistoryAndDetailsPage(page);
 
-        const pageHeaderTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-        expect(pageHeaderTitle).to.equal(foHummingbirdMyOrderHistoryPage.pageTitle);
+        const pageHeaderTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+        expect(pageHeaderTitle).to.equal(foDefaultMyOrderHistoryPage.pageTitle);
       });
 
       it('should go to order details page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToFoToOrderDetails', baseContext);
 
-        await foHummingbirdMyOrderHistoryPage.goToDetailsPage(page);
+        await foDefaultMyOrderHistoryPage.goToDetailsPage(page);
 
-        const pageTitle = await foHummingbirdMyOrderDetailsPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdMyOrderDetailsPage.pageTitle);
+        const pageTitle = await foDefaultMyOrderDetailsPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultMyOrderDetailsPage.pageTitle);
       });
 
       it('should download the file', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'checkDownloadFile', baseContext);
 
-        await foHummingbirdMyOrderDetailsPage.clickOnDownloadLink(page);
+        await foDefaultMyOrderDetailsPage.clickOnDownloadLink(page);
 
         const doesFileExist = await utilsFile.doesFileExist(newProductData.fileName, 5000);
         expect(doesFileExist, 'File is not downloaded!').eq(true);
@@ -361,7 +364,7 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO2', baseContext);
 
       // Go back to BO
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boOrdersPage.getPageTitle(page);
       expect(pageTitle).to.contains(boOrdersPage.pageTitle);
@@ -422,9 +425,9 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
 
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(editProductData.name);
     });
 
@@ -433,7 +436,7 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
 
       const taxValue = utilsCore.percentage(editProductData.priceTaxExcluded, editProductData.tax);
 
-      const result = await foHummingbirdProductPage.getProductInformation(page);
+      const result = await foDefaultProductPage.getProductInformation(page);
       await Promise.all([
         expect(result.name).to.equal(editProductData.name),
         expect(result.price.toFixed(2)).to.equal((editProductData.priceTaxExcluded + taxValue).toFixed(2)),
@@ -445,7 +448,7 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO3', baseContext);
 
       // Go back to BO
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);

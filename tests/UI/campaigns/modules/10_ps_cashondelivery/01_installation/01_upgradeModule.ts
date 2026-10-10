@@ -6,6 +6,15 @@ import semver from 'semver';
 import {installModule, uninstallModule} from '@commonTests/BO/modules/moduleManager';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultModalBlockCartPage,
+  foDefaultModalQuickViewPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boMaintenancePage,
@@ -14,12 +23,6 @@ import {
   type BrowserContext,
   dataCustomers,
   dataModules,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdModalQuickViewPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -95,7 +98,7 @@ describe('Cash on delivery (COD) module: Upgrade module', async () => {
 
       page = await boMaintenancePage.viewMyShop(page);
 
-      const pageContent = await foHummingbirdHomePage.getTextContent(page, foHummingbirdHomePage.content);
+      const pageContent = await foDefaultHomePage.getTextContent(page, foDefaultHomePage.content);
       expect(pageContent).to.equal(boMaintenancePage.maintenanceText);
     });
 
@@ -103,7 +106,7 @@ describe('Cash on delivery (COD) module: Upgrade module', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goToModuleManagerPage', baseContext);
 
       // Go back to BO
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
       await boDashboardPage.goToSubMenu(
         page,
         boDashboardPage.modulesParentLink,
@@ -202,55 +205,55 @@ describe('Cash on delivery (COD) module: Upgrade module', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goToTheFo', baseContext);
 
       page = await boModuleManagerPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.equal(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPageFO', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sighInFO', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected).to.eq(true);
     });
 
     it('should add the first product to the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdLoginPage.goToHomePage(page);
+      await foDefaultLoginPage.goToHomePage(page);
 
       // Add first product to cart by quick view
-      await foHummingbirdHomePage.quickViewProduct(page, 1);
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultHomePage.quickViewProduct(page, 1);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.eq(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.eq(foDefaultCartPage.pageTitle);
     });
 
     it('should proceed to checkout and check Step Address', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkAddressStep', baseContext);
 
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage).to.eq(true);
 
-      const isStepPersonalInformationComplete = await foHummingbirdCheckoutPage.isStepCompleted(
+      const isStepPersonalInformationComplete = await foDefaultCheckoutPage.isStepCompleted(
         page,
-        foHummingbirdCheckoutPage.personalInformationStepForm,
+        foDefaultCheckoutPage.personalInformationStepForm,
       );
       expect(isStepPersonalInformationComplete).to.eq(true);
     });
@@ -258,14 +261,14 @@ describe('Cash on delivery (COD) module: Upgrade module', async () => {
     it('should validate Step Address and go to Delivery Step', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDeliveryStep', baseContext);
 
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete).to.eq(true);
     });
 
     it('should go to payment step', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToPaymentStep', baseContext);
 
-      const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+      const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
       expect(isStepDeliveryComplete, 'Step Address is not complete').to.eq(true);
     });
 
@@ -273,7 +276,7 @@ describe('Cash on delivery (COD) module: Upgrade module', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'checkPaymentModule', baseContext);
 
       // Payment step - Choose payment step
-      const isVisible = await foHummingbirdCheckoutPage.isPaymentMethodExist(page, dataModules.psCashOnDelivery.tag);
+      const isVisible = await foDefaultCheckoutPage.isPaymentMethodExist(page, dataModules.psCashOnDelivery.tag);
       expect(isVisible).to.eq(true);
     });
   });
@@ -363,55 +366,55 @@ describe('Cash on delivery (COD) module: Upgrade module', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goToTheFoWoMaintenance', baseContext);
 
       page = await boModuleManagerPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.equal(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPageFOWoMaintenance', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sighInFOWoMaintenance', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected).to.eq(true);
     });
 
     it('should add the first product to the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCartWoMaintenance', baseContext);
 
-      await foHummingbirdLoginPage.goToHomePage(page);
+      await foDefaultLoginPage.goToHomePage(page);
 
       // Add first product to cart by quick view
-      await foHummingbirdHomePage.quickViewProduct(page, 1);
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultHomePage.quickViewProduct(page, 1);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.eq(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.eq(foDefaultCartPage.pageTitle);
     });
 
     it('should proceed to checkout and check Step Address', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkAddressStepWoMaintenance', baseContext);
 
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage).to.eq(true);
 
-      const isStepPersonalInformationComplete = await foHummingbirdCheckoutPage.isStepCompleted(
+      const isStepPersonalInformationComplete = await foDefaultCheckoutPage.isStepCompleted(
         page,
-        foHummingbirdCheckoutPage.personalInformationStepForm,
+        foDefaultCheckoutPage.personalInformationStepForm,
       );
       expect(isStepPersonalInformationComplete).to.eq(true);
     });
@@ -419,14 +422,14 @@ describe('Cash on delivery (COD) module: Upgrade module', async () => {
     it('should validate Step Address and go to Delivery Step', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDeliveryStepWoMaintenance', baseContext);
 
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete).to.eq(true);
     });
 
     it('should go to payment step', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToPaymentStepWoMaintenance', baseContext);
 
-      const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+      const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
       expect(isStepDeliveryComplete, 'Step Address is not complete').to.eq(true);
     });
 
@@ -434,7 +437,7 @@ describe('Cash on delivery (COD) module: Upgrade module', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'checkPaymentModuleWoMaintenance', baseContext);
 
       // Payment step - Choose payment step
-      const isVisible = await foHummingbirdCheckoutPage.isPaymentMethodExist(page, dataModules.psCashOnDelivery.tag);
+      const isVisible = await foDefaultCheckoutPage.isPaymentMethodExist(page, dataModules.psCashOnDelivery.tag);
       expect(isVisible).to.eq(true);
     });
   });

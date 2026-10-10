@@ -2,13 +2,16 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCreateAccountPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCustomerSettingsPage,
   boDashboardPage,
   boLoginPage,
   type BrowserContext,
-  foHummingbirdCreateAccountPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -81,9 +84,9 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable partner offe
 
       // Go to FO
       page = await boCustomerSettingsPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -91,11 +94,11 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable partner offe
       await testContext.addContextItem(this, 'testIdentifier', `checkIsPartnerOffer${index}`, baseContext);
 
       // Go to create account page
-      await foHummingbirdHomePage.goToLoginPage(page);
-      await foHummingbirdLoginPage.goToCreateAccountPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
+      await foDefaultLoginPage.goToCreateAccountPage(page);
 
       // Check partner offer
-      const isPartnerOfferVisible = await foHummingbirdCreateAccountPage.isPartnerOfferVisible(page);
+      const isPartnerOfferVisible = await foDefaultCreateAccountPage.isPartnerOfferVisible(page);
       expect(isPartnerOfferVisible).to.be.equal(test.args.enable);
     });
 
@@ -103,7 +106,7 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable partner offe
       await testContext.addContextItem(this, 'testIdentifier', `goBackToBO${index}`, baseContext);
 
       // Go back to BO
-      page = await foHummingbirdCreateAccountPage.closePage(browserContext, page, 0);
+      page = await foDefaultCreateAccountPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCustomerSettingsPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCustomerSettingsPage.pageTitle);

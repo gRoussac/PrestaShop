@@ -2,6 +2,14 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultHomePage,
+  foDefaultProductPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCarriersCreatePage,
   boCarriersPage,
   boDashboardPage,
@@ -16,11 +24,6 @@ import {
   dataZones,
   FakerCarrier,
   FakerProduct,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -207,77 +210,77 @@ describe('BO - Shipping - Carriers : Size and weight', async () => {
       // Click on view my shop
       page = await boCarriersPage.viewMyShop(page);
       // Change language
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
     it(`should search for the product '${productData.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchForProduct', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, productData.name);
+      await foDefaultHomePage.searchProduct(page, productData.name);
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it('should add the product to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+      await foDefaultSearchResultsPage.goToProductPage(page, 1);
       // Add the product to the cart
-      await foHummingbirdProductPage.addProductToTheCart(page, 1, [], false);
+      await foDefaultProductPage.addProductToTheCart(page, 1, [], false);
 
-      const notificationsNumber = await foHummingbirdProductPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultProductPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(1);
     });
 
     it('should go to shopping cart page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToShoppingCart', baseContext);
 
-      await foHummingbirdProductPage.goToCartPage(page);
+      await foDefaultProductPage.goToCartPage(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultCartPage.pageTitle);
     });
 
     it('should proceed to checkout', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'proceedToCheckout', baseContext);
 
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
       // Go to checkout page
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage).to.eq(true);
     });
 
     it('should fill guest personal information', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setPersonalInformation', baseContext);
 
-      await foHummingbirdCheckoutPage.clickOnSignIn(page);
+      await foDefaultCheckoutPage.clickOnSignIn(page);
 
-      const isCustomerConnected = await foHummingbirdCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
+      const isCustomerConnected = await foDefaultCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should choose the delivery address', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'chooseAndConfirmAddressStepStart', baseContext);
 
-      await foHummingbirdCheckoutPage.chooseDeliveryAddress(page, 1);
+      await foDefaultCheckoutPage.chooseDeliveryAddress(page, 1);
 
-      const isDeliveryStep = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isDeliveryStep = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isDeliveryStep).to.eq(true);
     });
 
     it('should check carriers', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCarriersBasic', baseContext);
 
-      const carriers = await foHummingbirdCheckoutPage.getAllCarriersNames(page);
+      const carriers = await foDefaultCheckoutPage.getAllCarriersNames(page);
       expect(carriers).to.deep.equal([dataCarriers.clickAndCollect.name, dataCarriers.myCarrier.name, carrierData.name]);
 
-      const carrierInfo = await foHummingbirdCheckoutPage.getCarrierData(page, idCarrier);
+      const carrierInfo = await foDefaultCheckoutPage.getCarrierData(page, idCarrier);
       await Promise.all([
         expect(carrierInfo.name).to.equal(carrierData.name),
         expect(carrierInfo.transitName).to.equal(carrierData.transitName),
@@ -289,39 +292,39 @@ describe('BO - Shipping - Carriers : Size and weight', async () => {
     it('should return to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'returnToCartQty2', baseContext);
 
-      await foHummingbirdCheckoutPage.clickOnHeaderLink(page, 'Logo');
-      await foHummingbirdHomePage.goToCartPage(page);
+      await foDefaultCheckoutPage.clickOnHeaderLink(page, 'Logo');
+      await foDefaultHomePage.goToCartPage(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultCartPage.pageTitle);
     });
 
     it('should change quantity to 4 and proceed to checkout', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'changeQuantity2', baseContext);
 
-      await foHummingbirdCartPage.editProductQuantity(page, 1, 4);
+      await foDefaultCartPage.editProductQuantity(page, 1, 4);
 
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
       // Go to checkout page
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage).to.eq(true);
     });
 
     it('should choose the delivery address', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'chooseAndConfirmAddressStepQty2', baseContext);
 
-      await foHummingbirdCheckoutPage.chooseDeliveryAddress(page, 1);
+      await foDefaultCheckoutPage.chooseDeliveryAddress(page, 1);
 
-      const isDeliveryStep = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isDeliveryStep = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isDeliveryStep).to.eq(true);
     });
 
     it('should check carriers', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCarriersWeightExceeded', baseContext);
 
-      const carriers = await foHummingbirdCheckoutPage.getAllCarriersNames(page);
+      const carriers = await foDefaultCheckoutPage.getAllCarriersNames(page);
       expect(carriers).to.deep.equal([dataCarriers.clickAndCollect.name, dataCarriers.myCarrier.name]);
     });
 
@@ -375,16 +378,16 @@ describe('BO - Shipping - Carriers : Size and weight', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCarriersWithSmallDimensions', baseContext);
 
       page = await boCarriersPage.changePage(browserContext, 1);
-      await foHummingbirdCheckoutPage.reloadPage(page);
+      await foDefaultCheckoutPage.reloadPage(page);
 
-      const carriers = await foHummingbirdCheckoutPage.getAllCarriersNames(page);
+      const carriers = await foDefaultCheckoutPage.getAllCarriersNames(page);
       expect(carriers).to.deep.equal([dataCarriers.clickAndCollect.name, dataCarriers.myCarrier.name]);
     });
 
     it('should go to \'Shipping > Carriers\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'returnToCarriersPage', baseContext);
 
-      page = await foHummingbirdCheckoutPage.changePage(browserContext, 0);
+      page = await foDefaultCheckoutPage.changePage(browserContext, 0);
       await boDashboardPage.goToSubMenu(
         page,
         boDashboardPage.shippingLink,

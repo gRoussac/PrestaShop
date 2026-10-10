@@ -7,12 +7,15 @@ import {deleteCustomerTest} from '@commonTests/BO/customers/customer';
 import {createAccountTest} from '@commonTests/FO/default/account';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultPasswordReminderPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   FakerCustomer,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdPasswordReminderPage,
   type MailDev,
   type MailDevEmail,
   type Page,
@@ -78,36 +81,36 @@ describe('FO - Login : Password reminder', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToShopFO', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPage', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultLoginPage.pageTitle);
     });
 
     it('should click on \'Forgot your password?\' link', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToPasswordReminderPage', baseContext);
 
-      await foHummingbirdLoginPage.goToPasswordReminderPage(page);
+      await foDefaultLoginPage.goToPasswordReminderPage(page);
 
-      const pageTitle = await foHummingbirdPasswordReminderPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdPasswordReminderPage.pageTitle);
+      const pageTitle = await foDefaultPasswordReminderPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultPasswordReminderPage.pageTitle);
     });
 
     it('should set the email address and send reset link', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sendResetPasswordLink', baseContext);
 
-      await foHummingbirdPasswordReminderPage.sendResetPasswordLink(page, customerData.email);
+      await foDefaultPasswordReminderPage.sendResetPasswordLink(page, customerData.email);
 
-      const successAlertContent = await foHummingbirdPasswordReminderPage.checkResetLinkSuccess(page);
+      const successAlertContent = await foDefaultPasswordReminderPage.checkResetLinkSuccess(page);
       expect(successAlertContent).to.contains(customerData.email);
     });
 
@@ -120,79 +123,79 @@ describe('FO - Login : Password reminder', async () => {
     it('should open reset password link', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'openResetPasswordLink', baseContext);
 
-      await foHummingbirdPasswordReminderPage.openForgotPasswordPage(page, newMail.text);
+      await foDefaultPasswordReminderPage.openForgotPasswordPage(page, newMail.text);
 
-      const pageTitle = await foHummingbirdPasswordReminderPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdPasswordReminderPage.pageTitle);
+      const pageTitle = await foDefaultPasswordReminderPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultPasswordReminderPage.pageTitle);
     });
 
     it('should check the email address to reset password', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkEmailAddress', baseContext);
 
-      const emailAddress = await foHummingbirdPasswordReminderPage.getEmailAddressToReset(page);
+      const emailAddress = await foDefaultPasswordReminderPage.getEmailAddressToReset(page);
       expect(emailAddress).to.contains(customerData.email);
     });
 
     it('should change the password and check the validation message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'changePassword', baseContext);
 
-      await foHummingbirdPasswordReminderPage.setNewPassword(page, newPassword);
+      await foDefaultPasswordReminderPage.setNewPassword(page, newPassword);
 
-      const successMessage = await foHummingbirdMyAccountPage.getSuccessMessageAlert(page);
-      expect(successMessage).to.equal(`${foHummingbirdMyAccountPage.resetPasswordSuccessMessage} ${customerData.email}`);
+      const successMessage = await foDefaultMyAccountPage.getSuccessMessageAlert(page);
+      expect(successMessage).to.equal(`${foDefaultMyAccountPage.resetPasswordSuccessMessage} ${customerData.email}`);
     });
 
     it('should logout from FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signOutFO', baseContext);
 
-      await foHummingbirdMyAccountPage.logout(page);
-      const isCustomerConnected = await foHummingbirdMyAccountPage.isCustomerConnected(page);
+      await foDefaultMyAccountPage.logout(page);
+      const isCustomerConnected = await foDefaultMyAccountPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected').to.eq(false);
     });
 
     it('should try to login with old password and check the error message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFOWithOldPassword', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, customerData, false);
+      await foDefaultLoginPage.customerLogin(page, customerData, false);
 
-      const loginError = await foHummingbirdLoginPage.getLoginError(page);
-      expect(loginError).to.contains(foHummingbirdLoginPage.loginErrorText);
+      const loginError = await foDefaultLoginPage.getLoginError(page);
+      expect(loginError).to.contains(foDefaultLoginPage.loginErrorText);
     });
 
     it('should sign in with new password', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFO', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, customerNewPassword);
+      await foDefaultLoginPage.customerLogin(page, customerNewPassword);
 
-      const isCustomerConnected = await foHummingbirdMyAccountPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultMyAccountPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should logout from FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signOutFO2', baseContext);
 
-      await foHummingbirdMyAccountPage.logout(page);
+      await foDefaultMyAccountPage.logout(page);
 
-      const isCustomerConnected = await foHummingbirdMyAccountPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultMyAccountPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected').to.eq(false);
     });
 
     it('should click on \'Forgot your password?\' link', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnForgetPassword2', baseContext);
 
-      await foHummingbirdLoginPage.goToPasswordReminderPage(page);
+      await foDefaultLoginPage.goToPasswordReminderPage(page);
 
-      const pageTitle = await foHummingbirdPasswordReminderPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdPasswordReminderPage.pageTitle);
+      const pageTitle = await foDefaultPasswordReminderPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultPasswordReminderPage.pageTitle);
     });
 
     it('should set the customer email and check the error alert', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkErrorMessage', baseContext);
 
-      await foHummingbirdPasswordReminderPage.sendResetPasswordLink(page, customerData.email);
+      await foDefaultPasswordReminderPage.sendResetPasswordLink(page, customerData.email);
 
-      const regeneratePasswordAlert = await foHummingbirdPasswordReminderPage.getErrorMessage(page);
-      expect(regeneratePasswordAlert).to.contains(foHummingbirdPasswordReminderPage.errorRegenerationMessage);
+      const regeneratePasswordAlert = await foDefaultPasswordReminderPage.getErrorMessage(page);
+      expect(regeneratePasswordAlert).to.contains(foDefaultPasswordReminderPage.errorRegenerationMessage);
     });
   });
 

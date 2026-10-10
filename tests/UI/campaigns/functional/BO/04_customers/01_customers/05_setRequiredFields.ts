@@ -2,13 +2,16 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCreateAccountPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCustomersPage,
   boDashboardPage,
   boLoginPage,
   type BrowserContext,
-  foHummingbirdCreateAccountPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -69,9 +72,9 @@ describe('BO - Customers - Customers : Set required fields', async () => {
       // View shop
       page = await boCustomersPage.viewMyShop(page);
       // Change language in FO
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -79,18 +82,18 @@ describe('BO - Customers - Customers : Set required fields', async () => {
       await testContext.addContextItem(this, 'testIdentifier', `checkPartnersOffers${index}`, baseContext);
 
       // Go to create account page
-      await foHummingbirdHomePage.goToLoginPage(page);
-      await foHummingbirdLoginPage.goToCreateAccountPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
+      await foDefaultLoginPage.goToCreateAccountPage(page);
 
-      const pageTitle = await foHummingbirdCreateAccountPage.getHeaderTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdCreateAccountPage.formTitle);
+      const pageTitle = await foDefaultCreateAccountPage.getHeaderTitle(page);
+      expect(pageTitle).to.contains(foDefaultCreateAccountPage.formTitle);
     });
 
     it('should check \'Receive offers from our partners\' checkbox', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `checkReceiveOffersCheckbox${index}`, baseContext);
 
       // Check partner offer required
-      const isPartnerOfferRequired = await foHummingbirdCreateAccountPage.isPartnerOfferRequired(page);
+      const isPartnerOfferRequired = await foDefaultCreateAccountPage.isPartnerOfferRequired(page);
       expect(isPartnerOfferRequired).to.be.equal(test.args.exist);
     });
 
@@ -98,7 +101,7 @@ describe('BO - Customers - Customers : Set required fields', async () => {
       await testContext.addContextItem(this, 'testIdentifier', `goBackToBO${index}`, baseContext);
 
       // Go back to BO
-      page = await foHummingbirdCreateAccountPage.closePage(browserContext, page, 0);
+      page = await foDefaultCreateAccountPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCustomersPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCustomersPage.pageTitle);

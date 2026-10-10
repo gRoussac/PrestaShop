@@ -2,6 +2,11 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultStoresPage,
+} from '@utils/foDefaultPages';
+
+import {
   boContactsPage,
   boDashboardPage,
   boImageSettingsPage,
@@ -10,8 +15,6 @@ import {
   boStoresCreatePage,
   type BrowserContext,
   FakerStore,
-  foHummingbirdHomePage,
-  foHummingbirdStoresPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -127,7 +130,7 @@ describe('BO - Design - Image Settings : Check stores image format', async () =>
         it('should go to BO', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goToBoStores${arg.extOriginal}`, baseContext);
 
-          await foHummingbirdStoresPage.goToBO(page);
+          await foDefaultStoresPage.goToBO(page);
 
           const pageTitle = await boDashboardPage.getPageTitle(page);
           expect(pageTitle).to.contains(boDashboardPage.pageTitle);
@@ -225,26 +228,26 @@ describe('BO - Design - Image Settings : Check stores image format', async () =>
         await testContext.addContextItem(this, 'testIdentifier', `goToFo${arg.extOriginal}`, baseContext);
 
         page = await boStoresPage.viewMyShop(page);
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.changeLanguage(page, 'en');
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.eq(true);
       });
 
       it('should go to Stores page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `goToAllProducts${arg.extOriginal}`, baseContext);
 
-        await foHummingbirdHomePage.goToFooterLink(page, 'Stores');
+        await foDefaultHomePage.goToFooterLink(page, 'Stores');
 
-        const pageTitle = await foHummingbirdStoresPage.getPageTitle(page);
-        expect(pageTitle).to.be.eq(foHummingbirdStoresPage.pageTitle);
+        const pageTitle = await foDefaultStoresPage.getPageTitle(page);
+        expect(pageTitle).to.be.eq(foDefaultStoresPage.pageTitle);
       });
 
       it('should check that the main image of the store is a WebP', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `checkStoreImageMain${arg.extOriginal}`, baseContext);
 
         // Check the WebP file from the Stores page
-        const quickViewImageMain = await foHummingbirdStoresPage.getStoreImageMain(page, idStore);
+        const quickViewImageMain = await foDefaultStoresPage.getStoreImageMain(page, idStore);
         expect(quickViewImageMain).to.not.eq(null);
 
         await utilsFile.downloadFile(quickViewImageMain as string, 'image.img');
@@ -282,7 +285,7 @@ describe('BO - Design - Image Settings : Check stores image format', async () =>
         it('should go to BO', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goToBoStores${arg.extension}`, baseContext);
 
-          await foHummingbirdStoresPage.goToBO(page);
+          await foDefaultStoresPage.goToBO(page);
 
           const pageTitle = await boDashboardPage.getPageTitle(page);
           expect(pageTitle).to.contains(boDashboardPage.pageTitle);

@@ -2,6 +2,12 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
@@ -13,9 +19,6 @@ import {
   dataCarriers,
   dataCustomers,
   FakerProduct,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -128,23 +131,23 @@ describe('BO - Catalog - Products : Shipping tab', async () => {
 
       page = await boProductsCreatePage.previewProduct(page);
 
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check that no delivery time is displayed', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDeliveryTime', baseContext);
 
-      const isDisplayed = await foHummingbirdProductPage.isDeliveryTimeDisplayed(page);
+      const isDisplayed = await foDefaultProductPage.isDeliveryTimeDisplayed(page);
       expect(isDisplayed).to.equal(false);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -164,23 +167,23 @@ describe('BO - Catalog - Products : Shipping tab', async () => {
 
       page = await boProductsCreatePage.previewProduct(page);
 
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check that no delivery time is displayed', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDeliveryTime1', baseContext);
 
-      const isDisplayed = await foHummingbirdProductPage.isDeliveryTimeDisplayed(page);
+      const isDisplayed = await foDefaultProductPage.isDeliveryTimeDisplayed(page);
       expect(isDisplayed).to.equal(false);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO1', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -228,23 +231,23 @@ describe('BO - Catalog - Products : Shipping tab', async () => {
 
       page = await boProductsCreatePage.previewProduct(page);
 
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check the delivery time in stock product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDeliveryTimeInStock', baseContext);
 
-      const deliveryTimeText = await foHummingbirdProductPage.getDeliveryInformationText(page);
+      const deliveryTimeText = await foDefaultProductPage.getDeliveryInformationText(page);
       expect(deliveryTimeText).to.equal('1 Day');
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO3', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -273,23 +276,23 @@ describe('BO - Catalog - Products : Shipping tab', async () => {
 
       page = await boProductsCreatePage.previewProduct(page);
 
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check the delivery time in stock product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDeliveryTimeInStock2', baseContext);
 
-      const deliveryTimeText = await foHummingbirdProductPage.getDeliveryInformationText(page);
+      const deliveryTimeText = await foDefaultProductPage.getDeliveryInformationText(page);
       expect(deliveryTimeText).to.equal('12 Days');
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO4', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -309,59 +312,59 @@ describe('BO - Catalog - Products : Shipping tab', async () => {
 
       page = await boProductsCreatePage.previewProduct(page);
 
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should add product to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdProductPage.addProductToTheCart(page, 1);
+      await foDefaultProductPage.addProductToTheCart(page, 1);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should proceed to checkout and validate the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'validateCart', baseContext);
 
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage).to.eq(true);
     });
 
     it('should sign in by default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFO', baseContext);
 
-      await foHummingbirdCheckoutPage.clickOnSignIn(page);
+      await foDefaultCheckoutPage.clickOnSignIn(page);
 
-      const isCustomerConnected = await foHummingbirdCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
+      const isCustomerConnected = await foDefaultCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to delivery address step', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'confirmAddressStep', baseContext);
 
-      const isDeliveryStep = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isDeliveryStep = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isDeliveryStep, 'Delivery Step boc is not displayed').to.eq(true);
     });
 
     it('should select the first carrier and check the shipping price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkShippingPrice1', baseContext);
 
-      await foHummingbirdCheckoutPage.chooseShippingMethod(page, dataCarriers.myCarrier.id);
+      await foDefaultCheckoutPage.chooseShippingMethod(page, dataCarriers.myCarrier.id);
 
-      const shippingCost = await foHummingbirdCheckoutPage.getShippingCost(page);
+      const shippingCost = await foDefaultCheckoutPage.getShippingCost(page);
       expect(shippingCost).to.equal('€20.40');
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO5', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -382,34 +385,34 @@ describe('BO - Catalog - Products : Shipping tab', async () => {
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
 
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should go to cart page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToCartPage', baseContext);
 
-      await foHummingbirdProductPage.goToCartPage(page);
+      await foDefaultProductPage.goToCartPage(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultCartPage.pageTitle);
     });
 
     it('should proceed to checkout and check the shipping methods', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkShippingMethods', baseContext);
 
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const carriers = await foHummingbirdCheckoutPage.getAllCarriersNames(page);
+      const carriers = await foDefaultCheckoutPage.getAllCarriersNames(page);
       expect(carriers).to.deep.eq([dataCarriers.clickAndCollect.name]);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO6', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);

@@ -3,12 +3,15 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultCategoryPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
   type BrowserContext,
-  foHummingbirdHomePage,
-  foHummingbirdCategoryPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -81,54 +84,54 @@ describe('FO - Home Page : Display all products', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToShopFO', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it('should go to all products page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAllProducts', baseContext);
 
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
-      await foHummingbirdHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
+      await foDefaultHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
 
-      const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+      const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
       expect(isCategoryPageVisible, 'Home category page was not opened').to.eq(true);
     });
 
     it('should check the number of products on the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'numberOfProducts', baseContext);
 
-      const numberOfProducts = await foHummingbirdCategoryPage.getNumberOfProducts(page);
+      const numberOfProducts = await foDefaultCategoryPage.getNumberOfProducts(page);
       expect(numberOfProducts).to.eql(numberOfActiveProducts);
     });
 
     it('should check that the header name is equal to HOME', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'nameOfHeader', baseContext);
 
-      const headerProductsName = await foHummingbirdCategoryPage.getHeaderPageName(page);
+      const headerProductsName = await foDefaultCategoryPage.getHeaderPageName(page);
       expect(headerProductsName).to.equal('Home');
     });
 
     it('should check that the sorting link is displayed', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'homeSortAndPaginationLink', baseContext);
 
-      const isSortingLinkVisible = await foHummingbirdCategoryPage.isSortButtonVisible(page);
+      const isSortingLinkVisible = await foDefaultCategoryPage.isSortButtonVisible(page);
       expect(isSortingLinkVisible).to.eq(true);
     });
 
     it('should check the showing items text', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'showingItemTextDisplayed', baseContext);
 
-      const numberOfItems = await foHummingbirdCategoryPage.getShowingItems(page);
+      const numberOfItems = await foDefaultCategoryPage.getShowingItems(page);
       expect(numberOfItems).equal(`Showing 1-12 of ${numberOfActiveProducts} item(s)`);
     });
 
     it('should check the list of product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'displayedListOfProduct', baseContext);
 
-      const listOfProductDisplayed = await foHummingbirdCategoryPage.getNumberOfProductsDisplayed(page);
+      const listOfProductDisplayed = await foDefaultCategoryPage.getNumberOfProductsDisplayed(page);
       expect(listOfProductDisplayed).to.be.above(0);
     });
   });

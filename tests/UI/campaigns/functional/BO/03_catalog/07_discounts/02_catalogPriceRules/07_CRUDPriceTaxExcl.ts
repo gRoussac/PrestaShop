@@ -2,6 +2,12 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultSearchResultsPage,
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   // Import BO pages
   boCartRulesPage,
   boCatalogPriceRulesCreatePage,
@@ -9,10 +15,7 @@ import {
   boDashboardPage,
   boLoginPage,
   // Import FO pages
-  foHummingbirdCartPage,
-  foHummingbirdSearchResultsPage,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
+  foDefaultCartPage,
   // Import data
   dataProducts,
   FakerCatalogPriceRule,
@@ -109,27 +112,27 @@ describe('BO - Catalog - Discounts - Catalog price Rules : CRUD Price (tax excl.
 
       // View my shop and init pages
       page = await boCatalogPriceRulesCreatePage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it(`should search for the product '${dataProducts.demo_6.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_6.name);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_6.name);
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it('should go to the product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage', baseContext);
 
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+      await foDefaultSearchResultsPage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(dataProducts.demo_6.name);
     });
 
@@ -137,11 +140,11 @@ describe('BO - Catalog - Discounts - Catalog price Rules : CRUD Price (tax excl.
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscount', baseContext);
 
       // Check discount
-      const columnValue = await foHummingbirdProductPage.getDiscountAmount(page);
+      const columnValue = await foDefaultProductPage.getDiscountAmount(page);
       expect(columnValue).to.equal(`(Save €${catalogPriceRuleData.reduction.toFixed(2)})`);
 
       // Check final price
-      const finalPrice = await foHummingbirdProductPage.getProductInformation(page);
+      const finalPrice = await foDefaultProductPage.getProductInformation(page);
       expect(finalPrice.price.toFixed(2)).to.equal(
         (
           catalogPriceRuleData.price + utilsCore.percentage(catalogPriceRuleData.price, 20) - catalogPriceRuleData.reduction
@@ -152,16 +155,16 @@ describe('BO - Catalog - Discounts - Catalog price Rules : CRUD Price (tax excl.
     it('should add the product to the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdProductPage.addProductToTheCart(page);
+      await foDefaultProductPage.addProductToTheCart(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should check the discount in cart page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscountInTheCart', baseContext);
 
-      const productDetail = await foHummingbirdCartPage.getProductDetail(page, 1);
+      const productDetail = await foDefaultCartPage.getProductDetail(page, 1);
       await Promise.all([
         expect(productDetail.regularPrice).to.equal(
           catalogPriceRuleData.price + utilsCore.percentage(catalogPriceRuleData.price, 20)),
@@ -179,7 +182,7 @@ describe('BO - Catalog - Discounts - Catalog price Rules : CRUD Price (tax excl.
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO', baseContext);
 
-      page = await foHummingbirdCartPage.changePage(browserContext, 0);
+      page = await foDefaultCartPage.changePage(browserContext, 0);
 
       const pageTitle = await boCatalogPriceRulesPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCatalogPriceRulesPage.pageTitle);
@@ -202,16 +205,16 @@ describe('BO - Catalog - Discounts - Catalog price Rules : CRUD Price (tax excl.
 
       page = await boCatalogPriceRulesCreatePage.changePage(browserContext, 1);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultCartPage.pageTitle);
     });
 
     it('should check the discount in cart page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscountInTheCart_2', baseContext);
 
-      await foHummingbirdCartPage.reloadPage(page);
+      await foDefaultCartPage.reloadPage(page);
 
-      const productDetail = await foHummingbirdCartPage.getProductDetail(page, 1);
+      const productDetail = await foDefaultCartPage.getProductDetail(page, 1);
       await Promise.all([
         expect(productDetail.regularPrice).to.equal(dataProducts.demo_6.combinations[0].priceTI),
         expect(productDetail.price.toFixed(2)).to.equal(
@@ -228,7 +231,7 @@ describe('BO - Catalog - Discounts - Catalog price Rules : CRUD Price (tax excl.
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO_3', baseContext);
 
-      page = await foHummingbirdCartPage.changePage(browserContext, 0);
+      page = await foDefaultCartPage.changePage(browserContext, 0);
 
       const pageTitle = await boCatalogPriceRulesPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCatalogPriceRulesPage.pageTitle);

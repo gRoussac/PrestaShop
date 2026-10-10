@@ -2,6 +2,14 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultCheckoutOrderConfirmationPage,
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCountriesPage,
   boDashboardPage,
   boLoginPage,
@@ -11,11 +19,6 @@ import {
   dataPaymentMethods,
   FakerAddress,
   FakerCustomer,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdCheckoutOrderConfirmationPage,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -97,9 +100,9 @@ describe('BO - International - Countries : Enable / Disable Countries', async ()
     // Click on view my shop
     page = await boCountriesPage.viewMyShop(page);
     // Change FO language
-    await foHummingbirdHomePage.changeLanguage(page, 'en');
+    await foDefaultHomePage.changeLanguage(page, 'en');
 
-    const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+    const isHomePage = await foDefaultHomePage.isHomePage(page);
     expect(isHomePage).to.equal(true);
   });
 
@@ -107,11 +110,11 @@ describe('BO - International - Countries : Enable / Disable Countries', async ()
     await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
     // Go to the first product page
-    await foHummingbirdHomePage.goToProductPage(page, 1);
+    await foDefaultHomePage.goToProductPage(page, 1);
     // Add the product to the cart
-    await foHummingbirdProductPage.addProductToTheCart(page);
+    await foDefaultProductPage.addProductToTheCart(page);
 
-    const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+    const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
     expect(notificationsNumber).to.be.equal(1);
   });
 
@@ -119,24 +122,24 @@ describe('BO - International - Countries : Enable / Disable Countries', async ()
     await testContext.addContextItem(this, 'testIdentifier', 'proceedtoCheckout', baseContext);
 
     // Proceed to checkout the shopping cart
-    await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+    await foDefaultCartPage.clickOnProceedToCheckout(page);
 
     // Go to checkout page
-    const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+    const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
     expect(isCheckoutPage).to.eq(true);
   });
 
   it('should fill guest personal information', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'setPersonalInformation', baseContext);
 
-    const isStepPersonalInfoCompleted = await foHummingbirdCheckoutPage.setGuestPersonalInformation(page, customerData);
+    const isStepPersonalInfoCompleted = await foDefaultCheckoutPage.setGuestPersonalInformation(page, customerData);
     expect(isStepPersonalInfoCompleted, 'Step personal information is not completed').to.eq(true);
   });
 
   it('should check available countries', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'checkAvailableCountries', baseContext);
 
-    const countries = await foHummingbirdCheckoutPage.getAvailableAddressCountries(page);
+    const countries = await foDefaultCheckoutPage.getAvailableAddressCountries(page);
     expect(countries.length).to.equal(2);
     expect(countries).to.deep.equal([
       dataCountries.france.name,
@@ -147,7 +150,7 @@ describe('BO - International - Countries : Enable / Disable Countries', async ()
   it('should fill address form and go to delivery step', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'setAddressStep', baseContext);
 
-    const isStepAddressComplete = await foHummingbirdCheckoutPage.setAddress(page, addressDataFR);
+    const isStepAddressComplete = await foDefaultCheckoutPage.setAddress(page, addressDataFR);
     expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
   });
 
@@ -155,7 +158,7 @@ describe('BO - International - Countries : Enable / Disable Countries', async ()
     await testContext.addContextItem(this, 'testIdentifier', 'goToPaymentStep', baseContext);
 
     // Delivery step - Go to payment step
-    const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+    const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
     expect(isStepDeliveryComplete, 'Step Address is not complete').to.eq(true);
   });
 
@@ -163,17 +166,17 @@ describe('BO - International - Countries : Enable / Disable Countries', async ()
     await testContext.addContextItem(this, 'testIdentifier', 'confirmOrder', baseContext);
 
     // Payment step - Choose payment step
-    await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
+    await foDefaultCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
 
     // Check the confirmation message
-    const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-    expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+    const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+    expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
   });
 
   it('should disable France', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'disableFrance', baseContext);
 
-    page = await foHummingbirdCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
+    page = await foDefaultCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
 
     await boCountriesPage.resetFilter(page);
     await boCountriesPage.filterTable(page, 'input', 'name', dataCountries.france.name);
@@ -189,9 +192,9 @@ describe('BO - International - Countries : Enable / Disable Countries', async ()
     // Click on view my shop
     page = await boCountriesPage.viewMyShop(page);
     // Change FO language
-    await foHummingbirdHomePage.changeLanguage(page, 'en');
+    await foDefaultHomePage.changeLanguage(page, 'en');
 
-    const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+    const isHomePage = await foDefaultHomePage.isHomePage(page);
     expect(isHomePage).to.equal(true);
   });
 
@@ -199,11 +202,11 @@ describe('BO - International - Countries : Enable / Disable Countries', async ()
     await testContext.addContextItem(this, 'testIdentifier', 'addProductToCartAfterDisable', baseContext);
 
     // Go to the first product page
-    await foHummingbirdHomePage.goToProductPage(page, 1);
+    await foDefaultHomePage.goToProductPage(page, 1);
     // Add the product to the cart
-    await foHummingbirdProductPage.addProductToTheCart(page);
+    await foDefaultProductPage.addProductToTheCart(page);
 
-    const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+    const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
     expect(notificationsNumber).to.be.equal(1);
   });
 
@@ -211,24 +214,24 @@ describe('BO - International - Countries : Enable / Disable Countries', async ()
     await testContext.addContextItem(this, 'testIdentifier', 'proceedtoCheckoutAfterDisable', baseContext);
 
     // Proceed to checkout the shopping cart
-    await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+    await foDefaultCartPage.clickOnProceedToCheckout(page);
 
     // Go to checkout page
-    const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+    const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
     expect(isCheckoutPage).to.eq(true);
   });
 
   it('should fill guest personal information', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'setPersonalInformationAfterDisable', baseContext);
 
-    const isStepPersonalInfoCompleted = await foHummingbirdCheckoutPage.setGuestPersonalInformation(page, customerData);
+    const isStepPersonalInfoCompleted = await foDefaultCheckoutPage.setGuestPersonalInformation(page, customerData);
     expect(isStepPersonalInfoCompleted, 'Step personal information is not completed').to.eq(true);
   });
 
   it('should check available countries', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'checkAvailableCountriesAfterDisable', baseContext);
 
-    const countries = await foHummingbirdCheckoutPage.getAvailableAddressCountries(page);
+    const countries = await foDefaultCheckoutPage.getAvailableAddressCountries(page);
     expect(countries.length).to.equal(1);
     expect(countries).to.deep.equal([
       dataCountries.unitedStates.name,
@@ -238,7 +241,7 @@ describe('BO - International - Countries : Enable / Disable Countries', async ()
   it('should fill address form and go to delivery step', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'setAddressStepAfterDisable', baseContext);
 
-    const isStepAddressComplete = await foHummingbirdCheckoutPage.setAddress(page, addressDataUS);
+    const isStepAddressComplete = await foDefaultCheckoutPage.setAddress(page, addressDataUS);
     expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
   });
 
@@ -246,7 +249,7 @@ describe('BO - International - Countries : Enable / Disable Countries', async ()
     await testContext.addContextItem(this, 'testIdentifier', 'goToPaymentStepAfterDisable', baseContext);
 
     // Delivery step - Go to payment step
-    const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+    const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
     expect(isStepDeliveryComplete, 'Step Address is not complete').to.eq(true);
   });
 
@@ -254,17 +257,17 @@ describe('BO - International - Countries : Enable / Disable Countries', async ()
     await testContext.addContextItem(this, 'testIdentifier', 'confirmOrderAfterDisable', baseContext);
 
     // Payment step - Choose payment step
-    await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
+    await foDefaultCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
 
     // Check the confirmation message
-    const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-    expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+    const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+    expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
   });
 
   it('POST-TEST : should enable France', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'enableFrance', baseContext);
 
-    page = await foHummingbirdCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
+    page = await foDefaultCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
 
     await boCountriesPage.setCountryStatus(page, 1, true);
 

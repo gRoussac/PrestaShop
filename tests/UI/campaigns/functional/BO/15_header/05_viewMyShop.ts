@@ -5,10 +5,13 @@ import {expect} from 'chai';
 import testContext from '@utils/testContext';
 
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   type BrowserContext,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -50,7 +53,7 @@ describe('BO - Header : View My Shop', async () => {
     const numPages = utilsPlaywright.getNumberTabs(browserContext);
     expect(numPages).to.be.eq(2);
 
-    const pageTitle = await foHummingbirdHomePage.getPageTitle(page);
-    expect(pageTitle).to.contains(foHummingbirdHomePage.pageTitle);
+    const pageTitle = await foDefaultHomePage.getPageTitle(page);
+    expect(pageTitle).to.contains(foDefaultHomePage.pageTitle);
   });
 });

@@ -5,6 +5,15 @@ import testContext from '@utils/testContext';
 import {disableModule, enableModule} from '@commonTests/BO/modules/moduleManager';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultModalWishlistPage,
+  foDefaultMyWishlistsViewPage,
+  foDefaultProductPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
@@ -12,12 +21,6 @@ import {
   dataCustomers,
   dataModules,
   dataProducts,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdModalWishlistPage,
-  foHummingbirdMyWishlistsViewPage,
-  foHummingbirdProductPage,
-  foHummingbirdSearchResultsPage,
   modBlockwishlistBoMain,
   type Page,
   utilsPlaywright,
@@ -122,53 +125,53 @@ describe('Wishlist module - Reset module', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
       page = await modBlockwishlistBoMain.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPageFO', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sighInFO', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected).to.eq(true);
     });
 
     it(`should search the product ${dataProducts.demo_3.name}`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProductDemo3', baseContext);
 
-      await foHummingbirdMyWishlistsViewPage.searchProduct(page, dataProducts.demo_3.name);
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+      await foDefaultMyWishlistsViewPage.searchProduct(page, dataProducts.demo_3.name);
+      await foDefaultSearchResultsPage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.equal(dataProducts.demo_3.name);
     });
 
     it('should add to the wishlist and get the label', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addToWishlist1', baseContext);
 
-      await foHummingbirdProductPage.clickAddToWishlistButton(page);
+      await foDefaultProductPage.clickAddToWishlistButton(page);
 
-      const textResult = await foHummingbirdModalWishlistPage.getModalAddToCreateWislistLabel(page);
+      const textResult = await foDefaultModalWishlistPage.getModalAddToCreateWislistLabel(page);
       expect(textResult).to.contains(labelButton);
     });
 
     it('should go to \'Modules > Module Manager\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToModuleManagerPageForReset', baseContext);
 
-      page = await foHummingbirdModalWishlistPage.changePage(browserContext, 0);
+      page = await foDefaultModalWishlistPage.changePage(browserContext, 0);
       await boDashboardPage.goToSubMenu(
         page,
         boDashboardPage.modulesParentLink,
@@ -198,10 +201,10 @@ describe('Wishlist module - Reset module', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'addToWishlist2', baseContext);
 
       page = await boModuleManagerPage.changePage(browserContext, 1);
-      await foHummingbirdProductPage.reloadPage(page);
-      await foHummingbirdProductPage.clickAddToWishlistButton(page);
+      await foDefaultProductPage.reloadPage(page);
+      await foDefaultProductPage.clickAddToWishlistButton(page);
 
-      const textResult = await foHummingbirdModalWishlistPage.getModalAddToCreateWislistLabel(page);
+      const textResult = await foDefaultModalWishlistPage.getModalAddToCreateWislistLabel(page);
       expect(textResult).to.contains(modBlockwishlistBoMain.defaultValueCreateButtonLabel);
     });
   });

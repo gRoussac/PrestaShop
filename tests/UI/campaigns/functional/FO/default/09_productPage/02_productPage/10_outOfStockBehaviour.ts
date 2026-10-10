@@ -4,6 +4,11 @@ import {expect} from 'chai';
 import {deleteProductTest} from '@commonTests/BO/catalog/product';
 
 import {
+  foDefaultModalBlockCartPage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
@@ -12,8 +17,6 @@ import {
   boStockMovementsPage,
   type BrowserContext,
   FakerProduct,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdProductPage,
   type Page,
   utilsDate,
   utilsFile,
@@ -173,21 +176,21 @@ describe('FO - Product page - Product page : Out of stock behaviour', async () =
 
       page = await boProductsCreatePage.previewProduct(page);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check the label \'In stock\'', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkLabelInStock', baseContext);
 
-      const productAvailability = await foHummingbirdProductPage.getProductAvailabilityLabel(page);
+      const productAvailability = await foDefaultProductPage.getProductAvailabilityLabel(page);
       expect(productAvailability).to.contains('In stock');
     });
 
     it('should check the notification of minimum purchase order quantity', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNotificationMinimumPurchase', baseContext);
 
-      const minimumPurchaseLabel = await foHummingbirdProductPage.getMinimalProductQuantityLabel(page);
+      const minimumPurchaseLabel = await foDefaultProductPage.getMinimalProductQuantityLabel(page);
       expect(minimumPurchaseLabel).to.contains('The minimum purchase order quantity for the product is 5.');
     });
 
@@ -195,16 +198,16 @@ describe('FO - Product page - Product page : Out of stock behaviour', async () =
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnAddToCartButton', baseContext);
 
       // Add the product to the cart
-      await foHummingbirdProductPage.clickOnAddToCartButton(page);
+      await foDefaultProductPage.clickOnAddToCartButton(page);
 
-      const notificationsNumber = await foHummingbirdProductPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultProductPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.equal(5);
     });
 
     it('should close the blockCart modal by clicking outside the modal', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closeBlockCartModal2', baseContext);
 
-      const isQuickViewModalClosed = await foHummingbirdModalBlockCartPage.closeBlockCartModal(page, true);
+      const isQuickViewModalClosed = await foDefaultModalBlockCartPage.closeBlockCartModal(page, true);
       expect(isQuickViewModalClosed).to.equal(true);
     });
 
@@ -212,7 +215,7 @@ describe('FO - Product page - Product page : Out of stock behaviour', async () =
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBackOffice', baseContext);
 
       // Go back to BO
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -234,17 +237,17 @@ describe('FO - Product page - Product page : Out of stock behaviour', async () =
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check that the Add to cart Button is disabled', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'tryAddProductToCart', baseContext);
 
-      const isAddToCartButtonEnabled = await foHummingbirdProductPage.isAddToCartButtonEnabled(page);
+      const isAddToCartButtonEnabled = await foDefaultProductPage.isAddToCartButtonEnabled(page);
       expect(isAddToCartButtonEnabled).to.equal(false);
 
-      const productAvailability = await foHummingbirdProductPage.getProductAvailabilityLabel(page);
+      const productAvailability = await foDefaultProductPage.getProductAvailabilityLabel(page);
       expect(productAvailability).to.contains('Out of stock');
     });
 
@@ -252,7 +255,7 @@ describe('FO - Product page - Product page : Out of stock behaviour', async () =
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBackOffice2', baseContext);
 
       // Go back to BO
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -273,17 +276,17 @@ describe('FO - Product page - Product page : Out of stock behaviour', async () =
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check that the Add to cart Button is enabled and check the availability icon', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      const isAddToCartButtonEnabled = await foHummingbirdProductPage.isAddToCartButtonEnabled(page);
+      const isAddToCartButtonEnabled = await foDefaultProductPage.isAddToCartButtonEnabled(page);
       expect(isAddToCartButtonEnabled).to.be.equal(true);
 
-      const productAvailability = await foHummingbirdProductPage.getProductAvailabilityLabel(page);
+      const productAvailability = await foDefaultProductPage.getProductAvailabilityLabel(page);
       expect(productAvailability).to.be.contains('Out of stock');
     });
   });

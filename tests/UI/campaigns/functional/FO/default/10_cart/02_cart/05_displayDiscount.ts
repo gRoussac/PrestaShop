@@ -4,15 +4,18 @@ import {expect} from 'chai';
 import {createCartRuleTest, deleteCartRuleTest} from '@commonTests/BO/catalog/cartRule';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultHomePage,
+  foDefaultModalBlockCartPage,
+  foDefaultModalQuickViewPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataProducts,
   FakerCartRule,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdHomePage,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdModalQuickViewPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsCore,
   utilsPlaywright,
@@ -71,81 +74,81 @@ describe('FO - Cart : Display discount on product', async () => {
     it('should go to FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToFo(page);
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it(`should search for the product '${dataProducts.demo_8.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_8.name);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_8.name);
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it(`should quick view the product '${dataProducts.demo_8.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'quickViewProduct', baseContext);
 
-      await foHummingbirdSearchResultsPage.quickViewProduct(page, 1);
+      await foDefaultSearchResultsPage.quickViewProduct(page, 1);
 
-      const isModalVisible = await foHummingbirdModalQuickViewPage.isQuickViewProductModalVisible(page);
+      const isModalVisible = await foDefaultModalQuickViewPage.isQuickViewProductModalVisible(page);
       expect(isModalVisible).to.equal(true);
     });
 
     it('should add the product to the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
 
-      const isNotVisible = await foHummingbirdModalBlockCartPage.continueShopping(page);
+      const isNotVisible = await foDefaultModalBlockCartPage.continueShopping(page);
       expect(isNotVisible).to.equal(true);
     });
 
     it(`should search for the product '${dataProducts.demo_9.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct2', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_9.name);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_9.name);
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it(`should quick view the product '${dataProducts.demo_9.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'quickViewProduct2', baseContext);
 
-      await foHummingbirdSearchResultsPage.quickViewProduct(page, 1);
+      await foDefaultSearchResultsPage.quickViewProduct(page, 1);
 
-      const isModalVisible = await foHummingbirdModalQuickViewPage.isQuickViewProductModalVisible(page);
+      const isModalVisible = await foDefaultModalQuickViewPage.isQuickViewProductModalVisible(page);
       expect(isModalVisible).to.equal(true);
     });
 
     it('should add the product to the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart2', baseContext);
 
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should check the cart notifications', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCartNotifications', baseContext);
 
-      const shoppingCarts = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const shoppingCarts = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(shoppingCarts).to.equal(2);
     });
 
     it('should add the first promo code', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addFirstPromoCode', baseContext);
 
-      await foHummingbirdCartPage.addPromoCode(page, firstCartRuleData.code);
+      await foDefaultCartPage.addPromoCode(page, firstCartRuleData.code);
 
-      const cartRuleName = await foHummingbirdCartPage.getCartRuleName(page, 1);
+      const cartRuleName = await foDefaultCartPage.getCartRuleName(page, 1);
       expect(cartRuleName).to.contains(firstCartRuleData.name);
     });
 
@@ -154,7 +157,7 @@ describe('FO - Cart : Display discount on product', async () => {
 
       const discount = utilsCore.percentage(dataProducts.demo_9.finalPrice, firstCartRuleData.getDiscountPercent());
 
-      const discountValue = await foHummingbirdCartPage.getCartRuleValue(page);
+      const discountValue = await foDefaultCartPage.getCartRuleValue(page);
       expect(discountValue).to.contains(`-€${discount.toFixed(2)}`);
     });
 
@@ -163,23 +166,23 @@ describe('FO - Cart : Display discount on product', async () => {
 
       const discount = utilsCore.percentage(dataProducts.demo_9.finalPrice, firstCartRuleData.getDiscountPercent());
 
-      const totalAfterDiscount = await foHummingbirdCartPage.getATIPrice(page);
+      const totalAfterDiscount = await foDefaultCartPage.getATIPrice(page);
       expect(totalAfterDiscount.toString()).to.equal((dataProducts.demo_9.finalPrice * 2 - discount).toFixed(2));
     });
 
     it('should add the second promo code', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addSecondPromoCode', baseContext);
 
-      await foHummingbirdCartPage.addPromoCode(page, secondCartRuleData.code);
+      await foDefaultCartPage.addPromoCode(page, secondCartRuleData.code);
 
-      const cartRuleName = await foHummingbirdCartPage.getCartRuleName(page, 2);
+      const cartRuleName = await foDefaultCartPage.getCartRuleName(page, 2);
       expect(cartRuleName).to.contains(secondCartRuleData.name);
     });
 
     it('should check the discount value', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscountValue2', baseContext);
 
-      const discountValue = await foHummingbirdCartPage.getCartRuleValue(page, 2);
+      const discountValue = await foDefaultCartPage.getCartRuleValue(page, 2);
       expect(discountValue).to.contains(`-€${secondCartRuleDiscount.toFixed(2)}`);
     });
 
@@ -188,7 +191,7 @@ describe('FO - Cart : Display discount on product', async () => {
 
       const firstDiscount = utilsCore.percentage(dataProducts.demo_9.finalPrice, firstCartRuleData.getDiscountPercent());
 
-      const totalAfterDiscount = await foHummingbirdCartPage.getATIPrice(page);
+      const totalAfterDiscount = await foDefaultCartPage.getATIPrice(page);
       expect(totalAfterDiscount.toString())
         .to.equal((dataProducts.demo_9.finalPrice * 2 - (firstDiscount + secondCartRuleDiscount))
           .toFixed(2));
@@ -197,7 +200,7 @@ describe('FO - Cart : Display discount on product', async () => {
     it('should remove the second discount', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'removeTheDiscount2', baseContext);
 
-      const isDeleteIconNotVisible = await foHummingbirdCheckoutPage.removePromoCode(page, 2);
+      const isDeleteIconNotVisible = await foDefaultCheckoutPage.removePromoCode(page, 2);
       expect(isDeleteIconNotVisible, 'The discount is not removed').to.equal(true);
     });
 
@@ -206,39 +209,39 @@ describe('FO - Cart : Display discount on product', async () => {
 
       const discount = utilsCore.percentage(dataProducts.demo_9.finalPrice, firstCartRuleData.getDiscountPercent());
 
-      const totalAfterDiscount = await foHummingbirdCartPage.getATIPrice(page);
+      const totalAfterDiscount = await foDefaultCartPage.getATIPrice(page);
       expect(totalAfterDiscount.toString()).to.equal((dataProducts.demo_9.finalPrice * 2 - discount).toFixed(2));
     });
 
     it('should remove the first discount', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'removeTheDiscount', baseContext);
 
-      const isDeleteIconNotVisible = await foHummingbirdCheckoutPage.removePromoCode(page, 1);
+      const isDeleteIconNotVisible = await foDefaultCheckoutPage.removePromoCode(page, 1);
       expect(isDeleteIconNotVisible, 'The discount is not removed').to.equal(true);
     });
 
     it('should check the total', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkTotal', baseContext);
 
-      const total = await foHummingbirdCartPage.getATIPrice(page);
+      const total = await foDefaultCartPage.getATIPrice(page);
       expect(total.toString()).to.equal((dataProducts.demo_9.finalPrice * 2).toFixed(2));
     });
 
     it('should delete the second product from the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'deleteLastProduct', baseContext);
 
-      await foHummingbirdCartPage.deleteProduct(page, 2);
+      await foDefaultCartPage.deleteProduct(page, 2);
 
-      const notificationNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationNumber).to.equal(1);
     });
 
     it('should delete the first product from the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'deleteFirstProduct', baseContext);
 
-      await foHummingbirdCartPage.deleteProduct(page, 1);
+      await foDefaultCartPage.deleteProduct(page, 1);
 
-      const notificationNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationNumber).to.equal(0);
     });
   });

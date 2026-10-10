@@ -2,11 +2,14 @@
 import testContext from '@utils/testContext';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataCustomers,
   FakerCustomer,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -37,71 +40,71 @@ describe('FO - Login : Login in FO', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToShopFO', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPage', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultLoginPage.pageTitle);
     });
 
     it('should enter an invalid credentials', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'enterInvalidCredentials', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, firstCredentialsData, false);
+      await foDefaultLoginPage.customerLogin(page, firstCredentialsData, false);
 
-      const loginError = await foHummingbirdLoginPage.getLoginError(page);
-      expect(loginError).to.contains(foHummingbirdLoginPage.loginErrorText);
+      const loginError = await foDefaultLoginPage.getLoginError(page);
+      expect(loginError).to.contains(foDefaultLoginPage.loginErrorText);
     });
 
     it('should enter an invalid email', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'enterInvalidEmail', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, secondCredentialsData, false);
+      await foDefaultLoginPage.customerLogin(page, secondCredentialsData, false);
 
-      const loginError = await foHummingbirdLoginPage.getLoginError(page);
-      expect(loginError).to.contains(foHummingbirdLoginPage.loginErrorText);
+      const loginError = await foDefaultLoginPage.getLoginError(page);
+      expect(loginError).to.contains(foDefaultLoginPage.loginErrorText);
     });
 
     it('should enter an invalid password', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'enterInvalidPassword', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, thirdCredentialsData, false);
+      await foDefaultLoginPage.customerLogin(page, thirdCredentialsData, false);
 
-      const loginError = await foHummingbirdLoginPage.getLoginError(page);
-      expect(loginError).to.contains(foHummingbirdLoginPage.loginErrorText);
+      const loginError = await foDefaultLoginPage.getLoginError(page);
+      expect(loginError).to.contains(foDefaultLoginPage.loginErrorText);
     });
 
     it('should check password type', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkPasswordType', baseContext);
 
-      const inputType = await foHummingbirdLoginPage.getPasswordType(page);
+      const inputType = await foDefaultLoginPage.getPasswordType(page);
       expect(inputType).to.equal('password');
     });
 
     it('should click on show button and check the password', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnShowButton', baseContext);
 
-      const inputType = await foHummingbirdLoginPage.showPassword(page);
+      const inputType = await foDefaultLoginPage.showPassword(page);
       expect(inputType).to.equal('text');
     });
 
     it('should enter a valid credentials', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'enterValidCredentials', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected!').to.eq(true);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
   });

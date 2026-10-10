@@ -4,6 +4,18 @@ import {expect} from 'chai';
 import setFeatureFlag from '@commonTests/BO/advancedParameters/newFeatures';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultSearchResultsPage,
+  foDefaultModalQuickViewPage,
+  foDefaultModalBlockCartPage,
+  foDefaultMyAccountPage,
+  foDefaultMyAddressesPage,
+  foDefaultMyAddressesCreatePage,
+  foDefaultCartPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDiscountsPage,
   boDiscountsCreatePage,
   boDashboardPage,
@@ -18,15 +30,6 @@ import {
   dataStates,
   FakerAddress,
   FakerDiscount,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdSearchResultsPage,
-  foHummingbirdModalQuickViewPage,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyAddressesPage,
-  foHummingbirdMyAddressesCreatePage,
-  foHummingbirdCartPage,
   type Page,
   utilsCore,
   utilsPlaywright,
@@ -178,57 +181,57 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
       await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop', baseContext);
 
       page = await boDiscountsCreatePage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.equal(true);
     });
 
     it(`should search for the product '${dataProducts.demo_3.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct_demo3', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_3.name);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_3.name);
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it(`should add the product '${dataProducts.demo_3.name}' to the cart`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart_demo3', baseContext);
 
-      await foHummingbirdSearchResultsPage.quickViewProduct(page, 1);
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultSearchResultsPage.quickViewProduct(page, 1);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
-      const shoppingCarts = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const shoppingCarts = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(shoppingCarts).to.equal(1);
     });
 
     it('should add the discount and check the error message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addDiscountToCart_errorMessage_1', baseContext);
 
-      await foHummingbirdCartPage.addPromoCode(page, discountData.discountCode);
+      await foDefaultCartPage.addPromoCode(page, discountData.discountCode);
 
-      const cartRuleErrorMessage = await foHummingbirdCartPage.getCartRuleErrorMessage(page);
-      expect(cartRuleErrorMessage).to.equals(`${foHummingbirdCartPage.minimumAmountErrorMessage
+      const cartRuleErrorMessage = await foDefaultCartPage.getCartRuleErrorMessage(page);
+      expect(cartRuleErrorMessage).to.equals(`${foDefaultCartPage.minimumAmountErrorMessage
       } €${parseFloat(discountData.minimumAmountValue.toString()).toFixed(2)}.`);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginFO', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'customerLogin', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected).to.eq(true);
     });
 
@@ -236,39 +239,39 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
     it.skip('should go to account page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAccountPage_1', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
 
-      const pageTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdMyAccountPage.pageTitle);
+      const pageTitle = await foDefaultMyAccountPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultMyAccountPage.pageTitle);
     });
 
     // @todo : https://github.com/PrestaShop/PrestaShop/issues/39929
     it.skip('should go to the "Your addresses" page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAddressesPage_1', baseContext);
 
-      await foHummingbirdMyAccountPage.goToAddressesPage(page);
+      await foDefaultMyAccountPage.goToAddressesPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyAddressesPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAddressesPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyAddressesPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAddressesPage.pageTitle);
     });
 
     // @todo : https://github.com/PrestaShop/PrestaShop/issues/39929
     it.skip('should go to edit address page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToEditAddressPage_1', baseContext);
 
-      const addressPosition = await foHummingbirdMyAddressesPage.getAddressPosition(page, customerAddressUS.alias);
-      await foHummingbirdMyAddressesPage.goToEditAddressPage(page, addressPosition);
+      const addressPosition = await foDefaultMyAddressesPage.getAddressPosition(page, customerAddressUS.alias);
+      await foDefaultMyAddressesPage.goToEditAddressPage(page, addressPosition);
 
-      const pageHeaderTitle = await foHummingbirdMyAddressesCreatePage.getHeaderTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAddressesCreatePage.updateFormTitle);
+      const pageHeaderTitle = await foDefaultMyAddressesCreatePage.getHeaderTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAddressesCreatePage.updateFormTitle);
     });
 
     // @todo : https://github.com/PrestaShop/PrestaShop/issues/39929
     it.skip('should update the address', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'updateAddress_1', baseContext);
 
-      const textResult = await foHummingbirdMyAddressesCreatePage.setAddress(page, customerAddressUS);
-      expect(textResult).to.equal(foHummingbirdMyAddressesPage.updateAddressSuccessfulMessage);
+      const textResult = await foDefaultMyAddressesCreatePage.setAddress(page, customerAddressUS);
+      expect(textResult).to.equal(foDefaultMyAddressesPage.updateAddressSuccessfulMessage);
       await page.screenshot({
         path: `${global.SCREENSHOT.FOLDER}/updateAddress_1.png`,
         fullPage: true,
@@ -278,20 +281,20 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
     it(`should search for the product '${dataProducts.demo_5.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct_1', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_5.name);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_5.name);
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it(`should add the product '${dataProducts.demo_5.name}' to the cart`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart_1', baseContext);
 
-      await foHummingbirdSearchResultsPage.quickViewProduct(page, 1);
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultSearchResultsPage.quickViewProduct(page, 1);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
-      const shoppingCarts = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const shoppingCarts = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(shoppingCarts).to.equal(2);
     });
 
@@ -299,9 +302,9 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
     it.skip('should add the discount', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addDiscount', baseContext);
 
-      await foHummingbirdCartPage.addPromoCode(page, discountData.discountCode);
+      await foDefaultCartPage.addPromoCode(page, discountData.discountCode);
 
-      const cartRuleName = await foHummingbirdCartPage.getCartRuleName(page, 1);
+      const cartRuleName = await foDefaultCartPage.getCartRuleName(page, 1);
       expect(cartRuleName).to.contains(discountData.name);
     });
 
@@ -309,10 +312,10 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
     it.skip('should check the discount value', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscountValue1', baseContext);
 
-      const discountValue = await foHummingbirdCartPage.getCartRuleValue(page);
+      const discountValue = await foDefaultCartPage.getCartRuleValue(page);
       expect(discountValue).to.contains('Free');
 
-      const subTotalDiscount = await foHummingbirdCartPage.getSubtotalDiscountValue(page);
+      const subTotalDiscount = await foDefaultCartPage.getSubtotalDiscountValue(page);
       expect(subTotalDiscount.toString()).to.equal(`-${dataCarriers.myCarrier.price.toFixed(0)}`);
     });
 
@@ -320,7 +323,7 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
     it.skip('should check the shipping cost', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkShippingCost_1', baseContext);
 
-      const subTotalShipping = await foHummingbirdCartPage.getSubtotalShippingValue(page);
+      const subTotalShipping = await foDefaultCartPage.getSubtotalShippingValue(page);
       expect(subTotalShipping).to.equal('Free');
     });
 
@@ -332,7 +335,7 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
         - utilsCore.percentage(dataProducts.demo_3.price, dataProducts.demo_3.specificPrice.discount)
         + dataProducts.demo_5.priceTaxExcluded;
 
-      const totalAfterDiscount = await foHummingbirdCartPage.getATIPrice(page);
+      const totalAfterDiscount = await foDefaultCartPage.getATIPrice(page);
       expect(totalAfterDiscount.toString()).to.equal(totalBeforeDiscount.toFixed(2));
     });
   });
@@ -341,7 +344,7 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO', baseContext);
 
-      page = await foHummingbirdCartPage.changePage(browserContext, 0);
+      page = await foDefaultCartPage.changePage(browserContext, 0);
 
       const pageTitle = await boDiscountsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boDiscountsCreatePage.pageTitle);
@@ -361,14 +364,14 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
 
       await page.reload();
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultCartPage.pageTitle);
     });
 
     it('should check the shipping cost', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkShippingCost_2', baseContext);
 
-      const subTotalShipping = await foHummingbirdCartPage.getSubtotalShippingValue(page);
+      const subTotalShipping = await foDefaultCartPage.getSubtotalShippingValue(page);
       expect(subTotalShipping).to.equal(`€${dataCarriers.myCarrier.price.toFixed(2)}`);
     });
 
@@ -380,17 +383,17 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
         + dataProducts.demo_5.priceTaxExcluded
         + dataCarriers.myCarrier.price;
 
-      const atiPrice = await foHummingbirdCartPage.getATIPrice(page);
+      const atiPrice = await foDefaultCartPage.getATIPrice(page);
       expect(atiPrice.toString()).to.equal(total.toFixed(2));
     });
 
     it('should add the discount and check the error message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addDiscountToCart_errorMessage_2', baseContext);
 
-      await foHummingbirdCartPage.addPromoCode(page, discountData.discountCode);
+      await foDefaultCartPage.addPromoCode(page, discountData.discountCode);
 
-      const cartRuleErrorMessage = await foHummingbirdCartPage.getCartRuleErrorMessage(page);
-      expect(cartRuleErrorMessage).to.equals(foHummingbirdCartPage.cartRuleCannotUseVoucherCountryDelivery);
+      const cartRuleErrorMessage = await foDefaultCartPage.getCartRuleErrorMessage(page);
+      expect(cartRuleErrorMessage).to.equals(foDefaultCartPage.cartRuleCannotUseVoucherCountryDelivery);
     });
   });
 
@@ -399,7 +402,7 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO', baseContext);
 
-      page = await foHummingbirdCartPage.changePage(browserContext, 0);
+      page = await foDefaultCartPage.changePage(browserContext, 0);
 
       const pageTitle = await boDiscountsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boDiscountsCreatePage.pageTitle);
@@ -426,23 +429,23 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
 
       await page.reload();
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultCartPage.pageTitle);
     });
 
     it('should add the discount', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addDiscount', baseContext);
 
-      await foHummingbirdCartPage.addPromoCode(page, discountData.discountCode);
+      await foDefaultCartPage.addPromoCode(page, discountData.discountCode);
 
-      const cartRuleName = await foHummingbirdCartPage.getCartRuleName(page, 1);
+      const cartRuleName = await foDefaultCartPage.getCartRuleName(page, 1);
       expect(cartRuleName).to.contains(discountData.name);
     });
 
     it('should check the shipping cost', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkShippingCost_3', baseContext);
 
-      const subTotalShipping = await foHummingbirdCartPage.getSubtotalShippingValue(page);
+      const subTotalShipping = await foDefaultCartPage.getSubtotalShippingValue(page);
       expect(subTotalShipping).to.equal(`€${dataCarriers.myCarrier.price.toFixed(2)}`);
     });
 
@@ -454,17 +457,17 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
         + dataProducts.demo_5.priceTaxExcluded
         + dataCarriers.myCarrier.price;
 
-      const atiPrice = await foHummingbirdCartPage.getATIPrice(page);
+      const atiPrice = await foDefaultCartPage.getATIPrice(page);
       expect(atiPrice.toString()).to.equal(total.toFixed(2));
     });
 
     it('should add the discount and check the error message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addDiscountToCart_errorMessage_3', baseContext);
 
-      await foHummingbirdCartPage.addPromoCode(page, discountData.discountCode);
+      await foDefaultCartPage.addPromoCode(page, discountData.discountCode);
 
-      const cartRuleErrorMessage = await foHummingbirdCartPage.getCartRuleErrorMessage(page);
-      expect(cartRuleErrorMessage).to.equals(foHummingbirdCartPage.cartRuleCannotUseVoucherCountryDelivery);
+      const cartRuleErrorMessage = await foDefaultCartPage.getCartRuleErrorMessage(page);
+      expect(cartRuleErrorMessage).to.equals(foDefaultCartPage.cartRuleCannotUseVoucherCountryDelivery);
     });
   });
 
@@ -472,7 +475,7 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO_2', baseContext);
 
-      page = await foHummingbirdCartPage.changePage(browserContext, 0);
+      page = await foDefaultCartPage.changePage(browserContext, 0);
 
       const pageTitle = await boDiscountsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boDiscountsCreatePage.pageTitle);
@@ -503,21 +506,21 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
 
       page = await boDiscountsCreatePage.changePage(browserContext, 1);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultCartPage.pageTitle);
     });
 
     // @todo : https://github.com/PrestaShop/PrestaShop/issues/39929
     it.skip('should check the Total (tax incl.) after the discount', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkTotalAfterDiscount_4', baseContext);
 
-      await foHummingbirdCartPage.reloadPage(page);
+      await foDefaultCartPage.reloadPage(page);
       const total = dataProducts.demo_3.price
         - utilsCore.percentage(dataProducts.demo_3.price, dataProducts.demo_3.specificPrice.discount)
         + dataProducts.demo_5.priceTaxExcluded
         + dataCarriers.myCarrier.price;
 
-      const totalAfterDiscount = await foHummingbirdCartPage.getATIPrice(page);
+      const totalAfterDiscount = await foDefaultCartPage.getATIPrice(page);
       expect(totalAfterDiscount.toString()).to.equal(total.toFixed(2));
     });
   });
@@ -531,43 +534,43 @@ describe('BO - Catalog - Discounts : Minimum purchase amount (On free shipping)'
 
       await page.reload();
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultCartPage.pageTitle);
     });
 
     it('should go to account page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAccountPage_2', baseContext);
 
-      await foHummingbirdCartPage.goToMyAccountPage(page);
+      await foDefaultCartPage.goToMyAccountPage(page);
 
-      const pageTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdMyAccountPage.pageTitle);
+      const pageTitle = await foDefaultMyAccountPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultMyAccountPage.pageTitle);
     });
 
     it('should go to the "Your addresses" page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAddressesPage_2', baseContext);
 
-      await foHummingbirdMyAccountPage.goToAddressesPage(page);
+      await foDefaultMyAccountPage.goToAddressesPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyAddressesPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAddressesPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyAddressesPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAddressesPage.pageTitle);
     });
 
     it('should go to edit address page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToEditAddressPage_2', baseContext);
 
-      const addressPosition = await foHummingbirdMyAddressesPage.getAddressPosition(page, dataAddresses.address_2.alias);
-      await foHummingbirdMyAddressesPage.goToEditAddressPage(page, addressPosition);
+      const addressPosition = await foDefaultMyAddressesPage.getAddressPosition(page, dataAddresses.address_2.alias);
+      await foDefaultMyAddressesPage.goToEditAddressPage(page, addressPosition);
 
-      const pageHeaderTitle = await foHummingbirdMyAddressesCreatePage.getHeaderTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAddressesCreatePage.updateFormTitle);
+      const pageHeaderTitle = await foDefaultMyAddressesCreatePage.getHeaderTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAddressesCreatePage.updateFormTitle);
     });
 
     it('should update the address', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'updateAddress_2', baseContext);
 
-      const textResult = await foHummingbirdMyAddressesCreatePage.setAddress(page, dataAddresses.address_2);
-      expect(textResult).to.equal(foHummingbirdMyAddressesPage.updateAddressSuccessfulMessage);
+      const textResult = await foDefaultMyAddressesCreatePage.setAddress(page, dataAddresses.address_2);
+      expect(textResult).to.equal(foDefaultMyAddressesPage.updateAddressSuccessfulMessage);
 
       await page.screenshot({
         path: `${global.SCREENSHOT.FOLDER}/updateAddress_2.png`,

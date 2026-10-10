@@ -3,13 +3,16 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultCartPage,
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boOrderSettingsPage,
   type BrowserContext,
-  foHummingbirdCartPage,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -83,9 +86,9 @@ describe('BO - Shop Parameters - Order Settings : Test minimum purchase total re
       page = await boOrderSettingsPage.viewMyShop(page);
 
       // Change Fo language
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
@@ -93,12 +96,12 @@ describe('BO - Shop Parameters - Order Settings : Test minimum purchase total re
       await testContext.addContextItem(this, 'testIdentifier', `addProductToCart_${index}`, baseContext);
 
       // Go to the first product page
-      await foHummingbirdHomePage.goToProductPage(page, 1);
+      await foDefaultHomePage.goToProductPage(page, 1);
 
       // Add the created product to the cart
-      await foHummingbirdProductPage.addProductToTheCart(page);
+      await foDefaultProductPage.addProductToTheCart(page);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(index + 1);
     });
 
@@ -106,15 +109,15 @@ describe('BO - Shop Parameters - Order Settings : Test minimum purchase total re
       await testContext.addContextItem(this, 'testIdentifier', `checkMinimumPurchaseTotal_${index}`, baseContext);
 
       // Check proceed to checkout button enable/disable
-      const isDisabled = await foHummingbirdCartPage.isProceedToCheckoutButtonDisabled(page);
+      const isDisabled = await foDefaultCartPage.isProceedToCheckoutButtonDisabled(page);
       expect(isDisabled).to.equal(test.args.disable);
 
       // Check alert message
-      const isAlertVisible = await foHummingbirdCartPage.isAlertWarningForMinimumPurchaseVisible(page);
+      const isAlertVisible = await foDefaultCartPage.isAlertWarningForMinimumPurchaseVisible(page);
       expect(isAlertVisible).to.equal(test.args.alertMessage);
 
       if (isAlertVisible) {
-        const alertText = await foHummingbirdCartPage.getAlertWarning(page);
+        const alertText = await foDefaultCartPage.getAlertWarning(page);
         expect(alertText).to.contains(alertMessage);
       }
     });
@@ -122,7 +125,7 @@ describe('BO - Shop Parameters - Order Settings : Test minimum purchase total re
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `BackToBO${index}`, baseContext);
 
-      page = await foHummingbirdCartPage.closePage(browserContext, page, 0);
+      page = await foDefaultCartPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boOrderSettingsPage.getPageTitle(page);
       expect(pageTitle).to.contains(boOrderSettingsPage.pageTitle);

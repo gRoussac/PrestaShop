@@ -2,13 +2,16 @@ import {expect} from 'chai';
 import testContext from '@utils/testContext';
 
 import {
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
   boProductsCreatePage,
   type BrowserContext,
   FakerProduct,
-  foHummingbirdProductPage,
   type Page,
   utilsCore,
   utilsPlaywright,
@@ -121,16 +124,16 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
 
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check all product information', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkProductInformation', baseContext);
 
-      const result = await foHummingbirdProductPage.getProductInformation(page);
+      const result = await foDefaultProductPage.getProductInformation(page);
       await Promise.all([
         expect(result.name).to.equal(newProductData.name),
         expect(result.price).to.equal(newProductData.price),
@@ -143,7 +146,7 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO', baseContext);
 
       // Go back to BO
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -164,9 +167,9 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
 
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(editProductData.name);
     });
 
@@ -175,7 +178,7 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
 
       const taxValue = utilsCore.percentage(editProductData.priceTaxExcluded, 10);
 
-      const result = await foHummingbirdProductPage.getProductInformation(page);
+      const result = await foDefaultProductPage.getProductInformation(page);
       await Promise.all([
         expect(result.name).to.equal(editProductData.name),
         expect(result.price).to.equal(editProductData.priceTaxExcluded + taxValue),
@@ -187,7 +190,7 @@ describe('BO - Catalog - Products : CRUD virtual product', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO2', baseContext);
 
       // Go back to BO
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);

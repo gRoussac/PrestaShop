@@ -2,14 +2,17 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boSeoUrlsPage,
   type BrowserContext,
   dataAttributes,
   dataProducts,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -86,9 +89,9 @@ describe('BO - Shop Parameters - Traffic & SEO : Enable/Disable display attribut
       // Go to FO
       page = await boSeoUrlsPage.viewMyShop(page);
       // Change FO language
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -96,9 +99,9 @@ describe('BO - Shop Parameters - Traffic & SEO : Enable/Disable display attribut
       await testContext.addContextItem(this, 'testIdentifier', `checkTitle_${index}`, baseContext);
 
       // Go to the first product page
-      await foHummingbirdHomePage.goToProductPage(page, 1);
+      await foDefaultHomePage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.equal(test.args.metaTitle);
     });
 
@@ -106,7 +109,7 @@ describe('BO - Shop Parameters - Traffic & SEO : Enable/Disable display attribut
       await testContext.addContextItem(this, 'testIdentifier', `goBackToBo_${index}`, baseContext);
 
       // Close page and init page objects
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boSeoUrlsPage.getPageTitle(page);
       expect(pageTitle).to.contains(boSeoUrlsPage.pageTitle);

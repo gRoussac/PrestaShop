@@ -4,13 +4,16 @@ import {expect} from 'chai';
 import {deleteProductTest} from '@commonTests/BO/catalog/product';
 
 import {
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
   boProductsCreatePage,
   type BrowserContext,
   FakerProduct,
-  foHummingbirdProductPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -100,14 +103,14 @@ describe('FO - Menu and Navigation - Navigate and display : Display "On sale!" b
 
       page = await boProductsCreatePage.previewProduct(page);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(onSaleProductData.name);
     });
 
     it('should check the discount flag', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscountTag', baseContext);
 
-      const flagText = await foHummingbirdProductPage.getProductTag(page);
+      const flagText = await foDefaultProductPage.getProductTag(page);
       expect(flagText).to.contains('On sale!');
     });
   });

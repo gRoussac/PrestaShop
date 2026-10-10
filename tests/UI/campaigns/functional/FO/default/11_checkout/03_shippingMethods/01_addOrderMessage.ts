@@ -2,19 +2,22 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultCheckoutOrderConfirmationPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyOrderDetailsPage,
+  foDefaultMyOrderHistoryPage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataCarriers,
   dataCustomers,
   dataPaymentMethods,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdCheckoutOrderConfirmationPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyOrderDetailsPage,
-  foHummingbirdMyOrderHistoryPage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -56,30 +59,30 @@ describe('FO - Checkout - Shipping methods : Add order message', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
       // Go to FO
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
       // Change FO language
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPageFO', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with customer credentials', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFO', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
@@ -87,13 +90,13 @@ describe('FO - Checkout - Shipping methods : Add order message', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
       // Go to home page
-      await foHummingbirdLoginPage.goToHomePage(page);
+      await foDefaultLoginPage.goToHomePage(page);
       // Go to the first product page
-      await foHummingbirdHomePage.goToProductPage(page, 1);
+      await foDefaultHomePage.goToProductPage(page, 1);
       // Add the product to the cart
-      await foHummingbirdProductPage.addProductToTheCart(page);
+      await foDefaultProductPage.addProductToTheCart(page);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(1);
     });
 
@@ -101,17 +104,17 @@ describe('FO - Checkout - Shipping methods : Add order message', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goToDeliveryStep', baseContext);
 
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
       // Address step - Go to delivery step
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
     });
 
     it(`should select '${dataCarriers.myCarrier.name}' and add a message`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sendMessage', baseContext);
 
-      const isPaymentStepDisplayed = await foHummingbirdCheckoutPage.chooseShippingMethodAndAddComment(
+      const isPaymentStepDisplayed = await foDefaultCheckoutPage.chooseShippingMethodAndAddComment(
         page,
         dataCarriers.myCarrier.id,
         message,
@@ -122,47 +125,47 @@ describe('FO - Checkout - Shipping methods : Add order message', async () => {
     it('should click on edit \'Shipping methods\' step and check the order message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnEditShippingStep', baseContext);
 
-      await foHummingbirdCheckoutPage.clickOnEditShippingMethodStep(page);
+      await foDefaultCheckoutPage.clickOnEditShippingMethodStep(page);
 
-      const orderMessage = await foHummingbirdCheckoutPage.getOrderMessage(page);
+      const orderMessage = await foDefaultCheckoutPage.getOrderMessage(page);
       expect(orderMessage).to.equal(message);
     });
 
     it(`should choose the other carrier '${dataCarriers.clickAndCollect.name}' and edit the order message`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'chooseAnotherCarrier', baseContext);
 
-      await foHummingbirdCheckoutPage.chooseShippingMethodWithoutValidation(page, dataCarriers.clickAndCollect.id, editMessage);
+      await foDefaultCheckoutPage.chooseShippingMethodWithoutValidation(page, dataCarriers.clickAndCollect.id, editMessage);
 
-      const isPaymentStep = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+      const isPaymentStep = await foDefaultCheckoutPage.goToPaymentStep(page);
       expect(isPaymentStep).to.eq(true);
     });
 
     it('should choose a payment method and validate the order', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'choosePaymentMethod', baseContext);
 
-      await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
+      await foDefaultCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
 
       // Check the confirmation message
-      const cardTitle: string = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-      expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+      const cardTitle: string = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+      expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
     });
 
     it('should go to order history and details page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToOrderHistoryPage', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
-      await foHummingbirdMyAccountPage.goToHistoryAndDetailsPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
+      await foDefaultMyAccountPage.goToHistoryAndDetailsPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyOrderHistoryPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyOrderHistoryPage.pageTitle);
     });
 
     it('should go to order details and check the messages box', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFoToOrderDetailsPage', baseContext);
 
-      await foHummingbirdMyOrderHistoryPage.goToDetailsPage(page);
+      await foDefaultMyOrderHistoryPage.goToDetailsPage(page);
 
-      const orderMessage = await foHummingbirdMyOrderDetailsPage.getBoxMessages(page);
+      const orderMessage = await foDefaultMyOrderDetailsPage.getBoxMessages(page);
       expect(orderMessage).to.contain(editMessage);
     });
   });

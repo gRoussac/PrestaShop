@@ -3,13 +3,16 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
   type BrowserContext,
   dataModules,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
   modPsFacetedsearchBoFilterTemplate,
   modPsFacetedsearchBoMain,
   type Page,
@@ -107,29 +110,29 @@ describe('Faceted search module - Reset module', async () => {
 
     page = await modPsFacetedsearchBoMain.viewMyShop(page);
 
-    const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+    const isHomePage = await foDefaultHomePage.isHomePage(page);
     expect(isHomePage).to.be.eq(true);
   });
 
   it('should check the "All products" page', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'goToAllProductsPage', baseContext);
 
-    await foHummingbirdHomePage.goToAllProductsPage(page);
+    await foDefaultHomePage.goToAllProductsPage(page);
 
-    const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+    const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
     expect(isCategoryPageVisible).to.be.eq(true);
 
-    const hasSearchFilters = await foHummingbirdCategoryPage.hasSearchFilters(page);
+    const hasSearchFilters = await foDefaultCategoryPage.hasSearchFilters(page);
     expect(hasSearchFilters).to.be.eq(true);
 
-    const hasSearchFilterType = await foHummingbirdCategoryPage.hasSearchFilterType(page, 'price', 'Price');
+    const hasSearchFilterType = await foDefaultCategoryPage.hasSearchFilterType(page, 'price', 'Price');
     expect(hasSearchFilterType).to.be.eq(false);
   });
 
   it('should close the page and return to the backOffice', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'closePageFo', baseContext);
 
-    page = await foHummingbirdCategoryPage.closePage(browserContext, page, 0);
+    page = await foDefaultCategoryPage.closePage(browserContext, page, 0);
 
     const pageTitle = await modPsFacetedsearchBoMain.getPageSubtitle(page);
     expect(pageTitle).to.eq(modPsFacetedsearchBoMain.pageSubTitle);
@@ -196,22 +199,22 @@ describe('Faceted search module - Reset module', async () => {
 
     page = await modPsFacetedsearchBoMain.viewMyShop(page);
 
-    const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+    const isHomePage = await foDefaultHomePage.isHomePage(page);
     expect(isHomePage).to.be.eq(true);
   });
 
   it('should check the "All products" page', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'goToAllProductsPage1', baseContext);
 
-    await foHummingbirdHomePage.goToAllProductsPage(page);
+    await foDefaultHomePage.goToAllProductsPage(page);
 
-    const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+    const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
     expect(isCategoryPageVisible).to.be.eq(true);
 
-    const hasSearchFilters = await foHummingbirdCategoryPage.hasSearchFilters(page);
+    const hasSearchFilters = await foDefaultCategoryPage.hasSearchFilters(page);
     expect(hasSearchFilters).to.be.eq(true);
 
-    const hasSearchFilterType = await foHummingbirdCategoryPage.hasSearchFilterType(page, 'price', 'Price');
+    const hasSearchFilterType = await foDefaultCategoryPage.hasSearchFilterType(page, 'price', 'Price');
     expect(hasSearchFilterType).to.be.eq(true);
   });
 });

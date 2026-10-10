@@ -3,10 +3,13 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultModalQuickViewPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataProducts,
-  foHummingbirdHomePage,
-  foHummingbirdModalQuickViewPage,
   type Page,
   type ProductAttribute,
   utilsPlaywright,
@@ -41,25 +44,25 @@ describe('FO - Product page - Quick view : Display of the product', async () => 
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.equal(true);
     });
 
     it('should quick view the third product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'quickView', baseContext);
 
-      await foHummingbirdHomePage.quickViewProduct(page, 3);
+      await foDefaultHomePage.quickViewProduct(page, 3);
 
-      const isModalVisible = await foHummingbirdModalQuickViewPage.isQuickViewProductModalVisible(page);
+      const isModalVisible = await foDefaultModalQuickViewPage.isQuickViewProductModalVisible(page);
       expect(isModalVisible).to.equal(true);
     });
 
     it('should check product details', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkProductDetails', baseContext);
 
-      const result = await foHummingbirdModalQuickViewPage.getProductDetailsFromQuickViewModal(page);
+      const result = await foDefaultModalQuickViewPage.getProductDetailsFromQuickViewModal(page);
       await Promise.all([
         expect(result.name).to.equal(dataProducts.demo_6.name),
         expect(result.price).to.equal(dataProducts.demo_6.combinations[0].priceTI),
@@ -69,7 +72,7 @@ describe('FO - Product page - Quick view : Display of the product', async () => 
         expect(result.thumbImage).to.contains(dataProducts.demo_6.thumbImage),
       ]);
 
-      const resultAttributes = await foHummingbirdModalQuickViewPage.getSelectedAttributesFromQuickViewModal(page, attributes);
+      const resultAttributes = await foDefaultModalQuickViewPage.getSelectedAttributesFromQuickViewModal(page, attributes);
       expect(resultAttributes.length).to.equal(1);
       expect(resultAttributes[0].name).to.equal('dimension');
       expect(resultAttributes[0].value).to.equal('40x60cm');
@@ -78,14 +81,14 @@ describe('FO - Product page - Quick view : Display of the product', async () => 
     it('should check the product cover image', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkProductImage', baseContext);
 
-      const quickViewImageMain = await foHummingbirdModalQuickViewPage.getQuickViewImageMain(page);
+      const quickViewImageMain = await foDefaultModalQuickViewPage.getQuickViewImageMain(page);
       expect(quickViewImageMain).to.contains(dataProducts.demo_6.coverImage);
     });
 
     it('should check that \'Add to cart\' button is enabled', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkAddToCartButton', baseContext);
 
-      const isEnabled = await foHummingbirdModalQuickViewPage.isAddToCartButtonEnabled(page);
+      const isEnabled = await foDefaultModalQuickViewPage.isAddToCartButtonEnabled(page);
       expect(isEnabled, 'Add to cart button is disabled').to.equal(true);
     });
   });

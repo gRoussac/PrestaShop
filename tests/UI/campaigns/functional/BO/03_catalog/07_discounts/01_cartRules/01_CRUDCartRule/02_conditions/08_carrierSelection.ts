@@ -5,6 +5,13 @@ import {expect} from 'chai';
 import {deleteCartRuleTest} from '@commonTests/BO/catalog/cartRule';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCartRulesPage,
   boCartRulesCreatePage,
   boDashboardPage,
@@ -14,10 +21,6 @@ import {
   dataCustomers,
   dataProducts,
   FakerCartRule,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -109,9 +112,9 @@ describe('BO - Catalog - Cart rules : Carrier selection', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop1', baseContext);
 
       page = await boCartRulesCreatePage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
   });
@@ -120,73 +123,73 @@ describe('BO - Catalog - Cart rules : Carrier selection', async () => {
     it('should go to the third product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFirstProductPage', baseContext);
 
-      await foHummingbirdHomePage.goToProductPage(page, 3);
+      await foDefaultHomePage.goToProductPage(page, 3);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle.toUpperCase()).to.contains(dataProducts.demo_6.name.toUpperCase());
     });
 
     it('should add product to cart and proceed to checkout', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdProductPage.addProductToTheCart(page);
+      await foDefaultProductPage.addProductToTheCart(page);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(1);
     });
 
     it('should add the promo code and check the error message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkErrorMessage', baseContext);
 
-      await foHummingbirdCartPage.addPromoCode(page, newCartRuleData.code);
+      await foDefaultCartPage.addPromoCode(page, newCartRuleData.code);
 
-      const alertMessage = await foHummingbirdCartPage.getCartRuleErrorMessage(page);
-      expect(alertMessage).to.equal(foHummingbirdCartPage.cartRuleChooseCarrierAlertMessageText);
+      const alertMessage = await foDefaultCartPage.getCartRuleErrorMessage(page);
+      expect(alertMessage).to.equal(foDefaultCartPage.cartRuleChooseCarrierAlertMessageText);
     });
 
     it('should proceed to checkout', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'proceedToCheckout', baseContext);
 
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const isCheckout = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckout = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckout).to.eq(true);
     });
 
     it('should sign in by default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFO', baseContext);
 
-      await foHummingbirdCheckoutPage.clickOnSignIn(page);
+      await foDefaultCheckoutPage.clickOnSignIn(page);
 
-      const isCustomerConnected = await foHummingbirdCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
+      const isCustomerConnected = await foDefaultCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to delivery step', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'confirmAddressStep', baseContext);
 
-      const isDeliveryStep = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isDeliveryStep = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isDeliveryStep, 'Delivery Step block is not displayed').to.eq(true);
     });
 
     it('should set the promo code and choose the wrong shipping method', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'chooseWrongShippingMethod', baseContext);
 
-      await foHummingbirdCheckoutPage.chooseShippingMethodAndAddComment(page, dataCarriers.clickAndCollect.id);
-      await foHummingbirdCheckoutPage.addPromoCode(page, newCartRuleData.code);
+      await foDefaultCheckoutPage.chooseShippingMethodAndAddComment(page, dataCarriers.clickAndCollect.id);
+      await foDefaultCheckoutPage.addPromoCode(page, newCartRuleData.code);
 
-      const errorShippingMessage = await foHummingbirdCheckoutPage.getCartRuleErrorMessage(page);
-      expect(errorShippingMessage).to.equal(foHummingbirdCartPage.cartRuleCannotUseVoucherAlertMessageText);
+      const errorShippingMessage = await foDefaultCheckoutPage.getCartRuleErrorMessage(page);
+      expect(errorShippingMessage).to.equal(foDefaultCartPage.cartRuleCannotUseVoucherAlertMessageText);
     });
 
     it('should choose the restricted shipping method and continue', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'chooseShippingMethod', baseContext);
 
-      await foHummingbirdCheckoutPage.goToShippingStep(page);
+      await foDefaultCheckoutPage.goToShippingStep(page);
 
-      await foHummingbirdCheckoutPage.chooseShippingMethodAndAddComment(page, dataCarriers.myCarrier.id);
+      await foDefaultCheckoutPage.chooseShippingMethodAndAddComment(page, dataCarriers.myCarrier.id);
 
-      const priceATI = await foHummingbirdCheckoutPage.getATIPrice(page);
+      const priceATI = await foDefaultCheckoutPage.getATIPrice(page);
       expect(priceATI.toFixed(2))
         .to.equal((dataProducts.demo_6.combinations[0].priceTI + dataCarriers.myCarrier.priceTTC).toFixed(2));
     });
@@ -194,32 +197,32 @@ describe('BO - Catalog - Cart rules : Carrier selection', async () => {
     it('should set the promo code for second time and check total after discount', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setPromoCode', baseContext);
 
-      await foHummingbirdCheckoutPage.addPromoCode(page, newCartRuleData.code);
+      await foDefaultCheckoutPage.addPromoCode(page, newCartRuleData.code);
 
       const totalAfterDiscount = dataProducts.demo_6.combinations[0].priceTI
         - newCartRuleDiscount + dataCarriers.myCarrier.priceTTC;
 
-      const priceATI = await foHummingbirdCheckoutPage.getATIPrice(page);
+      const priceATI = await foDefaultCheckoutPage.getATIPrice(page);
       expect(priceATI.toFixed(2)).to.equal(totalAfterDiscount.toFixed(2));
     });
 
     it('should go to Home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToHomePage', baseContext);
 
-      await foHummingbirdHomePage.clickOnHeaderLink(page, 'Logo');
+      await foDefaultHomePage.clickOnHeaderLink(page, 'Logo');
 
-      const pageTitle = await foHummingbirdHomePage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdHomePage.pageTitle);
+      const pageTitle = await foDefaultHomePage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultHomePage.pageTitle);
     });
 
     it('should go to cart page and delete the product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'deleteProduct', baseContext);
 
-      await foHummingbirdHomePage.goToCartPage(page);
+      await foDefaultHomePage.goToCartPage(page);
 
-      await foHummingbirdCartPage.deleteProduct(page, 1);
+      await foDefaultCartPage.deleteProduct(page, 1);
 
-      const notificationNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationNumber).to.be.equal(0);
     });
   });

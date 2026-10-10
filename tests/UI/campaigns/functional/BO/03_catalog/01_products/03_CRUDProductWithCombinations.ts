@@ -2,6 +2,10 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boAttributesPage,
   boDashboardPage,
   boLoginPage,
@@ -11,7 +15,6 @@ import {
   boProductsCreateTabPricingPage,
   type BrowserContext,
   FakerProduct,
-  foHummingbirdProductPage,
   type Page,
   type ProductAttributes,
   type ProductCombinationBulk,
@@ -549,9 +552,9 @@ describe('BO - Catalog - Products : CRUD product with combinations', async () =>
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
 
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
@@ -560,7 +563,7 @@ describe('BO - Catalog - Products : CRUD product with combinations', async () =>
 
       const taxValue = utilsCore.percentage(pricingData.priceTaxExcluded + secondCombinationData.impactOnPriceTExc, 20);
 
-      const result = await foHummingbirdProductPage.getProductInformation(page);
+      const result = await foDefaultProductPage.getProductInformation(page);
       await Promise.all([
         expect(result.name).to.equal(newProductData.name),
         expect(result.price).to.equal(pricingData.priceTaxExcluded + secondCombinationData.impactOnPriceTExc + taxValue),
@@ -568,7 +571,7 @@ describe('BO - Catalog - Products : CRUD product with combinations', async () =>
         expect(result.description).to.equal(newProductData.description),
       ]);
 
-      const productAttributes = await foHummingbirdProductPage.getProductAttributes(page);
+      const productAttributes = await foDefaultProductPage.getProductAttributes(page);
       await Promise.all([
         expect(productAttributes[0].name).to.equal(newProductData.attributes[0].name),
         expect(productAttributes[0].value).to.equal(newProductData.attributes[0].values.join(' ')),
@@ -583,7 +586,7 @@ describe('BO - Catalog - Products : CRUD product with combinations', async () =>
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO1', baseContext);
 
       // Go back to BO
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle: string = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -635,23 +638,23 @@ describe('BO - Catalog - Products : CRUD product with combinations', async () =>
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
 
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(editProductData.name);
     });
 
     it('should check all product information', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkEditedProductInformation', baseContext);
 
-      const result = await foHummingbirdProductPage.getProductInformation(page);
+      const result = await foDefaultProductPage.getProductInformation(page);
       await Promise.all([
         expect(result.name).to.equal(editProductData.name),
         expect(result.price).to.equal(editProductData.price + secondCombinationData.impactOnPriceTExc),
         expect(result.description).to.equal(editProductData.description),
       ]);
 
-      const productAttributes = await foHummingbirdProductPage.getProductAttributes(page);
+      const productAttributes = await foDefaultProductPage.getProductAttributes(page);
       await Promise.all([
         expect(productAttributes[0].name).to.equal(editProductAttributesData[0].name),
         expect(productAttributes[0].value).to.equal(editProductAttributesData[0].values.join(' ')),
@@ -664,7 +667,7 @@ describe('BO - Catalog - Products : CRUD product with combinations', async () =>
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO2', baseContext);
 
       // Go back to BO
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);

@@ -2,6 +2,12 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultCategoryPage,
+  foDefaultSitemapPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCategoriesPage,
   boCategoriesCreatePage,
   boDashboardPage,
@@ -9,9 +15,6 @@ import {
   type BrowserContext,
   dataCategories,
   FakerCategory,
-  foHummingbirdHomePage,
-  foHummingbirdCategoryPage,
-  foHummingbirdSitemapPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -86,33 +89,33 @@ describe('BO - Catalog - Categories : Edit home category', async () => {
     // View Shop
     page = await boCategoriesPage.viewMyShop(page);
     // Change FO language
-    await foHummingbirdHomePage.changeLanguage(page, 'en');
+    await foDefaultHomePage.changeLanguage(page, 'en');
 
-    const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+    const isHomePage = await foDefaultHomePage.isHomePage(page);
     expect(isHomePage).to.eq(true);
 
     // Go to sitemap page
-    await foHummingbirdHomePage.goToFooterLink(page, 'Sitemap');
+    await foDefaultHomePage.goToFooterLink(page, 'Sitemap');
 
-    const pageTitle = await foHummingbirdSitemapPage.getPageTitle(page);
-    expect(pageTitle).to.equal(foHummingbirdSitemapPage.pageTitle);
+    const pageTitle = await foDefaultSitemapPage.getPageTitle(page);
+    expect(pageTitle).to.equal(foDefaultSitemapPage.pageTitle);
 
     // Check category name
-    const categoryName = await foHummingbirdSitemapPage.getCategoryName(page, categoryID);
+    const categoryName = await foDefaultSitemapPage.getCategoryName(page, categoryID);
     expect(categoryName).to.contains(editCategoryData.name);
   });
 
   it('should view the created category', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'viewCreatedCategoryFO', baseContext);
 
-    await foHummingbirdSitemapPage.viewCreatedCategory(page, categoryID);
+    await foDefaultSitemapPage.viewCreatedCategory(page, categoryID);
 
     // Check category name
-    const pageTitle = await foHummingbirdCategoryPage.getHeaderPageName(page);
+    const pageTitle = await foDefaultCategoryPage.getHeaderPageName(page);
     expect(pageTitle).to.contains(editCategoryData.name);
 
     // Check category description
-    const categoryDescription = await foHummingbirdCategoryPage.getCategoryDescription(page);
+    const categoryDescription = await foDefaultCategoryPage.getCategoryDescription(page);
     expect(categoryDescription).to.equal(editCategoryData.description);
   });
 
@@ -120,7 +123,7 @@ describe('BO - Catalog - Categories : Edit home category', async () => {
     await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo', baseContext);
 
     // Close tab and init other page objects with new current tab
-    page = await foHummingbirdCategoryPage.closePage(browserContext, page, 0);
+    page = await foDefaultCategoryPage.closePage(browserContext, page, 0);
 
     const pageTitle = await boCategoriesPage.getPageTitle(page);
     expect(pageTitle).to.contains(boCategoriesPage.pageTitle);

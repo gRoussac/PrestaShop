@@ -3,6 +3,13 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCountriesPage,
   boDashboardPage,
   boLoginPage,
@@ -15,10 +22,6 @@ import {
   dataProducts,
   FakerAddress,
   FakerCountry,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -174,56 +177,56 @@ describe('FO - Checkout - Addresses: Select address', async () => {
       it('should go to FO', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
-        await foHummingbirdHomePage.goToFo(page);
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.goToFo(page);
+        await foDefaultHomePage.changeLanguage(page, 'en');
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.equal(true);
       });
 
       it('should go to the fourth product page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage', baseContext);
 
-        await foHummingbirdHomePage.goToProductPage(page, 4);
+        await foDefaultHomePage.goToProductPage(page, 4);
 
-        const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+        const pageTitle = await foDefaultProductPage.getPageTitle(page);
         expect(pageTitle).to.contains(dataProducts.demo_5.name);
       });
 
       it('should add product to cart and go to cart page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-        await foHummingbirdProductPage.addProductToTheCart(page, 1);
+        await foDefaultProductPage.addProductToTheCart(page, 1);
 
-        const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+        const pageTitle = await foDefaultCartPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
       });
 
       it('should validate shopping cart and go to checkout page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToCheckoutPage', baseContext);
 
         // Proceed to checkout the shopping cart
-        await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+        await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-        const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+        const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
         expect(isCheckoutPage).to.equal(true);
       });
 
       it('should sign in with default customer', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'fillCustomerInformation', baseContext);
 
-        await foHummingbirdCheckoutPage.clickOnSignIn(page);
+        await foDefaultCheckoutPage.clickOnSignIn(page);
 
-        const isStepCompleted = await foHummingbirdCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
+        const isStepCompleted = await foDefaultCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
         expect(isStepCompleted).to.equal(true);
       });
 
       it('should choose the third address', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'chooseThirdAddress', baseContext);
 
-        await foHummingbirdCheckoutPage.selectDeliveryAddress(page, 1);
+        await foDefaultCheckoutPage.selectDeliveryAddress(page, 1);
 
-        const isStepCompleted = await foHummingbirdCheckoutPage.clickOnContinueButtonFromAddressStep(page);
+        const isStepCompleted = await foDefaultCheckoutPage.clickOnContinueButtonFromAddressStep(page);
         expect(isStepCompleted).to.eq(true);
       });
 
@@ -231,14 +234,14 @@ describe('FO - Checkout - Addresses: Select address', async () => {
         await testContext.addContextItem(this, 'testIdentifier', 'continueToPaymentStep', baseContext);
 
         // Delivery step - Go to payment step
-        const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+        const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
         expect(isStepDeliveryComplete, 'Step Address is not complete').to.equal(true);
       });
 
       it('should check that no payment method is available', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'checkNoPaymentMethodAvailable', baseContext);
 
-        const alertMessage = await foHummingbirdCheckoutPage.getNoPaymentAvailableMessage(page);
+        const alertMessage = await foDefaultCheckoutPage.getNoPaymentAvailableMessage(page);
         expect(alertMessage).to.equal('Unfortunately, there is no payment method available.');
       });
     });

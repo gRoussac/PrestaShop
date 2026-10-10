@@ -2,6 +2,10 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
@@ -10,7 +14,6 @@ import {
   boShopParametersPage,
   type BrowserContext,
   dataProducts,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -117,20 +120,20 @@ describe('BO - Shop Parameters - General : Enable/Disable Allow iframes on HTML 
         await testContext.addContextItem(this, 'testIdentifier', `previewProduct${index}`, baseContext);
 
         page = await boProductsCreatePage.previewProduct(page);
-        await foHummingbirdProductPage.changeLanguage(page, 'en');
+        await foDefaultProductPage.changeLanguage(page, 'en');
 
-        const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+        const pageTitle = await foDefaultProductPage.getPageTitle(page);
         expect(pageTitle).to.contains(dataProducts.demo_14.name);
       });
 
       it('should check the existence of the iframe in the product description', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `checkIframe${index}`, baseContext);
 
-        const isIframeVisible = await foHummingbirdProductPage.isIframeVisibleInProductDescription(page);
+        const isIframeVisible = await foDefaultProductPage.isIframeVisibleInProductDescription(page);
         expect(isIframeVisible).to.equal(arg.exist);
 
         if (arg.exist) {
-          const youtubeURL = await foHummingbirdProductPage.getURLInProductDescription(page);
+          const youtubeURL = await foDefaultProductPage.getURLInProductDescription(page);
           expect(youtubeURL).to.equal('https://www.youtube.com/embed/3qcApq8NMhw?si=0O8BBWjbJ7gJRkoi');
         }
       });
@@ -138,7 +141,7 @@ describe('BO - Shop Parameters - General : Enable/Disable Allow iframes on HTML 
       it('should go back to BO', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `goBackToBo${index}`, baseContext);
 
-        page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+        page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
         const pageTitle = await boProductsCreatePage.getPageTitle(page);
         expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);

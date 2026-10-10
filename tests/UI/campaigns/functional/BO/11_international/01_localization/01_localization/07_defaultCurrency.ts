@@ -2,6 +2,10 @@
 import testContext from '@utils/testContext';
 
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boCurrenciesPage,
   boLanguagesPage,
   boDashboardPage,
@@ -10,7 +14,6 @@ import {
   type BrowserContext,
   dataCurrencies,
   dataLanguages,
-  foHummingbirdHomePage,
   type ImportContent,
   type Page,
   utilsPlaywright,
@@ -145,14 +148,14 @@ describe('BO - International - Localization : Update default currency', async ()
         // View my shop and init pages
         page = await boLocalizationPage.viewMyShop(page);
 
-        const defaultCurrency = await foHummingbirdHomePage.getDefaultCurrency(page);
+        const defaultCurrency = await foDefaultHomePage.getDefaultCurrency(page);
         expect(defaultCurrency).to.equal(test.args.currency);
       });
 
       it('should go back to BO', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `goBackToBo${index}`, baseContext);
 
-        page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+        page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
         const pageTitle = await boLocalizationPage.getPageTitle(page);
         expect(pageTitle).to.contains(boLocalizationPage.pageTitle);

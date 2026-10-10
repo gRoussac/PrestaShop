@@ -2,11 +2,14 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultHomePage,
+  foDefaultModalBlockCartPage,
+  foDefaultModalQuickViewPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
-  foHummingbirdCartPage,
-  foHummingbirdHomePage,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdModalQuickViewPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -35,127 +38,127 @@ describe('FO - Cart : Change quantity', async () => {
     it('should go to FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToFo(page);
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.equal(true);
     });
 
     it('should add the first product to cart and proceed to checkout', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addFirstProductToCart', baseContext);
 
-      await foHummingbirdHomePage.quickViewProduct(page, 1);
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultHomePage.quickViewProduct(page, 1);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should increase the product quantity by the touchSpin up to 5', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'increaseQuantity5', baseContext);
 
-      const quantity = await foHummingbirdCartPage.setProductQuantity(page, 1, 5);
+      const quantity = await foDefaultCartPage.setProductQuantity(page, 1, 5);
       expect(quantity).to.equal(5);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(5);
     });
 
     it('should decrease the product quantity by the touchSpin down to 2', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'decreaseQuantity2', baseContext);
 
-      const quantity = await foHummingbirdCartPage.setProductQuantity(page, 1, 2);
+      const quantity = await foDefaultCartPage.setProductQuantity(page, 1, 2);
       expect(quantity).to.equal(2);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(2);
     });
 
     it('should set the quantity 3 in the input', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setQuantity3', baseContext);
 
-      await foHummingbirdCartPage.editProductQuantity(page, 1, 3);
+      await foDefaultCartPage.editProductQuantity(page, 1, 3);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(3);
     });
 
     it('should set the quantity -6 in the input', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setQuantity-6', baseContext);
 
-      await foHummingbirdCartPage.deleteProduct(page, 1);
+      await foDefaultCartPage.deleteProduct(page, 1);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(0);
     });
 
     it('should go to home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToHomePage2', baseContext);
 
-      await foHummingbirdCartPage.goToHomePage(page);
+      await foDefaultCartPage.goToHomePage(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.equal(true);
     });
 
     it('should add the first product to cart and proceed to checkout', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addFirstProductToCart2', baseContext);
 
-      await foHummingbirdHomePage.quickViewProduct(page, 1);
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultHomePage.quickViewProduct(page, 1);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should set the quantity +6 in the input', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setQuantity+6', baseContext);
 
-      await foHummingbirdCartPage.editProductQuantity(page, 1, +6);
+      await foDefaultCartPage.editProductQuantity(page, 1, +6);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(6);
     });
 
     it('should set the quantity 64 in the input', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setQuantity64', baseContext);
 
-      await foHummingbirdCartPage.editProductQuantity(page, 1, 64);
+      await foDefaultCartPage.editProductQuantity(page, 1, 64);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(64);
     });
 
     it('should set the quantity 2400 in the input & check the error message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setQuantity2400', baseContext);
 
-      await foHummingbirdCartPage.editProductQuantity(page, 1, 2400);
+      await foDefaultCartPage.editProductQuantity(page, 1, 2400);
 
-      const alertText = await foHummingbirdCartPage.getNotificationMessage(page);
-      expect(alertText).to.contains(foHummingbirdCartPage.errorNotificationForProductQuantity(300));
+      const alertText = await foDefaultCartPage.getNotificationMessage(page);
+      expect(alertText).to.contains(foDefaultCartPage.errorNotificationForProductQuantity(300));
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(300);
     });
 
     it('should set the quantity 3 in the input without validation', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setQuantityWithoutValidation', baseContext);
 
-      await foHummingbirdCartPage.setQuantity(page, 1, 3);
+      await foDefaultCartPage.setQuantity(page, 1, 3);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(300);
     });
 
     it('should set the quantity 0 in the input', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'setQuantity', baseContext);
 
-      await foHummingbirdCartPage.editProductQuantity(page, 1, 0);
+      await foDefaultCartPage.editProductQuantity(page, 1, 0);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(1);
     });
   });

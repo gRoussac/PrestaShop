@@ -9,6 +9,14 @@ import {createAccountTest} from '@commonTests/FO/default/account';
 import {createOrderByCustomerTest} from '@commonTests/FO/default/order';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyCreditSlipsPage,
+  foDefaultMyOrderDetailsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boOrdersPage,
@@ -22,11 +30,6 @@ import {
   FakerAddress,
   FakerCustomer,
   FakerOrder,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyCreditSlipsPage,
-  foHummingbirdMyOrderDetailsPage,
   type MailDev,
   type MailDevEmail,
   type Page,
@@ -114,53 +117,53 @@ describe('FO - Consult credit slip list & View PDF Credit slip & View order', as
       it('should go to FO home page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToShopFO', baseContext);
 
-        await foHummingbirdHomePage.goTo(page, global.FO.URL);
+        await foDefaultHomePage.goTo(page, global.FO.URL);
 
-        const result = await foHummingbirdHomePage.isHomePage(page);
+        const result = await foDefaultHomePage.isHomePage(page);
         expect(result).to.eq(true);
       });
 
       it('should go to login page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPage', baseContext);
 
-        await foHummingbirdHomePage.goToLoginPage(page);
+        await foDefaultHomePage.goToLoginPage(page);
 
-        const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdLoginPage.pageTitle);
+        const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultLoginPage.pageTitle);
       });
 
       it('should login', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'loginFO', baseContext);
 
-        await foHummingbirdLoginPage.customerLogin(page, customerData);
+        await foDefaultLoginPage.customerLogin(page, customerData);
 
-        const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+        const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
         expect(isCustomerConnected, 'Customer is not connected!').to.eq(true);
       });
 
       it('should go to my account page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToMyAccountPage1', baseContext);
 
-        await foHummingbirdHomePage.goToMyAccountPage(page);
+        await foDefaultHomePage.goToMyAccountPage(page);
 
-        const pageTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdMyAccountPage.pageTitle);
+        const pageTitle = await foDefaultMyAccountPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultMyAccountPage.pageTitle);
       });
 
       it('should go credit slips page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goTofoHummingbirdMyCreditSlipsPage1', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'goTofoDefaultMyCreditSlipsPage1', baseContext);
 
-        await foHummingbirdMyAccountPage.goToCreditSlipsPage(page);
+        await foDefaultMyAccountPage.goToCreditSlipsPage(page);
 
-        const pageTitle = await foHummingbirdMyCreditSlipsPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdMyCreditSlipsPage.pageTitle);
+        const pageTitle = await foDefaultMyCreditSlipsPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultMyCreditSlipsPage.pageTitle);
       });
 
       it('should check there no credit slips', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'checkNoCreditSlips', baseContext);
 
-        const alertInfoMessage = await foHummingbirdMyCreditSlipsPage.getAlertInfoMessage(page);
-        expect(alertInfoMessage).to.equal(foHummingbirdMyCreditSlipsPage.noCreditSlipsInfoMessage);
+        const alertInfoMessage = await foDefaultMyCreditSlipsPage.getAlertInfoMessage(page);
+        expect(alertInfoMessage).to.equal(foDefaultMyCreditSlipsPage.noCreditSlipsInfoMessage);
       });
     });
 
@@ -263,54 +266,54 @@ describe('FO - Consult credit slip list & View PDF Credit slip & View order', as
 
         // View my shop and init pages
         page = await boOrdersViewBasePage.viewMyShop(page);
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.changeLanguage(page, 'en');
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.eq(true);
       });
 
       it('should go to my account page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToMyAccountPage2', baseContext);
 
-        await foHummingbirdHomePage.goToMyAccountPage(page);
+        await foDefaultHomePage.goToMyAccountPage(page);
 
-        const pageTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdMyAccountPage.pageTitle);
+        const pageTitle = await foDefaultMyAccountPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultMyAccountPage.pageTitle);
       });
 
       it('should go credit slips page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goTofoHummingbirdMyCreditSlipsPage2', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'goTofoDefaultMyCreditSlipsPage2', baseContext);
 
-        await foHummingbirdMyAccountPage.goToCreditSlipsPage(page);
+        await foDefaultMyAccountPage.goToCreditSlipsPage(page);
 
-        const pageTitle = await foHummingbirdMyCreditSlipsPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdMyCreditSlipsPage.pageTitle);
+        const pageTitle = await foDefaultMyCreditSlipsPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultMyCreditSlipsPage.pageTitle);
       });
 
       it('should check the number of credit slips', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'checkNumberCreditSlips', baseContext);
 
-        const numberCreditSlips = await foHummingbirdMyCreditSlipsPage.getNumberOfCreditSlips(page);
+        const numberCreditSlips = await foDefaultMyCreditSlipsPage.getNumberOfCreditSlips(page);
         expect(numberCreditSlips).to.equal(1);
       });
 
       it('should check that the \'Order reference, Credit Slip ID, Date Issued\' are correct', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'checkCreditSlipInfo', baseContext);
 
-        const creditSlipOrderReference = await foHummingbirdMyCreditSlipsPage.getOrderReference(page, 1);
+        const creditSlipOrderReference = await foDefaultMyCreditSlipsPage.getOrderReference(page, 1);
         expect(creditSlipOrderReference).to.equal(orderReference);
 
-        const creditSlipOrderIdentifier = await foHummingbirdMyCreditSlipsPage.getCreditSlipID(page, 1);
+        const creditSlipOrderIdentifier = await foDefaultMyCreditSlipsPage.getCreditSlipID(page, 1);
         expect(parseInt(creditSlipOrderIdentifier.replace('#', ''), 10)).to.equal(parseInt(creditSlipID, 10));
 
-        const creditSlipDateIssued = await foHummingbirdMyCreditSlipsPage.getDateIssued(page, 1);
+        const creditSlipDateIssued = await foDefaultMyCreditSlipsPage.getDateIssued(page, 1);
         expect(creditSlipDateIssued).to.equal(dateIssued);
       });
 
       it('should click on the PDF Icon on the "View credit slip" column', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'clickOnViewCreditSlip', baseContext);
 
-        filePath = await foHummingbirdMyCreditSlipsPage.downloadCreditSlip(page, 1);
+        filePath = await foDefaultMyCreditSlipsPage.downloadCreditSlip(page, 1);
 
         const found = await utilsFile.doesFileExist(filePath);
         expect(found, 'PDF file was not downloaded').to.eq(true);
@@ -350,28 +353,28 @@ describe('FO - Consult credit slip list & View PDF Credit slip & View order', as
       it('should click on the order Reference link', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'clickOrderReferenceLink', baseContext);
 
-        await foHummingbirdMyCreditSlipsPage.clickOrderReference(page, 1);
+        await foDefaultMyCreditSlipsPage.clickOrderReference(page, 1);
 
-        const pageTitle = await foHummingbirdMyOrderDetailsPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdMyOrderDetailsPage.pageTitle);
+        const pageTitle = await foDefaultMyOrderDetailsPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultMyOrderDetailsPage.pageTitle);
       });
 
       it('should go to credit slips page', async function () {
-        await testContext.addContextItem(this, 'testIdentifier', 'goTofoHummingbirdMyCreditSlipsPage4', baseContext);
+        await testContext.addContextItem(this, 'testIdentifier', 'goTofoDefaultMyCreditSlipsPage4', baseContext);
 
-        await foHummingbirdMyAccountPage.goToCreditSlipsPage(page);
+        await foDefaultMyAccountPage.goToCreditSlipsPage(page);
 
-        const foHummingbirdMyCreditSlipsPageTitle = await foHummingbirdMyCreditSlipsPage.getPageTitle(page);
-        expect(foHummingbirdMyCreditSlipsPageTitle).to.equal(foHummingbirdMyCreditSlipsPage.pageTitle);
+        const foDefaultMyCreditSlipsPageTitle = await foDefaultMyCreditSlipsPage.getPageTitle(page);
+        expect(foDefaultMyCreditSlipsPageTitle).to.equal(foDefaultMyCreditSlipsPage.pageTitle);
       });
 
       it('should click on the "Home" link', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'clickHomeLink', baseContext);
 
-        await foHummingbirdMyCreditSlipsPage.clickHomeLink(page);
+        await foDefaultMyCreditSlipsPage.clickHomeLink(page);
 
-        const homePageTitle = await foHummingbirdHomePage.getPageTitle(page);
-        expect(homePageTitle).to.equal(foHummingbirdHomePage.pageTitle);
+        const homePageTitle = await foDefaultHomePage.getPageTitle(page);
+        expect(homePageTitle).to.equal(foDefaultHomePage.pageTitle);
       });
     });
   });

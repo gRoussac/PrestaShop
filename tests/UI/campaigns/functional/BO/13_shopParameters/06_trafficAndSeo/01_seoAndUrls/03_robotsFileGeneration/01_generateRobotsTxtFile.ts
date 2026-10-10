@@ -2,6 +2,10 @@ import {expect} from 'chai';
 import testContext from '@utils/testContext';
 
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLanguagesPage,
   boLoginPage,
@@ -10,7 +14,6 @@ import {
   boTranslationsPage,
   type BrowserContext,
   dataLanguages,
-  foHummingbirdHomePage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -77,7 +80,7 @@ describe('BO - Shop Parameters - Traffic & SEO : Generate robots.txt file', asyn
     const hasText = await utilsFile.isTextInFile('robots.txt', `/${dataLanguages.deutsch.isoCode}/`);
     expect(hasText).to.eq(false);
 
-    page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+    page = await foDefaultHomePage.closePage(browserContext, page, 0);
   });
 
   it('should go to \'International > Translations\' page', async function () {
@@ -134,7 +137,7 @@ describe('BO - Shop Parameters - Traffic & SEO : Generate robots.txt file', asyn
     const hasText = await utilsFile.isTextInFile('robots.txt', `/${dataLanguages.deutsch.isoCode}/`);
     expect(hasText).to.eq(true);
 
-    page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+    page = await foDefaultHomePage.closePage(browserContext, page, 0);
   });
 
   // Post-condition: delete German language
