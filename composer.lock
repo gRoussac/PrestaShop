@@ -203,7 +203,7 @@
             ],
             "authors": [
                 {
-                    "name": "Kévin Dunglas",
+                    "name": "K\u00e9vin Dunglas",
                     "email": "kevin@dunglas.fr",
                     "homepage": "https://dunglas.fr"
                 }
@@ -2328,7 +2328,7 @@
                     "role": "Owner"
                 },
                 {
-                    "name": "André Rothe",
+                    "name": "Andr\u00e9 Rothe",
                     "email": "phosco@gmx.de",
                     "homepage": "https://www.phosco.info",
                     "role": "Committer"
@@ -2709,7 +2709,7 @@
             ],
             "authors": [
                 {
-                    "name": "Luís Cobucci",
+                    "name": "Lu\u00eds Cobucci",
                     "email": "lcobucci@gmail.com"
                 }
             ],
@@ -2777,7 +2777,7 @@
             ],
             "authors": [
                 {
-                    "name": "Luís Cobucci",
+                    "name": "Lu\u00eds Cobucci",
                     "email": "lcobucci@gmail.com",
                     "role": "Developer"
                 }
@@ -3167,7 +3167,7 @@
                     "email": "pabs@pablotron.org"
                 },
                 {
-                    "name": "Jonatan Männchen",
+                    "name": "Jonatan M\u00e4nnchen",
                     "email": "jonatan@maennchen.ch"
                 },
                 {
@@ -3175,7 +3175,7 @@
                     "email": "donatj@gmail.com"
                 },
                 {
-                    "name": "András Kolesár",
+                    "name": "Andr\u00e1s Koles\u00e1r",
                     "email": "kolesar@kolesar.hu"
                 }
             ],
@@ -4289,7 +4289,7 @@
                     "email": "github@oliverklee.de"
                 },
                 {
-                    "name": "Zoli Szabó",
+                    "name": "Zoli Szab\u00f3",
                     "email": "zoli.szabo+github@gmail.com"
                 },
                 {
@@ -8819,7 +8819,7 @@
                     "email": "fabien@symfony.com"
                 },
                 {
-                    "name": "Jean-François Simon",
+                    "name": "Jean-Fran\u00e7ois Simon",
                     "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
@@ -10634,7 +10634,7 @@
             ],
             "authors": [
                 {
-                    "name": "Jérémy Derussé",
+                    "name": "J\u00e9r\u00e9my Deruss\u00e9",
                     "email": "jeremy@derusse.com"
                 },
                 {
@@ -12344,7 +12344,7 @@
             ],
             "authors": [
                 {
-                    "name": "Kévin Dunglas",
+                    "name": "K\u00e9vin Dunglas",
                     "email": "dunglas@gmail.com"
                 },
                 {
@@ -13785,7 +13785,7 @@
                     "email": "kevinbond@gmail.com"
                 },
                 {
-                    "name": "Simon André",
+                    "name": "Simon Andr\u00e9",
                     "email": "smn.andre@gmail.com"
                 },
                 {
@@ -14225,7 +14225,7 @@
             ],
             "authors": [
                 {
-                    "name": "Kévin Dunglas",
+                    "name": "K\u00e9vin Dunglas",
                     "email": "dunglas@gmail.com"
                 },
                 {
@@ -14738,7 +14738,7 @@
             ],
             "authors": [
                 {
-                    "name": "Túbal Martín",
+                    "name": "T\u00fabal Mart\u00edn",
                     "homepage": "http://tubalmartin.me/"
                 }
             ],
@@ -15505,7 +15505,7 @@
             ],
             "authors": [
                 {
-                    "name": "Andreas Möller",
+                    "name": "Andreas M\u00f6ller",
                     "email": "am@localheinz.com",
                     "homepage": "https://localheinz.com"
                 }
@@ -15576,7 +15576,7 @@
             ],
             "authors": [
                 {
-                    "name": "Andreas Möller",
+                    "name": "Andreas M\u00f6ller",
                     "email": "am@localheinz.com",
                     "homepage": "https://localheinz.com"
                 }
@@ -15657,7 +15657,7 @@
             ],
             "authors": [
                 {
-                    "name": "Andreas Möller",
+                    "name": "Andreas M\u00f6ller",
                     "email": "am@localheinz.com",
                     "homepage": "https://localheinz.com"
                 }
@@ -15729,7 +15729,7 @@
             ],
             "authors": [
                 {
-                    "name": "Andreas Möller",
+                    "name": "Andreas M\u00f6ller",
                     "email": "am@localheinz.com",
                     "homepage": "https://localheinz.com"
                 }
@@ -15794,7 +15794,7 @@
             ],
             "authors": [
                 {
-                    "name": "Andreas Möller",
+                    "name": "Andreas M\u00f6ller",
                     "email": "am@localheinz.com",
                     "homepage": "https://localheinz.com"
                 }
@@ -15871,7 +15871,7 @@
             ],
             "authors": [
                 {
-                    "name": "Andreas Möller",
+                    "name": "Andreas M\u00f6ller",
                     "email": "am@localheinz.com",
                     "homepage": "https://localheinz.com"
                 }
@@ -15960,7 +15960,7 @@
                     "email": "fabien@symfony.com"
                 },
                 {
-                    "name": "Dariusz Rumiński",
+                    "name": "Dariusz Rumi\u0144ski",
                     "email": "dariusz.ruminski@gmail.com"
                 }
             ],
@@ -16042,7 +16042,7 @@
                     "email": "igor@wiedler.ch"
                 },
                 {
-                    "name": "Robert Schönthal",
+                    "name": "Robert Sch\u00f6nthal",
                     "email": "seroscho@googlemail.com"
                 }
             ],
@@ -17975,29 +17975,30 @@
         },
         {
             "name": "spaze/phpstan-disallowed-calls",
-            "version": "v2.10.0",
+            "version": "v4.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spaze/phpstan-disallowed-calls.git",
-                "reference": "332969d0aa67ddb8597c2f1248268d69ebf5f9c7"
+                "reference": "90210a86e93e3a96f9a7fded9f5a8b3ee40925dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spaze/phpstan-disallowed-calls/zipball/332969d0aa67ddb8597c2f1248268d69ebf5f9c7",
-                "reference": "332969d0aa67ddb8597c2f1248268d69ebf5f9c7",
+                "url": "https://api.github.com/repos/spaze/phpstan-disallowed-calls/zipball/90210a86e93e3a96f9a7fded9f5a8b3ee40925dd",
+                "reference": "90210a86e93e3a96f9a7fded9f5a8b3ee40925dd",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.2 || ^8.0",
-                "phpstan/phpstan": "^1.0"
+                "php": "^7.4 || ^8.0",
+                "phpstan/phpstan": "^1.12.6 || ^2.0"
             },
             "require-dev": {
-                "nette/neon": "^3.2",
-                "nikic/php-parser": "^4.13",
+                "nette/neon": "^3.3.1",
                 "php-parallel-lint/php-console-highlighter": "^1.0",
                 "php-parallel-lint/php-parallel-lint": "^1.2",
-                "phpunit/phpunit": "^7.0 || ^9.4.2",
-                "spaze/coding-standard": "^1.3"
+                "phpstan/phpstan-deprecation-rules": "^1.2 || ^2.0",
+                "phpunit/phpunit": "^9.6 || ^10.1 || ^11.0 || ^12.0 || ^13.0",
+                "shipmonk/dead-code-detector": "^1.1",
+                "spaze/coding-standard": "^1.8"
             },
             "type": "phpstan-extension",
             "extra": {
@@ -18018,20 +18019,26 @@
             ],
             "authors": [
                 {
-                    "name": "Michal Špaček",
+                    "name": "Michal \u0160pa\u010dek",
                     "email": "mail@michalspacek.cz",
                     "homepage": "https://www.michalspacek.cz"
                 }
             ],
-            "description": "PHPStan rules to detect disallowed method & function calls, constant, namespace & superglobal usages",
+            "description": "PHPStan rules to detect disallowed method & function calls, constant, namespace, attribute, property & superglobal usages, with powerful rules to re-allow a call or a usage in places where it should be allowed.",
             "keywords": [
                 "static analysis"
             ],
             "support": {
                 "issues": "https://github.com/spaze/phpstan-disallowed-calls/issues",
-                "source": "https://github.com/spaze/phpstan-disallowed-calls/tree/v2.10.0"
+                "source": "https://github.com/spaze/phpstan-disallowed-calls/tree/v4.14.0"
             },
-            "time": "2022-11-23T04:26:38+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/spaze",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-08-02T15:18:24+00:00"
         },
         {
             "name": "symfony/browser-kit",
