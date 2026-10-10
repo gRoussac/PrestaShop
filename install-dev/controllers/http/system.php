@@ -41,7 +41,8 @@ class InstallControllerHttpSystem extends InstallControllerHttp implements HttpC
     {
         $this->tests['required'] = $this->model_system->checkRequiredTests();
 
-        return $this->tests['required']['success'];
+        // checkRequiredTests() exposes success as 0|1 (legacy int flags).
+        return (bool) $this->tests['required']['success'];
     }
 
     /**
