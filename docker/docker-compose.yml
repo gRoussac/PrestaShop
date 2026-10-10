@@ -1,5 +1,9 @@
-volumes:
-  db-data:
+# Local stack: Apache + PHP-FPM + MySQL + Maildev
+# From repo root: make docker-up
+# FO: http://localhost:8001 / https://localhost:8002
+# Maildev UI: http://localhost:1080
+
+name: prestashop
 
 services:
   mysql:
@@ -11,62 +15,63 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWD:-prestashop}
       MYSQL_DATABASE: ${DB_NAME:-prestashop}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
     restart: unless-stopped
-    networks:
-      - prestashop-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
 
-  prestashop-git:
-    hostname: ${PS_HOSTNAME:-localhost}
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-      args:
-        - VERSION=${VERSION:-8.1-apache}
-        - USER_ID=${USER_ID:-1000}
-        - GROUP_ID=${GROUP_ID:-1000}
-        - NODE_VERSION=${NODE_VERSION:-20.19.5}
-        - INSTALL_XDEBUG=${INSTALL_XDEBUG:-false}
-        - TIMEZONE=${TIMEZONE:-UTC}
+  php:
+    build: ./docker/php
+    volumes:
+      - .:/var/www/html
     environment:
-      DISABLE_MAKE: ${DISABLE_MAKE:-0}
-      PS_INSTALL_AUTO: ${PS_INSTALL_AUTO:-1}
-      DB_PASSWD: ${DB_PASSWD:-prestashop}
-      DB_NAME: ${DB_NAME:-prestashop}
       DB_SERVER: ${DB_SERVER:-mysql}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_NAME: ${DB_NAME:-prestashop}
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWD: ${DB_PASSWD:-prestashop}
       DB_PREFIX: ${DB_PREFIX:-ps_}
       PS_DOMAIN: ${PS_DOMAIN:-localhost:8001}
       PS_FOLDER_INSTALL: ${PS_FOLDER_INSTALL:-install-dev}
       PS_FOLDER_ADMIN: ${PS_FOLDER_ADMIN:-admin-dev}
       PS_COUNTRY: ${PS_COUNTRY:-fr}
       PS_LANGUAGE: ${PS_LANGUAGE:-en}
-      PS_DEV_MODE: ${PS_DEV_MODE:-1}
       PS_ENABLE_SSL: ${PS_ENABLE_SSL:-0}
-      PS_ERASE_DB: ${PS_ERASE_DB:-0}
-      PS_USE_DOCKER_MAILDEV: ${PS_USE_DOCKER_MAILDEV:-1}
+      PS_INSTALL_DEMO_PRODUCTS: ${PS_INSTALL_DEMO_PRODUCTS:-1}
+      PS_ALL_LANGUAGES: ${PS_ALL_LANGUAGES:-0}
       ADMIN_MAIL: ${ADMIN_MAIL:-demo@prestashop.com}
       ADMIN_PASSWD: ${ADMIN_PASSWD:-Pr3st4Sh0P}
-      BLACKFIRE_ENABLE: ${BLACKFIRE_ENABLE:-0}
-      BLACKFIRE_SERVER_ID: ${BLACKFIRE_SERVER_ID:-0}
-      BLACKFIRE_SERVER_TOKEN: ${BLACKFIRE_SERVER_TOKEN:-0}
-    command: /tmp/wait-for-it.sh --timeout=60 --strict mysql:3306 -- /tmp/docker_run_git.sh
+      ADMIN_FIRSTNAME: ${ADMIN_FIRSTNAME:-John}
+      ADMIN_LASTNAME: ${ADMIN_LASTNAME:-Doe}
+      PS_USE_DOCKER_MAILDEV: ${PS_USE_DOCKER_MAILDEV:-1}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  apache:
+    build: ./docker/apache
     ports:
       - "8001:80"
       - "8002:443"
-    depends_on:
-      - mysql
     volumes:
-      - .:/var/www/html
-    networks:
-      - prestashop-network
+      - .:/var/www/html:ro
+    depends_on:
+      - php
+    restart: unless-stopped
 
   maildev:
-    image: 'maildev/maildev'
+    image: maildev/maildev:2.1.0
     ports:
       - "1080:1080"
       - "1025:1025"
-    networks:
-      - prestashop-network
+    restart: unless-stopped
 
-networks:
-  prestashop-network:
-    name: prestashop-network
+volumes:
+  db-data:

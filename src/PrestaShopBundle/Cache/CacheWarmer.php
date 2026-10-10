@@ -21,7 +21,6 @@ class CacheWarmer implements CacheWarmerInterface
     public function warmUp($cacheDir)
     {
         $legacyDirs = [
-            $cacheDir . DIRECTORY_SEPARATOR . 'cachefs',
             $cacheDir . DIRECTORY_SEPARATOR . 'purifier',
             $cacheDir . DIRECTORY_SEPARATOR . 'push',
             $cacheDir . DIRECTORY_SEPARATOR . 'sandbox',

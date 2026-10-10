@@ -1,0 +1,12 @@
+# Overlay: run MariaDB instead of MySQL (same service name `mysql`).
+#   docker compose -f docker/docker-compose.yml -f docker/compose.mariadb.yml --project-directory . up -d
+
+services:
+  mysql:
+    image: mariadb:11.4
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
