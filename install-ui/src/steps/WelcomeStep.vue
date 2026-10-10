@@ -6,7 +6,12 @@ const data = bootstrap.stepData || {};
 const language = ref(data.language || "");
 
 watch(language, () => {
-  document.getElementById("mainForm")?.requestSubmit();
+  // Native submit: language reload only (no submitNext). Do not use requestSubmit()
+  // with a Next submitter or the wizard would advance unexpectedly.
+  const form = document.getElementById("mainForm");
+  if (form) {
+    HTMLFormElement.prototype.submit.call(form);
+  }
 });
 </script>
 
