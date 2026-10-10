@@ -2,13 +2,16 @@
 import testContext from '@utils/testContext';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataCustomers,
   FakerCustomer,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -45,79 +48,79 @@ describe('FO - Checkout - Personal information : Sign in', async () => {
     it('should open FO page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'openFO', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToFo(page);
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should add product to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdHomePage.goToProductPage(page, 1);
-      await foHummingbirdProductPage.addProductToTheCart(page, 1);
+      await foDefaultHomePage.goToProductPage(page, 1);
+      await foDefaultProductPage.addProductToTheCart(page, 1);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should proceed to checkout validate the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'validateCart', baseContext);
 
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage).to.eq(true);
     });
 
     it('should enter an invalid credentials', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'enterInvalidCredentials', baseContext);
 
-      await foHummingbirdCheckoutPage.clickOnSignIn(page);
+      await foDefaultCheckoutPage.clickOnSignIn(page);
 
-      const isCustomerConnected = await foHummingbirdCheckoutPage.customerLogin(page, credentialsData);
+      const isCustomerConnected = await foDefaultCheckoutPage.customerLogin(page, credentialsData);
       expect(isCustomerConnected, 'Customer is connected').to.eq(false);
 
-      const loginError = await foHummingbirdCheckoutPage.getLoginError(page);
-      expect(loginError).to.contains(foHummingbirdCheckoutPage.authenticationErrorMessage);
+      const loginError = await foDefaultCheckoutPage.getLoginError(page);
+      expect(loginError).to.contains(foDefaultCheckoutPage.authenticationErrorMessage);
     });
 
     it('should sign in with customer credentials', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signIn', baseContext);
 
-      const isCustomerConnected = await foHummingbirdCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
+      const isCustomerConnected = await foDefaultCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should click on edit Personal information step and get the identity of the customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCustomerIdentity', baseContext);
 
-      await foHummingbirdCheckoutPage.clickOnEditPersonalInformationStep(page);
+      await foDefaultCheckoutPage.clickOnEditPersonalInformationStep(page);
 
-      const customerIdentity = await foHummingbirdCheckoutPage.getCustomerIdentity(page);
+      const customerIdentity = await foDefaultCheckoutPage.getCustomerIdentity(page);
       expect(customerIdentity).to.equal(`${dataCustomers.johnDoe.firstName} ${dataCustomers.johnDoe.lastName}`);
     });
 
     it('should check the existence of the text message \'If you sign out now, your cart will be emptied.\'', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkMessage', baseContext);
 
-      const message = await foHummingbirdCheckoutPage.getLogoutMessage(page);
-      expect(message).to.equal(foHummingbirdCheckoutPage.messageIfYouSignOut);
+      const message = await foDefaultCheckoutPage.getLogoutMessage(page);
+      expect(message).to.equal(foDefaultCheckoutPage.messageIfYouSignOut);
     });
 
     it('should logout and check that the customer is no longer connected', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'logout', baseContext);
 
-      const isCustomerConnected = await foHummingbirdCheckoutPage.logOutCustomer(page);
+      const isCustomerConnected = await foDefaultCheckoutPage.logOutCustomer(page);
       expect(isCustomerConnected, 'Customer is still connected').to.eq(false);
     });
 
     it('should check the message \'There are no more items in your cart\' in shopping cart page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNoItemsNumber', baseContext);
 
-      const message = await foHummingbirdCartPage.getNoItemsInYourCartMessage(page);
-      expect(message).to.equal(foHummingbirdCartPage.noItemsInYourCartMessage);
+      const message = await foDefaultCartPage.getNoItemsInYourCartMessage(page);
+      expect(message).to.equal(foDefaultCartPage.noItemsInYourCartMessage);
     });
   });
 });

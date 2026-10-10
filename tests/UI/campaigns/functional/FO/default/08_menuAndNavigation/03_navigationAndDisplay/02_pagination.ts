@@ -3,12 +3,15 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductSettingsPage,
   type BrowserContext,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -45,58 +48,58 @@ describe('FO - Menu and Navigation - Navigate and display : Pagination', async (
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'openShopPage', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should go to all products page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAllProducts', baseContext);
 
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
-      await foHummingbirdHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
+      await foDefaultHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
 
-      const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+      const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
       expect(isCategoryPageVisible, 'Home category page was not opened').to.equal(true);
     });
 
     it('should check the number of products on the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'numberOfProducts', baseContext);
 
-      const numberOfProducts = await foHummingbirdCategoryPage.getNumberOfProducts(page);
+      const numberOfProducts = await foDefaultCategoryPage.getNumberOfProducts(page);
       expect(numberOfProducts).to.equal(19);
     });
 
     it('should check the pagination in the bottom of the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkPaginationLabel', baseContext);
 
-      const pagesList = await foHummingbirdCategoryPage.getPagesList(page);
+      const pagesList = await foDefaultCategoryPage.getPagesList(page);
       expect(pagesList).to.contain('1 2 Next');
     });
 
     it('should click on next', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnNext', baseContext);
 
-      await foHummingbirdCategoryPage.goToNextPage(page);
+      await foDefaultCategoryPage.goToNextPage(page);
 
-      const numberOfItems = await foHummingbirdCategoryPage.getShowingItems(page);
+      const numberOfItems = await foDefaultCategoryPage.getShowingItems(page);
       expect(numberOfItems).to.equal('Showing 13-19 of 19 item(s)');
     });
 
     it('should check the pagination in the bottom of the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkPaginationLabel1', baseContext);
 
-      const pagesList = await foHummingbirdCategoryPage.getPagesList(page);
+      const pagesList = await foDefaultCategoryPage.getPagesList(page);
       expect(pagesList).to.contain('Previous 1 2');
     });
 
     it('should click on previous', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnPrevious', baseContext);
 
-      await foHummingbirdCategoryPage.goToPreviousPage(page);
+      await foDefaultCategoryPage.goToPreviousPage(page);
 
-      const numberOfItems = await foHummingbirdCategoryPage.getShowingItems(page);
+      const numberOfItems = await foDefaultCategoryPage.getShowingItems(page);
       expect(numberOfItems).to.equal('Showing 1-12 of 19 item(s)');
     });
   });
@@ -138,58 +141,58 @@ describe('FO - Menu and Navigation - Navigate and display : Pagination', async (
       await testContext.addContextItem(this, 'testIdentifier', 'goToShopFO1', baseContext);
 
       page = await boProductSettingsPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should go to all products page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAllProducts1', baseContext);
 
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
-      await foHummingbirdHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
+      await foDefaultHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
 
-      const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+      const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
       expect(isCategoryPageVisible, 'Home category page was not opened').to.equal(true);
     });
 
     it('should check the number of products on the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'numberOfProducts2', baseContext);
 
-      const numberOfProducts = await foHummingbirdCategoryPage.getNumberOfProducts(page);
+      const numberOfProducts = await foDefaultCategoryPage.getNumberOfProducts(page);
       expect(numberOfProducts).to.equal(19);
     });
 
     it('should check the pagination in the bottom of the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkPaginationLabel2', baseContext);
 
-      const pagesList = await foHummingbirdCategoryPage.getPagesList(page);
+      const pagesList = await foDefaultCategoryPage.getPagesList(page);
       expect(pagesList).to.contain('1 2 3 4 Next');
     });
 
     it('should click on next', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnNext1', baseContext);
 
-      await foHummingbirdCategoryPage.goToNextPage(page);
+      await foDefaultCategoryPage.goToNextPage(page);
 
-      const numberOfItems = await foHummingbirdCategoryPage.getShowingItems(page);
+      const numberOfItems = await foDefaultCategoryPage.getShowingItems(page);
       expect(numberOfItems).to.equal('Showing 7-12 of 19 item(s)');
     });
 
     it('should check the pagination in the bottom of the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkPaginationLabel3', baseContext);
 
-      const pagesList = await foHummingbirdCategoryPage.getPagesList(page);
+      const pagesList = await foDefaultCategoryPage.getPagesList(page);
       expect(pagesList).to.contain('Previous 1 2 3 4 Next');
     });
 
     it('should click on previous', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnPrevious1', baseContext);
 
-      await foHummingbirdCategoryPage.goToPreviousPage(page);
+      await foDefaultCategoryPage.goToPreviousPage(page);
 
-      const numberOfItems = await foHummingbirdCategoryPage.getShowingItems(page);
+      const numberOfItems = await foDefaultCategoryPage.getShowingItems(page);
       expect(numberOfItems).to.equal('Showing 1-6 of 19 item(s)');
     });
   });
@@ -198,7 +201,7 @@ describe('FO - Menu and Navigation - Navigate and display : Pagination', async (
     it('should close the FO page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closeFOPage', baseContext);
 
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductSettingsPage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductSettingsPage.pageTitle);
@@ -217,33 +220,33 @@ describe('FO - Menu and Navigation - Navigate and display : Pagination', async (
       await testContext.addContextItem(this, 'testIdentifier', 'goToShopFO2', baseContext);
 
       page = await boProductSettingsPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should go to all products page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAllProducts2', baseContext);
 
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
-      await foHummingbirdHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
+      await foDefaultHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
 
-      const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+      const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
       expect(isCategoryPageVisible, 'Home category page was not opened').to.equal(true);
     });
 
     it('should check the number of products on the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'numberOfProducts3', baseContext);
 
-      const numberOfProducts = await foHummingbirdCategoryPage.getNumberOfProducts(page);
+      const numberOfProducts = await foDefaultCategoryPage.getNumberOfProducts(page);
       expect(numberOfProducts).to.equal(19);
     });
 
     it('should check that the pagination label is not visible', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkPaginationLabel4', baseContext);
 
-      const isVisible = await foHummingbirdCategoryPage.isPagesListVisible(page);
+      const isVisible = await foDefaultCategoryPage.isPagesListVisible(page);
       expect(isVisible).to.equal(false);
     });
   });
@@ -253,7 +256,7 @@ describe('FO - Menu and Navigation - Navigate and display : Pagination', async (
     it('should go back BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO4', baseContext);
 
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductSettingsPage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductSettingsPage.pageTitle);

@@ -6,13 +6,16 @@ import {setupSmtpConfigTest, resetSmtpConfigTest} from '@commonTests/BO/advanced
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
   type BrowserContext,
   dataModules,
   foClassicEmailSubscriptionPage,
-  foHummingbirdHomePage,
   type MailDev,
   type MailDevEmail,
   modPsEmailSubscriptionBoMain,
@@ -128,15 +131,15 @@ describe('Mail alerts module - Enable/Disable send a confirmation email after su
 
       page = await modPsEmailSubscriptionBoMain.viewMyShop(page);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should subscribe to newsletter', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'subscribeToNewsletter', baseContext);
 
-      const newsletterSubscribeAlertMessage = await foHummingbirdHomePage.subscribeToNewsletter(page, 'bonjour@prestashop.com');
-      expect(newsletterSubscribeAlertMessage).to.contains(foHummingbirdHomePage.successSubscriptionMessage);
+      const newsletterSubscribeAlertMessage = await foDefaultHomePage.subscribeToNewsletter(page, 'bonjour@prestashop.com');
+      expect(newsletterSubscribeAlertMessage).to.contains(foDefaultHomePage.successSubscriptionMessage);
     });
 
     it('should check the confirmation email', async function () {
@@ -151,7 +154,7 @@ describe('Mail alerts module - Enable/Disable send a confirmation email after su
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO', baseContext);
 
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await modPsEmailSubscriptionBoMain.getPageSubtitle(page);
       expect(pageTitle).to.equal(modPsEmailSubscriptionBoMain.pageTitle);
@@ -171,14 +174,14 @@ describe('Mail alerts module - Enable/Disable send a confirmation email after su
 
       page = await modPsEmailSubscriptionBoMain.viewMyShop(page);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should subscribe to newsletter', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'subscribeToNewsletter2', baseContext);
 
-      const newsletterSubscribeAlertMessage = await foHummingbirdHomePage.subscribeToNewsletter(page, 'hola@prestashop.com');
+      const newsletterSubscribeAlertMessage = await foDefaultHomePage.subscribeToNewsletter(page, 'hola@prestashop.com');
       expect(newsletterSubscribeAlertMessage).to.contains('A verification email has been sent. Please check your inbox');
     });
 
@@ -194,7 +197,7 @@ describe('Mail alerts module - Enable/Disable send a confirmation email after su
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnProvidedLink', baseContext);
 
       const link: string = allEmails[numberOfEmails].text.match(/https?:\/\/.*emailsubscription[^\s]*/)![0];
-      await foHummingbirdHomePage.goTo(page, link);
+      await foDefaultHomePage.goTo(page, link);
     });
 
     it('should check the success message', async function () {
@@ -215,7 +218,7 @@ describe('Mail alerts module - Enable/Disable send a confirmation email after su
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO1', baseContext);
 
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await modPsEmailSubscriptionBoMain.getPageSubtitle(page);
       expect(pageTitle).to.equal(modPsEmailSubscriptionBoMain.pageTitle);
@@ -242,15 +245,15 @@ describe('Mail alerts module - Enable/Disable send a confirmation email after su
 
       page = await modPsEmailSubscriptionBoMain.viewMyShop(page);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should subscribe to newsletter', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'subscribeToNewsletter3', baseContext);
 
-      const newsletterSubscribeAlertMessage = await foHummingbirdHomePage.subscribeToNewsletter(page, 'hola3@prestashop.com');
-      expect(newsletterSubscribeAlertMessage).to.contains(foHummingbirdHomePage.successSubscriptionMessage);
+      const newsletterSubscribeAlertMessage = await foDefaultHomePage.subscribeToNewsletter(page, 'hola3@prestashop.com');
+      expect(newsletterSubscribeAlertMessage).to.contains(foDefaultHomePage.successSubscriptionMessage);
     });
 
     it('should check that no confirmation email is sent', async function () {

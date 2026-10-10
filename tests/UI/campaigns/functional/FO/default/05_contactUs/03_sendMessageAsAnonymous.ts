@@ -4,6 +4,12 @@ import {expect} from 'chai';
 import {resetSmtpConfigTest, setupSmtpConfigTest} from '@commonTests/BO/advancedParameters/smtp';
 
 import {
+  foDefaultContactUsPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCustomerServicePage,
   boDashboardPage,
   boLoginPage,
@@ -12,9 +18,6 @@ import {
   dataCustomers,
   dataModules,
   FakerContactMessage,
-  foHummingbirdContactUsPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
   type MailDev,
   type MailDevEmail,
   modContactFormBoMain,
@@ -158,16 +161,16 @@ describe('FO - Contact us : Send message from contact us page with customer not 
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'openShop', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should check if that any account is connected', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkIfCustomerNotConnected', baseContext);
 
-      const isCustomerConnected = await foHummingbirdHomePage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultHomePage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected!').to.eq(false);
     });
 
@@ -175,28 +178,28 @@ describe('FO - Contact us : Send message from contact us page with customer not 
       await testContext.addContextItem(this, 'testIdentifier', 'goOnContactPage', baseContext);
 
       // Go to contact us page
-      await foHummingbirdLoginPage.goToFooterLink(page, 'Contact us');
+      await foDefaultLoginPage.goToFooterLink(page, 'Contact us');
 
-      const pageTitle = await foHummingbirdContactUsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdContactUsPage.pageTitle);
+      const pageTitle = await foDefaultContactUsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultContactUsPage.pageTitle);
     });
 
     it('should check if the email is invalid', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkInvalidEmail', baseContext);
 
-      await foHummingbirdContactUsPage.sendMessage(page, contactUsInvalidEmail);
+      await foDefaultContactUsPage.sendMessage(page, contactUsInvalidEmail);
 
-      const invalidEmailError = await foHummingbirdContactUsPage.getAlertError(page);
-      expect(invalidEmailError).to.contains(foHummingbirdContactUsPage.invalidEmail);
+      const invalidEmailError = await foDefaultContactUsPage.getAlertError(page);
+      expect(invalidEmailError).to.contains(foDefaultContactUsPage.invalidEmail);
     });
 
     it('should send message to customer service', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sendMessage', baseContext);
 
-      await foHummingbirdContactUsPage.sendMessage(page, contactUsData, `${contactUsData.fileName}.txt`);
+      await foDefaultContactUsPage.sendMessage(page, contactUsData, `${contactUsData.fileName}.txt`);
 
-      const validationMessage = await foHummingbirdContactUsPage.getAlertSuccess(page);
-      expect(validationMessage).to.equal(foHummingbirdContactUsPage.validationMessage);
+      const validationMessage = await foDefaultContactUsPage.getAlertSuccess(page);
+      expect(validationMessage).to.equal(foDefaultContactUsPage.validationMessage);
     });
 
     it('should check that the confirmation mail is in mailbox', async function () {

@@ -3,6 +3,10 @@ import testContext from '@utils/testContext';
 
 // Import pages
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boCurrenciesPage,
   boCurrenciesCreatePage,
   boDashboardPage,
@@ -11,7 +15,6 @@ import {
   type BrowserContext,
   dataCurrencies,
   FakerCurrency,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -153,21 +156,21 @@ describe('BO - International - Currencies : Edit official and unofficial currenc
     // View my shop and int pages
     page = await boCurrenciesPage.viewMyShop(page);
 
-    const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+    const isHomePage = await foDefaultHomePage.isHomePage(page);
     expect(isHomePage).to.eq(true);
   });
 
   it('should check the price of the first product in list', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'checkSymbol', baseContext);
 
-    const productPrice = await foHummingbirdHomePage.getProductPrice(page, 1);
+    const productPrice = await foDefaultHomePage.getProductPrice(page, 1);
     expect(productPrice).to.contains(customSymbol);
   });
 
   it('should go back to BO', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo', baseContext);
 
-    page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+    page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
     const pageTitle = await boCurrenciesPage.getPageTitle(page);
     expect(pageTitle).to.contains(boCurrenciesPage.pageTitle);

@@ -6,6 +6,13 @@ import {deleteProductTest} from '@commonTests/BO/catalog/product';
 import setFeatureFlag from '@commonTests/BO/advancedParameters/newFeatures';
 
 import {
+  foDefaultMyAccountPage,
+  foDefaultMyOrderHistoryPage,
+  foDefaultMyOrderDetailsPage,
+  foDefaultLoginPage,
+} from '@utils/foDefaultPages';
+
+import {
   // BO pages
   boDashboardPage,
   boLoginPage,
@@ -20,11 +27,7 @@ import {
   boOrdersViewBlockProductsPage,
   boOrdersViewBlockTabListPage,
   // FO pages
-  foHummingbirdHomePage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyOrderHistoryPage,
-  foHummingbirdMyOrderDetailsPage,
-  foHummingbirdLoginPage,
+  foDefaultHomePage,
   // Data
   dataCustomers,
   dataOrderStatuses,
@@ -568,108 +571,108 @@ describe('BO - Orders - Create order : Multi Carrier', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop', baseContext);
 
       page = await boOrdersViewBlockTabListPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPageFO', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle, 'Fail to open FO login page').to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle, 'Fail to open FO login page').to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with customer credentials', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFO', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to Your account > Order history and details page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToOrderHistoryPage2', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
-      await foHummingbirdMyAccountPage.goToHistoryAndDetailsPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
+      await foDefaultMyAccountPage.goToHistoryAndDetailsPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyOrderHistoryPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyOrderHistoryPage.pageTitle);
     });
 
     it('should go to order details page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFoToOrderDetails2', baseContext);
 
-      await foHummingbirdMyOrderHistoryPage.goToDetailsPage(page);
+      await foDefaultMyOrderHistoryPage.goToDetailsPage(page);
 
-      const pageTitle = await foHummingbirdMyOrderDetailsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdMyOrderDetailsPage.pageTitle);
+      const pageTitle = await foDefaultMyOrderDetailsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultMyOrderDetailsPage.pageTitle);
     });
 
     it('should check the number of carriers from Shipment tracking details table', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNumberOfCarriers', baseContext);
 
-      const numberOfCarriers = await foHummingbirdMyOrderDetailsPage.getNumberOfCarriersFromShipmentDetailsTable(page);
+      const numberOfCarriers = await foDefaultMyOrderDetailsPage.getNumberOfCarriersFromShipmentDetailsTable(page);
       expect(numberOfCarriers).to.equal(3);
     });
 
     it('should check the Shipment tracking details table', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCarriersTable', baseContext);
 
-      let carrier = await foHummingbirdMyOrderDetailsPage.getCarrierDataFromTable(page, 1);
+      let carrier = await foDefaultMyOrderDetailsPage.getCarrierDataFromTable(page, 1);
       expect(carrier).to.equal(firstCarrierData.name);
 
-      carrier = await foHummingbirdMyOrderDetailsPage.getCarrierDataFromTable(page, 2);
+      carrier = await foDefaultMyOrderDetailsPage.getCarrierDataFromTable(page, 2);
       expect(carrier).to.equal(secondCarrierData.name);
 
-      carrier = await foHummingbirdMyOrderDetailsPage.getCarrierDataFromTable(page, 3);
+      carrier = await foDefaultMyOrderDetailsPage.getCarrierDataFromTable(page, 3);
       expect(carrier).to.equal(secondCarrierData.name);
     });
 
     it('should check the number of products from Product details table', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNumberOfProducts', baseContext);
 
-      const numberOfProducts = await foHummingbirdMyOrderDetailsPage.getNumberOfRowsFromProductDetailsTable(page);
+      const numberOfProducts = await foDefaultMyOrderDetailsPage.getNumberOfRowsFromProductDetailsTable(page);
       expect(numberOfProducts).to.equal(4);
     });
 
     it('should check product details table', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkProductDetails', baseContext);
 
-      let productName = await foHummingbirdMyOrderDetailsPage.getOrderProductColumn(page, 1);
+      let productName = await foDefaultMyOrderDetailsPage.getOrderProductColumn(page, 1);
       expect(productName).to.contain(firstProductData.name)
         .and.to.contain(firstCarrierData.name);
-      let productQuantity = await foHummingbirdMyOrderDetailsPage.getProductQuantity(page, 1);
+      let productQuantity = await foDefaultMyOrderDetailsPage.getProductQuantity(page, 1);
       expect(productQuantity).to.equal(3);
 
-      productName = await foHummingbirdMyOrderDetailsPage.getOrderProductColumn(page, 2);
+      productName = await foDefaultMyOrderDetailsPage.getOrderProductColumn(page, 2);
       expect(productName).to.contain(secondProductData.name)
         .and.to.contain(firstCarrierData.name);
-      productQuantity = await foHummingbirdMyOrderDetailsPage.getProductQuantity(page, 2);
+      productQuantity = await foDefaultMyOrderDetailsPage.getProductQuantity(page, 2);
       expect(productQuantity).to.equal(3);
 
-      productName = await foHummingbirdMyOrderDetailsPage.getOrderProductColumn(page, 3);
+      productName = await foDefaultMyOrderDetailsPage.getOrderProductColumn(page, 3);
       expect(productName).to.contain(thirdProductData.name)
         .and.to.contain(secondCarrierData.name);
-      productQuantity = await foHummingbirdMyOrderDetailsPage.getProductQuantity(page, 3);
+      productQuantity = await foDefaultMyOrderDetailsPage.getProductQuantity(page, 3);
       expect(productQuantity).to.equal(2);
 
-      productName = await foHummingbirdMyOrderDetailsPage.getOrderProductColumn(page, 4);
+      productName = await foDefaultMyOrderDetailsPage.getOrderProductColumn(page, 4);
       expect(productName).to.contain(secondProductData.name)
         .and.to.contain(secondCarrierData.name);
-      productQuantity = await foHummingbirdMyOrderDetailsPage.getProductQuantity(page, 4);
+      productQuantity = await foDefaultMyOrderDetailsPage.getProductQuantity(page, 4);
       expect(productQuantity).to.equal(1);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo', baseContext);
 
-      page = await foHummingbirdMyOrderDetailsPage.changePage(browserContext, 0);
+      page = await foDefaultMyOrderDetailsPage.changePage(browserContext, 0);
 
       const pageTitle = await boOrdersViewBlockTabListPage.getPageTitle(page);
       expect(pageTitle).to.contains(boOrdersViewBlockTabListPage.pageTitle);
@@ -715,68 +718,68 @@ describe('BO - Orders - Create order : Multi Carrier', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToFO', baseContext);
 
       page = await boOrdersViewBlockTabListPage.changePage(browserContext, 1);
-      await foHummingbirdMyOrderHistoryPage.reloadPage(page);
+      await foDefaultMyOrderHistoryPage.reloadPage(page);
 
-      const pageTitle = await foHummingbirdMyOrderDetailsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdMyOrderDetailsPage.pageTitle);
+      const pageTitle = await foDefaultMyOrderDetailsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultMyOrderDetailsPage.pageTitle);
     });
 
     it('should check the number of carriers from Shipment tracking details table', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNumberOfCarriers_2', baseContext);
 
-      const numberOfCarriers = await foHummingbirdMyOrderDetailsPage.getNumberOfCarriersFromShipmentDetailsTable(page);
+      const numberOfCarriers = await foDefaultMyOrderDetailsPage.getNumberOfCarriersFromShipmentDetailsTable(page);
       expect(numberOfCarriers).to.equal(2);
     });
 
     it('should check the Shipment tracking details table', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCarriersTable_2', baseContext);
 
-      let carrier = await foHummingbirdMyOrderDetailsPage.getCarrierDataFromTable(page, 1);
+      let carrier = await foDefaultMyOrderDetailsPage.getCarrierDataFromTable(page, 1);
       expect(carrier).to.equal(firstCarrierData.name);
 
-      carrier = await foHummingbirdMyOrderDetailsPage.getCarrierDataFromTable(page, 2);
+      carrier = await foDefaultMyOrderDetailsPage.getCarrierDataFromTable(page, 2);
       expect(carrier).to.equal(secondCarrierData.name);
     });
 
     it('should check the number of products in Product details table', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNumberOfProducts_2', baseContext);
 
-      const numberOfProducts = await foHummingbirdMyOrderDetailsPage.getNumberOfRowsFromProductDetailsTable(page);
+      const numberOfProducts = await foDefaultMyOrderDetailsPage.getNumberOfRowsFromProductDetailsTable(page);
       expect(numberOfProducts).to.equal(4);
     });
 
     it('should check product details table', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkProductDetails_2', baseContext);
 
-      let productName = await foHummingbirdMyOrderDetailsPage.getOrderProductColumn(page, 1);
+      let productName = await foDefaultMyOrderDetailsPage.getOrderProductColumn(page, 1);
       expect(productName).to.contain(firstProductData.name)
         .and.to.contain(firstCarrierData.name);
-      let productQuantity = await foHummingbirdMyOrderDetailsPage.getProductQuantity(page, 1);
+      let productQuantity = await foDefaultMyOrderDetailsPage.getProductQuantity(page, 1);
       expect(productQuantity).to.equal(3);
 
-      productName = await foHummingbirdMyOrderDetailsPage.getOrderProductColumn(page, 2);
+      productName = await foDefaultMyOrderDetailsPage.getOrderProductColumn(page, 2);
       expect(productName).to.contain(secondProductData.name)
         .and.to.contain(firstCarrierData.name);
-      productQuantity = await foHummingbirdMyOrderDetailsPage.getProductQuantity(page, 2);
+      productQuantity = await foDefaultMyOrderDetailsPage.getProductQuantity(page, 2);
       expect(productQuantity).to.equal(3);
 
-      productName = await foHummingbirdMyOrderDetailsPage.getOrderProductColumn(page, 3);
+      productName = await foDefaultMyOrderDetailsPage.getOrderProductColumn(page, 3);
       expect(productName).to.contain(thirdProductData.name)
         .and.to.contain(secondCarrierData.name);
-      productQuantity = await foHummingbirdMyOrderDetailsPage.getProductQuantity(page, 3);
+      productQuantity = await foDefaultMyOrderDetailsPage.getProductQuantity(page, 3);
       expect(productQuantity).to.equal(2);
 
-      productName = await foHummingbirdMyOrderDetailsPage.getOrderProductColumn(page, 4);
+      productName = await foDefaultMyOrderDetailsPage.getOrderProductColumn(page, 4);
       expect(productName).to.contain(secondProductData.name)
         .and.to.contain(secondCarrierData.name);
-      productQuantity = await foHummingbirdMyOrderDetailsPage.getProductQuantity(page, 4);
+      productQuantity = await foDefaultMyOrderDetailsPage.getProductQuantity(page, 4);
       expect(productQuantity).to.equal(1);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo_2', baseContext);
 
-      page = await foHummingbirdMyOrderDetailsPage.changePage(browserContext, 0);
+      page = await foDefaultMyOrderDetailsPage.changePage(browserContext, 0);
 
       const pageTitle = await boOrdersViewBlockTabListPage.getPageTitle(page);
       expect(pageTitle).to.contains(boOrdersViewBlockTabListPage.pageTitle);

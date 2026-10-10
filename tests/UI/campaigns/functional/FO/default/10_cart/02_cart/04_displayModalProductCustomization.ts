@@ -2,13 +2,16 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultHomePage,
+  foDefaultModalBlockCartPage,
+  foDefaultProductPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataProducts,
-  foHummingbirdCartPage,
-  foHummingbirdHomePage,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdProductPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -33,79 +36,79 @@ describe('FO - Cart : Display modal of product customization', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToFo(page);
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it(`should search for the product '${dataProducts.demo_14.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_14.name);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_14.name);
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it('should go to the product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage', baseContext);
 
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+      await foDefaultSearchResultsPage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(dataProducts.demo_14.name);
     });
 
     it('should add custom text and add the product to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdProductPage.setProductCustomizations(page, [customText]);
+      await foDefaultProductPage.setProductCustomizations(page, [customText]);
 
-      await foHummingbirdProductPage.clickOnAddToCartButton(page);
+      await foDefaultProductPage.clickOnAddToCartButton(page);
 
-      const isBlockCartModal = await foHummingbirdModalBlockCartPage.isBlockCartModalVisible(page);
+      const isBlockCartModal = await foDefaultModalBlockCartPage.isBlockCartModalVisible(page);
       expect(isBlockCartModal).to.equal(true);
 
-      const successMessage = await foHummingbirdModalBlockCartPage.getBlockCartModalTitle(page);
-      expect(successMessage).to.contains(foHummingbirdHomePage.successAddToCartMessage);
+      const successMessage = await foDefaultModalBlockCartPage.getBlockCartModalTitle(page);
+      expect(successMessage).to.contains(foDefaultHomePage.successAddToCartMessage);
     });
 
     it('should click on continue shopping button', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'continueShopping', baseContext);
 
-      const isModalNotVisible = await foHummingbirdModalBlockCartPage.continueShopping(page);
+      const isModalNotVisible = await foDefaultModalBlockCartPage.continueShopping(page);
       expect(isModalNotVisible).to.equal(true);
     });
 
     it('should go to the cart page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToCartPage', baseContext);
 
-      await foHummingbirdProductPage.goToCartPage(page);
+      await foDefaultProductPage.goToCartPage(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should click on product customization and check the modal', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickCustomization', baseContext);
 
-      const isModalVisible = await foHummingbirdCartPage.clickOnProductCustomization(page, 1);
+      const isModalVisible = await foDefaultCartPage.clickOnProductCustomization(page, 1);
       expect(isModalVisible).to.equal(true);
     });
 
     it('should check the customization modal content', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'getModalContent', baseContext);
 
-      const modalContent = await foHummingbirdCartPage.getProductCustomizationModal(page);
+      const modalContent = await foDefaultCartPage.getProductCustomizationModal(page);
       expect(modalContent).to.equal(`Type your text here ${customText}`);
     });
 
     it('should close the modal', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closeModal', baseContext);
 
-      const isModalNotVisible = await foHummingbirdCartPage.closeProductCustomizationModal(page, 1);
+      const isModalNotVisible = await foDefaultCartPage.closeProductCustomizationModal(page, 1);
       expect(isModalNotVisible).to.equal(true);
     });
   });

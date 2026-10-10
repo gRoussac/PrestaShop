@@ -2,18 +2,21 @@
 import testContext from '@utils/testContext';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultCheckoutOrderConfirmationPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boEmailPage,
   boLoginPage,
   type BrowserContext,
   dataCustomers,
   dataPaymentMethods,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdCheckoutOrderConfirmationPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdProductPage,
   type Page,
   utilsCore,
   utilsPlaywright,
@@ -89,27 +92,27 @@ describe('BO - Advanced Parameters - E-mail : Sort and pagination emails', async
       page = await boDashboardPage.viewMyShop(page);
 
       // Change language on FO
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginFO', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFO', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
@@ -120,39 +123,39 @@ describe('BO - Advanced Parameters - E-mail : Sort and pagination emails', async
         await testContext.addContextItem(this, 'testIdentifier', `createOrder${index}`, baseContext);
 
         // Go to home page
-        await foHummingbirdLoginPage.goToHomePage(page);
+        await foDefaultLoginPage.goToHomePage(page);
 
         // Go to the first product page
-        await foHummingbirdHomePage.goToProductPage(page, 1);
+        await foDefaultHomePage.goToProductPage(page, 1);
 
         // Add the created product to the cart
-        await foHummingbirdProductPage.addProductToTheCart(page);
+        await foDefaultProductPage.addProductToTheCart(page);
 
         // Proceed to checkout the shopping cart
-        await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+        await foDefaultCartPage.clickOnProceedToCheckout(page);
 
         // Address step - Go to delivery step
-        const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+        const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
         expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
 
         // Delivery step - Go to payment step
-        const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+        const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
         expect(isStepDeliveryComplete, 'Step Address is not complete').to.eq(true);
 
         // Payment step - Choose payment step
-        await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
+        await foDefaultCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
 
         // Check the confirmation message
-        const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-        expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+        const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+        expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
       });
     });
 
     it('should sign out from FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signOutFO', baseContext);
 
-      await foHummingbirdCheckoutOrderConfirmationPage.logout(page);
-      const isCustomerConnected = await foHummingbirdCheckoutOrderConfirmationPage.isCustomerConnected(page);
+      await foDefaultCheckoutOrderConfirmationPage.logout(page);
+      const isCustomerConnected = await foDefaultCheckoutOrderConfirmationPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected').to.eq(false);
     });
 
@@ -160,7 +163,7 @@ describe('BO - Advanced Parameters - E-mail : Sort and pagination emails', async
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO', baseContext);
 
       // Go Back to BO
-      page = await foHummingbirdCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
+      page = await foDefaultCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boEmailPage.getPageTitle(page);
       expect(pageTitle).to.contains(boEmailPage.pageTitle);

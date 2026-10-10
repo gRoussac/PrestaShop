@@ -4,6 +4,12 @@ import {expect} from 'chai';
 import {deleteProductTest} from '@commonTests/BO/catalog/product';
 
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+  foDefaultModalQuickViewPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boImageSettingsPage,
   boLoginPage,
@@ -12,9 +18,6 @@ import {
   boProductsCreateTabDescriptionPage,
   type BrowserContext,
   FakerProduct,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
-  foHummingbirdModalQuickViewPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -147,8 +150,8 @@ describe('BO - Design - Image Settings : Check product image format', async () =
         it('should go to BO', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goToBoProducts${arg.extOriginal}`, baseContext);
 
-          page = await foHummingbirdCategoryPage.closePage(browserContext, page, 0);
-          await foHummingbirdCategoryPage.goToBO(page);
+          page = await foDefaultCategoryPage.closePage(browserContext, page, 0);
+          await foDefaultCategoryPage.goToBO(page);
 
           const pageTitle = await boDashboardPage.getPageTitle(page);
           expect(pageTitle).to.contains(boDashboardPage.pageTitle);
@@ -269,39 +272,39 @@ describe('BO - Design - Image Settings : Check product image format', async () =
         await testContext.addContextItem(this, 'testIdentifier', `goToFo${arg.extOriginal}`, baseContext);
 
         page = await boProductsCreatePage.viewMyShop(page);
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.changeLanguage(page, 'en');
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.eq(true);
       });
 
       it('should go to all products page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `goToAllProducts${arg.extOriginal}`, baseContext);
 
-        await foHummingbirdHomePage.goToAllProductsPage(page);
+        await foDefaultHomePage.goToAllProductsPage(page);
 
-        const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+        const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
         expect(isCategoryPageVisible, 'Home category page was not opened').to.eq(true);
       });
 
       it(`should go to the second page and quick view the product '${arg.product.name}'`, async function () {
         await testContext.addContextItem(this, 'testIdentifier', `quickViewCustomizedProduct${arg.extOriginal}`, baseContext);
 
-        await foHummingbirdCategoryPage.goToNextPage(page);
+        await foDefaultCategoryPage.goToNextPage(page);
 
-        const nthProduct: number|null = await foHummingbirdCategoryPage.getNThChildFromIDProduct(page, idProduct);
+        const nthProduct: number|null = await foDefaultCategoryPage.getNThChildFromIDProduct(page, idProduct);
         expect(nthProduct).to.not.eq(null);
 
-        await foHummingbirdCategoryPage.quickViewProduct(page, nthProduct as number);
+        await foDefaultCategoryPage.quickViewProduct(page, nthProduct as number);
 
-        const isModalVisible = await foHummingbirdModalQuickViewPage.isQuickViewProductModalVisible(page);
+        const isModalVisible = await foDefaultModalQuickViewPage.isQuickViewProductModalVisible(page);
         expect(isModalVisible).to.eq(true);
       });
 
       it('should check that the main image of the quick view is a WebP', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `checkMainImageQuickView${arg.extOriginal}`, baseContext);
 
-        const quickViewImageMain = await foHummingbirdModalQuickViewPage.getQuickViewImageMain(page);
+        const quickViewImageMain = await foDefaultModalQuickViewPage.getQuickViewImageMain(page);
         expect(quickViewImageMain).to.not.eq(null);
 
         await utilsFile.downloadFile(quickViewImageMain as string, 'image.img');

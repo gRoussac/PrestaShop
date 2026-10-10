@@ -2,6 +2,13 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyInformationsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleConfigurationPage,
@@ -9,10 +16,6 @@ import {
   type BrowserContext,
   dataCustomers,
   FakerModule,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyInformationsPage,
   modPsEmailSubscriptionBoMain,
   type Page,
   utilsPlaywright,
@@ -53,20 +56,20 @@ describe('FO - Newsletter : Subscribe to Newsletter', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFOForSubscribingToNewsletter', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it('should subscribe to newsletter', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'subscribeToNewsletterForJohnDoe', baseContext);
 
-      const newsletterSubscribeAlertMessage = await foHummingbirdHomePage.subscribeToNewsletter(
+      const newsletterSubscribeAlertMessage = await foDefaultHomePage.subscribeToNewsletter(
         page,
         dataCustomers.johnDoe.email,
       );
-      expect(newsletterSubscribeAlertMessage).to.contains(foHummingbirdHomePage.successSubscriptionMessage);
+      expect(newsletterSubscribeAlertMessage).to.contains(foDefaultHomePage.successSubscriptionMessage);
     });
   });
 
@@ -74,20 +77,20 @@ describe('FO - Newsletter : Subscribe to Newsletter', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'openFoShop', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it('should subscribe to newsletter with already used email', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'subscribeWithAlreadyUsedEmail', baseContext);
 
-      const newsletterSubscribeAlertMessage = await foHummingbirdHomePage.subscribeToNewsletter(
+      const newsletterSubscribeAlertMessage = await foDefaultHomePage.subscribeToNewsletter(
         page,
         dataCustomers.johnDoe.email,
       );
-      expect(newsletterSubscribeAlertMessage).to.contains(foHummingbirdHomePage.alreadyUsedEmailMessage);
+      expect(newsletterSubscribeAlertMessage).to.contains(foDefaultHomePage.alreadyUsedEmailMessage);
     });
   });
 
@@ -95,39 +98,39 @@ describe('FO - Newsletter : Subscribe to Newsletter', async () => {
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFOLoginPage', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageHeaderTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdLoginPage.pageTitle);
+      const pageHeaderTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultLoginPage.pageTitle);
     });
 
     it('Should sign in FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFo', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdMyAccountPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultMyAccountPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to account information page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAccountInformationPage', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
-      await foHummingbirdMyAccountPage.goToInformationPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
+      await foDefaultMyAccountPage.goToInformationPage(page);
 
-      const pageTitle = await foHummingbirdMyInformationsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdMyInformationsPage.pageTitle);
+      const pageTitle = await foDefaultMyInformationsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultMyInformationsPage.pageTitle);
     });
 
     it('should unsubscribe from newsletter', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'unsubscribeFromNewsLetter', baseContext);
 
-      const unsubscribeAlertText = await foHummingbirdMyInformationsPage.unsubscribeNewsletter(
+      const unsubscribeAlertText = await foDefaultMyInformationsPage.unsubscribeNewsletter(
         page,
         dataCustomers.johnDoe.password,
       );
-      expect(unsubscribeAlertText).to.contains(foHummingbirdMyInformationsPage.successfulUpdateMessage);
+      expect(unsubscribeAlertText).to.contains(foDefaultMyInformationsPage.successfulUpdateMessage);
     });
   });
 
@@ -194,20 +197,20 @@ describe('FO - Newsletter : Subscribe to Newsletter', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFOToSubscribeToNewsletter', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it('should subscribe to newsletter', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'subscribeToNewsletter', baseContext);
 
-      const newsletterSubscribeAlertMessage = await foHummingbirdHomePage.subscribeToNewsletter(
+      const newsletterSubscribeAlertMessage = await foDefaultHomePage.subscribeToNewsletter(
         page,
         dataCustomers.johnDoe.email,
       );
-      expect(newsletterSubscribeAlertMessage).to.contains(foHummingbirdHomePage.successSubscriptionMessage);
+      expect(newsletterSubscribeAlertMessage).to.contains(foDefaultHomePage.successSubscriptionMessage);
     });
   });
 

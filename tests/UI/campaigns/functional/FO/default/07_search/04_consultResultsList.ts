@@ -3,11 +3,14 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultProductPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataProducts,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -45,34 +48,34 @@ describe('FO - Search Page : Consult results list', async () => {
     it('should go to FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFO', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should put \'Mug\' in the search input and check result', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct1', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, 'mug');
+      await foDefaultHomePage.searchProduct(page, 'mug');
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it('should check the search result page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'countResult', baseContext);
 
-      const countResults = await foHummingbirdSearchResultsPage.getSearchResultsNumber(page);
+      const countResults = await foDefaultSearchResultsPage.getSearchResultsNumber(page);
       expect(countResults).to.equal(5);
     });
 
     it('should go to the second product in the list and check the product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToSecondProductInList', baseContext);
 
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 2);
+      await foDefaultSearchResultsPage.goToProductPage(page, 2);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(dataProducts.demo_11.name);
     });
 
@@ -81,32 +84,32 @@ describe('FO - Search Page : Consult results list', async () => {
 
       await page.goBack();
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it('should put \'Fox\' in the search input and check result', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct2', baseContext);
 
-      await foHummingbirdSearchResultsPage.searchProduct(page, 'fox');
+      await foDefaultSearchResultsPage.searchProduct(page, 'fox');
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it('should check the search result page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'countResult2', baseContext);
 
-      const countResults = await foHummingbirdSearchResultsPage.getSearchResultsNumber(page);
+      const countResults = await foDefaultSearchResultsPage.getSearchResultsNumber(page);
       expect(countResults).to.equal(7);
     });
 
     it('should go to the first product in the list and check the product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFirstProductInList', baseContext);
 
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+      await foDefaultSearchResultsPage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(dataProducts.demo_15.name);
     });
 
@@ -115,19 +118,19 @@ describe('FO - Search Page : Consult results list', async () => {
 
       await page.goBack();
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it('should remove the searched value and press enter', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'removeSearch', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, '');
+      await foDefaultHomePage.searchProduct(page, '');
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-      const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+      const hasResults = await foDefaultSearchResultsPage.hasResults(page);
       expect(hasResults, 'There are results!').to.equal(false);
     });
   });

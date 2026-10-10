@@ -4,6 +4,14 @@ import {expect} from 'chai';
 import {deleteCartRuleTest} from '@commonTests/BO/catalog/cartRule';
 
 import {
+  foDefaultCartPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultProductPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCartRulesPage,
   boCartRulesCreatePage,
   boDashboardPage,
@@ -12,11 +20,6 @@ import {
   dataCustomers,
   dataProducts,
   FakerCartRule,
-  foHummingbirdCartPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdProductPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
   utilsCore,
@@ -93,69 +96,69 @@ describe('BO - Cart rules - Actions : Apply a discount to Specific product', asy
       await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop', baseContext);
 
       page = await boCartRulesCreatePage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPage', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.eq(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.eq(foDefaultLoginPage.pageTitle);
     });
 
     it('should login', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'loginFO', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected!').to.eq(true);
     });
 
     it(`should search for the product '${dataProducts.demo_14.name}' and go to product page`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_14.name);
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_14.name);
+      await foDefaultSearchResultsPage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(dataProducts.demo_14.name);
     });
 
     it('should add the product to cart and continue to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdProductPage.addProductToTheCart(page, 1);
+      await foDefaultProductPage.addProductToTheCart(page, 1);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should check that discount is automatically applied to the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscountApplied', baseContext);
 
-      await foHummingbirdCartPage.addPromoCode(page, cartRuleData.code);
+      await foDefaultCartPage.addPromoCode(page, cartRuleData.code);
 
       const discount = utilsCore.percentage(dataProducts.demo_14.finalPrice, cartRuleData.getDiscountPercent());
 
-      const subTotalDiscount = await foHummingbirdCartPage.getSubtotalDiscountValue(page);
+      const subTotalDiscount = await foDefaultCartPage.getSubtotalDiscountValue(page);
       expect(subTotalDiscount.toString()).to.eq(`-${discount.toFixed(2)}`);
 
-      const subTotalShipping = await foHummingbirdCartPage.getSubtotalShippingValue(page);
+      const subTotalShipping = await foDefaultCartPage.getSubtotalShippingValue(page);
       expect(subTotalShipping).to.eq('Free');
 
-      const priceATI = await foHummingbirdCartPage.getATIPrice(page);
+      const priceATI = await foDefaultCartPage.getATIPrice(page);
       expect(priceATI.toString()).to.eq((dataProducts.demo_14.finalPrice - discount).toFixed(2));
 
-      const cartRuleName = await foHummingbirdCartPage.getCartRuleName(page);
+      const cartRuleName = await foDefaultCartPage.getCartRuleName(page);
       expect(cartRuleName).to.contains(cartRuleData.name);
 
-      const cartRuleValue = await foHummingbirdCartPage.getCartRuleValue(page);
+      const cartRuleValue = await foDefaultCartPage.getCartRuleValue(page);
       expect(cartRuleValue.toString()).to.contains(`-€${discount.toFixed(2)}`);
     });
   });
@@ -164,7 +167,7 @@ describe('BO - Cart rules - Actions : Apply a discount to Specific product', asy
     it('should go to new cart rule page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToEditCartRulePage', baseContext);
 
-      page = await foHummingbirdCartPage.changePage(browserContext, 0);
+      page = await foDefaultCartPage.changePage(browserContext, 0);
       await boCartRulesPage.goToEditCartRulePage(page, 1);
 
       const pageTitle = await boCartRulesCreatePage.getPageTitle(page);
@@ -183,23 +186,23 @@ describe('BO - Cart rules - Actions : Apply a discount to Specific product', asy
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscountApplied1', baseContext);
 
       page = await boCartRulesCreatePage.changePage(browserContext, 1);
-      await foHummingbirdCartPage.reloadPage(page);
+      await foDefaultCartPage.reloadPage(page);
 
       const discount = utilsCore.percentage(dataProducts.demo_14.finalPrice, cartRuleData.getDiscountPercent());
 
-      const subTotalDiscount = await foHummingbirdCartPage.getSubtotalDiscountValue(page);
+      const subTotalDiscount = await foDefaultCartPage.getSubtotalDiscountValue(page);
       expect(subTotalDiscount.toFixed(2)).to.eq(`-${discount.toFixed(2)}`);
 
-      const subTotalShipping = await foHummingbirdCartPage.getSubtotalShippingValue(page);
+      const subTotalShipping = await foDefaultCartPage.getSubtotalShippingValue(page);
       expect(subTotalShipping).to.eq('Free');
 
-      const priceATI = await foHummingbirdCartPage.getATIPrice(page);
+      const priceATI = await foDefaultCartPage.getATIPrice(page);
       expect(priceATI.toFixed(2)).to.eq((dataProducts.demo_14.finalPrice - discount).toFixed(2));
 
-      const cartRuleName = await foHummingbirdCartPage.getCartRuleName(page);
+      const cartRuleName = await foDefaultCartPage.getCartRuleName(page);
       expect(cartRuleName).to.contains(cartRuleData.name);
 
-      const cartRuleValue = await foHummingbirdCartPage.getCartRuleValue(page);
+      const cartRuleValue = await foDefaultCartPage.getCartRuleValue(page);
       expect(cartRuleValue).to.contains(`-€${discount.toFixed(2)}`);
     });
   });
@@ -208,7 +211,7 @@ describe('BO - Cart rules - Actions : Apply a discount to Specific product', asy
     it('should go to edit cart rule page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToEditCartRulePageErrors', baseContext);
 
-      page = await foHummingbirdCartPage.changePage(browserContext, 0);
+      page = await foDefaultCartPage.changePage(browserContext, 0);
       await boCartRulesPage.goToEditCartRulePage(page, 1);
 
       const pageTitle = await boCartRulesCreatePage.getPageTitle(page);
@@ -250,21 +253,21 @@ describe('BO - Cart rules - Actions : Apply a discount to Specific product', asy
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscountApplied2', baseContext);
 
       page = await boCartRulesCreatePage.changePage(browserContext, 1);
-      await foHummingbirdCartPage.reloadPage(page);
+      await foDefaultCartPage.reloadPage(page);
 
-      const subTotalDiscount = await foHummingbirdCartPage.getSubtotalDiscountValue(page);
+      const subTotalDiscount = await foDefaultCartPage.getSubtotalDiscountValue(page);
       expect(subTotalDiscount.toFixed(2)).to.eq(`-${cartRuleData.getDiscountAmount().toFixed(2)}`);
 
-      const subTotalShipping = await foHummingbirdCartPage.getSubtotalShippingValue(page);
+      const subTotalShipping = await foDefaultCartPage.getSubtotalShippingValue(page);
       expect(subTotalShipping).to.eq('Free');
 
-      const priceATI = await foHummingbirdCartPage.getATIPrice(page);
+      const priceATI = await foDefaultCartPage.getATIPrice(page);
       expect(priceATI.toFixed(2)).to.eq((dataProducts.demo_14.finalPrice - cartRuleData.getDiscountAmount()).toFixed(2));
 
-      const cartRuleName = await foHummingbirdCartPage.getCartRuleName(page);
+      const cartRuleName = await foDefaultCartPage.getCartRuleName(page);
       expect(cartRuleName).to.contains(cartRuleData.name);
 
-      const cartRuleValue = await foHummingbirdCartPage.getCartRuleValue(page);
+      const cartRuleValue = await foDefaultCartPage.getCartRuleValue(page);
       expect(cartRuleValue).to.contains(`-€${cartRuleData.getDiscountAmount().toFixed(2)}`);
     });
   });
@@ -273,7 +276,7 @@ describe('BO - Cart rules - Actions : Apply a discount to Specific product', asy
     it('should go to edit cart rule page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToEditCartRulePageDiscountAmountValue', baseContext);
 
-      page = await foHummingbirdCartPage.changePage(browserContext, 0);
+      page = await foDefaultCartPage.changePage(browserContext, 0);
       await boCartRulesPage.goToEditCartRulePage(page, 1);
 
       const pageTitle = await boCartRulesCreatePage.getPageTitle(page);
@@ -292,21 +295,21 @@ describe('BO - Cart rules - Actions : Apply a discount to Specific product', asy
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscountApplied3', baseContext);
 
       page = await boCartRulesCreatePage.changePage(browserContext, 1);
-      await foHummingbirdCartPage.reloadPage(page);
+      await foDefaultCartPage.reloadPage(page);
 
-      const subTotalDiscount = await foHummingbirdCartPage.getSubtotalDiscountValue(page);
+      const subTotalDiscount = await foDefaultCartPage.getSubtotalDiscountValue(page);
       expect(subTotalDiscount.toFixed(2)).to.eq(`-${cartRuleData.getDiscountAmount().toFixed(2)}`);
 
-      const subTotalShipping = await foHummingbirdCartPage.getSubtotalShippingValue(page);
+      const subTotalShipping = await foDefaultCartPage.getSubtotalShippingValue(page);
       expect(subTotalShipping).to.eq('Free');
 
-      const priceATI = await foHummingbirdCartPage.getATIPrice(page);
+      const priceATI = await foDefaultCartPage.getATIPrice(page);
       expect(priceATI.toFixed(2)).to.eq((dataProducts.demo_14.finalPrice - cartRuleData.getDiscountAmount()).toFixed(2));
 
-      const cartRuleName = await foHummingbirdCartPage.getCartRuleName(page);
+      const cartRuleName = await foDefaultCartPage.getCartRuleName(page);
       expect(cartRuleName).to.contains(cartRuleData.name);
 
-      const cartRuleValue = await foHummingbirdCartPage.getCartRuleValue(page);
+      const cartRuleValue = await foDefaultCartPage.getCartRuleValue(page);
       expect(cartRuleValue).to.contains(`-€${cartRuleData.getDiscountAmount().toFixed(2)}`);
     });
   });
@@ -315,7 +318,7 @@ describe('BO - Cart rules - Actions : Apply a discount to Specific product', asy
     it('should go to edit cart rule page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToEditCartRulePageDiscountAmountValue100', baseContext);
 
-      page = await foHummingbirdCartPage.changePage(browserContext, 0);
+      page = await foDefaultCartPage.changePage(browserContext, 0);
       await boCartRulesPage.goToEditCartRulePage(page, 1);
 
       const pageTitle = await boCartRulesCreatePage.getPageTitle(page);
@@ -334,24 +337,24 @@ describe('BO - Cart rules - Actions : Apply a discount to Specific product', asy
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscountApplied4', baseContext);
 
       page = await boCartRulesCreatePage.changePage(browserContext, 1);
-      await foHummingbirdCartPage.reloadPage(page);
+      await foDefaultCartPage.reloadPage(page);
 
       let discountedPrice: number = dataProducts.demo_14.finalPrice - cartRuleData.getDiscountAmount();
       discountedPrice = discountedPrice > 0 ? discountedPrice : 0;
 
-      const subTotalDiscount = await foHummingbirdCartPage.getSubtotalDiscountValue(page);
+      const subTotalDiscount = await foDefaultCartPage.getSubtotalDiscountValue(page);
       expect(subTotalDiscount.toFixed(2)).to.eq(`-${dataProducts.demo_14.finalPrice.toFixed(2)}`);
 
-      const subTotalShipping = await foHummingbirdCartPage.getSubtotalShippingValue(page);
+      const subTotalShipping = await foDefaultCartPage.getSubtotalShippingValue(page);
       expect(subTotalShipping).to.eq('Free');
 
-      const priceATI = await foHummingbirdCartPage.getATIPrice(page);
+      const priceATI = await foDefaultCartPage.getATIPrice(page);
       expect(priceATI.toFixed(2)).to.eq(discountedPrice.toFixed(2));
 
-      const cartRuleName = await foHummingbirdCartPage.getCartRuleName(page);
+      const cartRuleName = await foDefaultCartPage.getCartRuleName(page);
       expect(cartRuleName).to.contains(cartRuleData.name);
 
-      const cartRuleValue = await foHummingbirdCartPage.getCartRuleValue(page);
+      const cartRuleValue = await foDefaultCartPage.getCartRuleValue(page);
       expect(cartRuleValue).to.contains(`-€${dataProducts.demo_14.finalPrice.toFixed(2)}`);
     });
   });
@@ -360,50 +363,50 @@ describe('BO - Cart rules - Actions : Apply a discount to Specific product', asy
     it('should go to home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToHomePage', baseContext);
 
-      await foHummingbirdCartPage.goToHomePage(page);
+      await foDefaultCartPage.goToHomePage(page);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it(`should search for the product '${dataProducts.demo_1.name}' and go to product page`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage1', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_1.name);
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_1.name);
+      await foDefaultSearchResultsPage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(dataProducts.demo_1.name);
     });
 
     it('should add the product to cart and continue to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart1', baseContext);
 
-      await foHummingbirdProductPage.addProductToTheCart(page, 1);
+      await foDefaultProductPage.addProductToTheCart(page, 1);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should remove product from shopping cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'removeProduct', baseContext);
 
-      await foHummingbirdCartPage.deleteProduct(page, 1);
+      await foDefaultCartPage.deleteProduct(page, 1);
 
-      const notificationNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationNumber).to.be.equal(1);
     });
 
     it('should check that discount is automatically applied to the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscountApplied5', baseContext);
 
-      const hasSubtotalDiscount = await foHummingbirdCartPage.hasSubtotalDiscount(page);
+      const hasSubtotalDiscount = await foDefaultCartPage.hasSubtotalDiscount(page);
       expect(hasSubtotalDiscount).to.eq(false);
 
-      const subTotalShipping = await foHummingbirdCartPage.getSubtotalShippingValue(page);
+      const subTotalShipping = await foDefaultCartPage.getSubtotalShippingValue(page);
       expect(subTotalShipping).to.eq('Free');
 
-      const priceATI = await foHummingbirdCartPage.getATIPrice(page);
+      const priceATI = await foDefaultCartPage.getATIPrice(page);
       expect(priceATI.toString()).to.eq(dataProducts.demo_1.finalPrice.toFixed(2));
     });
   });

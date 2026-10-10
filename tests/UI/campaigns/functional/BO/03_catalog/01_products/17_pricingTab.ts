@@ -2,6 +2,10 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCartRulesPage,
   boCatalogPriceRulesPage,
   boCatalogPriceRulesCreatePage,
@@ -13,7 +17,6 @@ import {
   type BrowserContext,
   FakerCatalogPriceRule,
   FakerProduct,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -141,23 +144,23 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'previewProduct', baseContext);
 
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check the product price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkProductPrice', baseContext);
 
-      const productPrice = await foHummingbirdProductPage.getProductPrice(page);
+      const productPrice = await foDefaultProductPage.getProductPrice(page);
       expect(productPrice).to.eq('€100.00');
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -189,23 +192,23 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'previewProduct2', baseContext);
 
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check the product price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkProductPrice2', baseContext);
 
-      const productPrice = await foHummingbirdProductPage.getProductPrice(page);
+      const productPrice = await foDefaultProductPage.getProductPrice(page);
       expect(productPrice).to.eq('€120.00');
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO2', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -263,23 +266,23 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'previewProduct3', baseContext);
 
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check the price per unit', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkUnitPrice', baseContext);
 
-      const flagText = await foHummingbirdProductPage.getProductUnitPrice(page);
+      const flagText = await foDefaultProductPage.getProductUnitPrice(page);
       expect(flagText).to.eq('(€12.00 per unit)');
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO3', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -298,23 +301,23 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'previewProduct4', baseContext);
 
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check the on sale flag', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkOnSaleFlag', baseContext);
 
-      const flagText = await foHummingbirdProductPage.getProductTag(page);
+      const flagText = await foDefaultProductPage.getProductTag(page);
       expect(flagText).to.contains('On sale!');
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO4', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -333,23 +336,23 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'previewProduct5', baseContext);
 
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check the product price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkSpecificPrice', baseContext);
 
-      const productPrice = await foHummingbirdProductPage.getProductPrice(page);
+      const productPrice = await foDefaultProductPage.getProductPrice(page);
       expect(productPrice).to.eq('€100.00');
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO5', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -368,23 +371,23 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'previewProduct6', baseContext);
 
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check the product price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkUpdatedSpecificPrice', baseContext);
 
-      const productPrice = await foHummingbirdProductPage.getProductPrice(page);
+      const productPrice = await foDefaultProductPage.getProductPrice(page);
       expect(productPrice).to.eq('€90.00');
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO6', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -401,23 +404,23 @@ describe('BO - Catalog - Products : Pricing tab', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'previewProduct7', baseContext);
 
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check the product price', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDeletedSpecificPrice', baseContext);
 
-      const productPrice = await foHummingbirdProductPage.getProductPrice(page);
+      const productPrice = await foDefaultProductPage.getProductPrice(page);
       expect(productPrice).to.eq('€120.00');
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO7', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);

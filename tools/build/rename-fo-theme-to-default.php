@@ -1,7 +1,7 @@
 <?php
 /**
- * After Composer installs prestashop/hummingbird into themes/hummingbird,
- * promote it to the sole FO theme at themes/default and drop classic leftovers.
+ * Composer installs the upstream FO theme package into themes/<package-dir>.
+ * Promote it to themes/default and drop classic leftovers.
  */
 
 declare(strict_types=1);
@@ -9,7 +9,8 @@ declare(strict_types=1);
 $root = dirname(__DIR__, 2);
 $themesDir = $root . '/themes';
 $classicDir = $themesDir . '/classic';
-$hummingbirdDir = $themesDir . '/hummingbird';
+// Upstream package directory name on disk after Composer extract.
+$sourceDir = $themesDir . '/hummingbird';
 $defaultDir = $themesDir . '/default';
 
 function removeDirectory(string $path): void
@@ -37,12 +38,12 @@ function removeDirectory(string $path): void
 
 removeDirectory($classicDir);
 
-if (is_dir($hummingbirdDir)) {
+if (is_dir($sourceDir)) {
     if (is_dir($defaultDir)) {
         removeDirectory($defaultDir);
     }
-    if (!rename($hummingbirdDir, $defaultDir)) {
-        fwrite(STDERR, "Failed to rename themes/hummingbird to themes/default\n");
+    if (!rename($sourceDir, $defaultDir)) {
+        fwrite(STDERR, "Failed to promote FO theme package dir to themes/default\n");
         exit(1);
     }
 }

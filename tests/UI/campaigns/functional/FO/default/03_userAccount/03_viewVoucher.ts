@@ -7,13 +7,16 @@ import {deleteCustomerTest} from '@commonTests/BO/customers/customer';
 import {createAccountTest} from '@commonTests/FO/default/account';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyVouchersPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   FakerCartRule,
   FakerCustomer,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyVouchersPage,
   type Page,
   utilsDate,
   utilsPlaywright,
@@ -77,38 +80,38 @@ describe('FO - Account : View vouchers', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToShopFO', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPageFO', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with created customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sighInFO', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, customerData);
+      await foDefaultLoginPage.customerLogin(page, customerData);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to vouchers page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFOVouchersPage', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
-      await foHummingbirdMyAccountPage.goToVouchersPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
+      await foDefaultMyAccountPage.goToVouchersPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyVouchersPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyVouchersPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyVouchersPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyVouchersPage.pageTitle);
     });
 
     [
@@ -130,7 +133,7 @@ describe('FO - Account : View vouchers', async () => {
       it(`should check the voucher ${cartRule.args.column} n°${cartRule.args.row}`, async function () {
         await testContext.addContextItem(this, 'testIdentifier', `checkVoucher${index}`, baseContext);
 
-        const cartRuleTextColumn = await foHummingbirdMyVouchersPage.getTextColumnFromTableVouchers(
+        const cartRuleTextColumn = await foDefaultMyVouchersPage.getTextColumnFromTableVouchers(
           page,
           cartRule.args.row,
           cartRule.args.column,

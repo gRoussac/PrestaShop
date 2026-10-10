@@ -2,11 +2,14 @@ import {expect} from 'chai';
 import testContext from '@utils/testContext';
 
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataCategories,
   FakerCategory,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -30,9 +33,9 @@ describe('FO - Menu and Navigation - Navigate in Categories : Side block categor
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFO', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -52,9 +55,9 @@ describe('FO - Menu and Navigation - Navigate in Categories : Side block categor
       it(`should click on category '${arg.parent.name}'`, async function () {
         await testContext.addContextItem(this, 'testIdentifier', `goToCategory${index}`, baseContext);
 
-        await foHummingbirdHomePage.goToCategory(page, arg.parent.id);
+        await foDefaultHomePage.goToCategory(page, arg.parent.id);
 
-        const pageTitle = await foHummingbirdHomePage.getPageTitle(page);
+        const pageTitle = await foDefaultHomePage.getPageTitle(page);
         expect(pageTitle).to.equal(arg.parent.name);
       });
 
@@ -62,10 +65,10 @@ describe('FO - Menu and Navigation - Navigate in Categories : Side block categor
         it(`should check category block '${arg.parent.name}'`, async function () {
           await testContext.addContextItem(this, 'testIdentifier', `checkCategory${index}`, baseContext);
 
-          const hasBlockCategories = await foHummingbirdCategoryPage.hasBlockCategories(page);
+          const hasBlockCategories = await foDefaultCategoryPage.hasBlockCategories(page);
           expect(hasBlockCategories).to.equal(true);
 
-          const numBlockCategories = await foHummingbirdCategoryPage.getNumBlockCategories(page, 0);
+          const numBlockCategories = await foDefaultCategoryPage.getNumBlockCategories(page, 0);
           expect(numBlockCategories).to.be.equal(dataCategories.home.children.length);
         });
       }
@@ -74,19 +77,19 @@ describe('FO - Menu and Navigation - Navigate in Categories : Side block categor
         it(`should click on category '${arg.child.name}' in sideBlock`, async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goToSideBlock${index}`, baseContext);
 
-          await foHummingbirdCategoryPage.clickBlockCategory(page, arg.child!.name, arg.parent.name);
+          await foDefaultCategoryPage.clickBlockCategory(page, arg.child!.name, arg.parent.name);
 
-          const pageTitle = await foHummingbirdHomePage.getPageTitle(page);
+          const pageTitle = await foDefaultHomePage.getPageTitle(page);
           expect(pageTitle).to.equal(arg.child!.name);
         });
 
         it(`should check category block '${arg.child.name}'`, async function () {
           await testContext.addContextItem(this, 'testIdentifier', `checkSubCategory${index}`, baseContext);
 
-          const hasBlockCategories = await foHummingbirdCategoryPage.hasBlockCategories(page);
+          const hasBlockCategories = await foDefaultCategoryPage.hasBlockCategories(page);
           expect(hasBlockCategories).to.be.equal(true);
 
-          const numBlockCategories = await foHummingbirdCategoryPage.getNumBlockCategories(page, 0);
+          const numBlockCategories = await foDefaultCategoryPage.getNumBlockCategories(page, 0);
           expect(numBlockCategories).to.be.equal(dataCategories.home.children.length);
         });
       }

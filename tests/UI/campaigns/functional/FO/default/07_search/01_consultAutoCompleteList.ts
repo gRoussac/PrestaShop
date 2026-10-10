@@ -3,8 +3,11 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -37,9 +40,9 @@ describe('FO - Search Page : Search product and consult autocomplete list', asyn
     it('should go to FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFO', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -49,19 +52,19 @@ describe('FO - Search Page : Search product and consult autocomplete list', asyn
       const searchValue: string = 'test';
       const numSearchResults: number = 7;
 
-      const numResults = await foHummingbirdHomePage.countAutocompleteSearchResult(page, searchValue);
+      const numResults = await foDefaultHomePage.countAutocompleteSearchResult(page, searchValue);
       expect(numResults).equal(numSearchResults);
 
-      const inputValue = await foHummingbirdHomePage.getSearchValue(page);
+      const inputValue = await foDefaultHomePage.getSearchValue(page);
       expect(inputValue).equal(searchValue);
     });
 
     it('should click outside the autocomplete list and check that the list is not displayed', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOutsideAutocompleteList', baseContext);
 
-      await foHummingbirdHomePage.closeAutocompleteSearch(page);
+      await foDefaultHomePage.closeAutocompleteSearch(page);
 
-      const hasAutocompleteList = await foHummingbirdHomePage.isAutocompleteSearchResultVisible(page);
+      const hasAutocompleteList = await foDefaultHomePage.isAutocompleteSearchResultVisible(page);
       expect(hasAutocompleteList).to.eq(false);
     });
 
@@ -82,19 +85,19 @@ describe('FO - Search Page : Search product and consult autocomplete list', asyn
       it(`should check the autocomplete list with the value ${search.searchValue}`, async function () {
         await testContext.addContextItem(this, 'testIdentifier', `checkAutocompleteList_${index}`, baseContext);
 
-        const numResults = await foHummingbirdHomePage.countAutocompleteSearchResult(page, search.searchValue);
+        const numResults = await foDefaultHomePage.countAutocompleteSearchResult(page, search.searchValue);
         expect(numResults).equal(search.numResults);
 
-        const inputValue = await foHummingbirdHomePage.getSearchValue(page);
+        const inputValue = await foDefaultHomePage.getSearchValue(page);
         expect(inputValue).equal(search.searchValue);
       });
 
       it('should close the autocomplete list', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `closeAutocompleteList_${index}`, baseContext);
 
-        await foHummingbirdHomePage.closeAutocompleteSearch(page);
+        await foDefaultHomePage.closeAutocompleteSearch(page);
 
-        const hasAutocompleteList = await foHummingbirdHomePage.isAutocompleteSearchResultVisible(page);
+        const hasAutocompleteList = await foDefaultHomePage.isAutocompleteSearchResultVisible(page);
         expect(hasAutocompleteList).to.eq(false);
       });
     });
@@ -102,7 +105,7 @@ describe('FO - Search Page : Search product and consult autocomplete list', asyn
     it('should check the autocomplete list with a string with less than 3 characters', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkAutocompleteListSmallString', baseContext);
 
-      const hasSearchResult = await foHummingbirdHomePage.hasAutocompleteSearchResult(page, 'te');
+      const hasSearchResult = await foDefaultHomePage.hasAutocompleteSearchResult(page, 'te');
       expect(hasSearchResult, 'There are results in autocomplete search').to.eq(false);
     });
   });

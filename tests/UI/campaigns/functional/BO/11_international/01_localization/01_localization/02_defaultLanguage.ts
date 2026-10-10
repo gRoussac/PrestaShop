@@ -3,12 +3,15 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLocalizationPage,
   boLoginPage,
   type BrowserContext,
   dataLanguages,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -87,16 +90,16 @@ describe('BO - International - Localization : Update default language', async ()
         it('should open the shop page', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `openShop_${index}`, baseContext);
 
-          await foHummingbirdHomePage.goTo(page, global.FO.URL);
+          await foDefaultHomePage.goTo(page, global.FO.URL);
 
-          const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+          const isHomePage = await foDefaultHomePage.isHomePage(page);
           expect(isHomePage).to.eq(true);
         });
 
         it('should go to FO and check the language', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `checkLanguageInFO_${index}`, baseContext);
 
-          const defaultLanguage = await foHummingbirdHomePage.getDefaultShopLanguage(page);
+          const defaultLanguage = await foDefaultHomePage.getDefaultShopLanguage(page);
           expect(defaultLanguage).to.equal(test.args.languageToCheck);
         });
       });

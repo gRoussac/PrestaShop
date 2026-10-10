@@ -3,13 +3,16 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLanguagesPage,
   boLocalizationPage,
   boLoginPage,
   type BrowserContext,
   dataLanguages,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -120,23 +123,23 @@ describe('FO - Header and Footer : Change language', async () => {
       it('should go to FO home page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToFO1', baseContext);
 
-        await foHummingbirdHomePage.goToFo(page);
+        await foDefaultHomePage.goToFo(page);
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.eq(true);
       });
 
       it('should check that the languages list is not visible', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'checkLanguageListNotVisible', baseContext);
 
-        const isVisible = await foHummingbirdHomePage.isLanguageListVisible(page);
+        const isVisible = await foDefaultHomePage.isLanguageListVisible(page);
         expect(isVisible, 'Language list is visible!').to.eq(false);
       });
 
       it('should check that the shop language is \'English\'', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'checkShopLanguage', baseContext);
 
-        const language = await foHummingbirdHomePage.getShopLanguage(page);
+        const language = await foDefaultHomePage.getShopLanguage(page);
         expect(language).to.equal('en-US');
       });
     });
@@ -146,7 +149,7 @@ describe('FO - Header and Footer : Change language', async () => {
       it('should go to BO', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'openBOPage2', baseContext);
 
-        await foHummingbirdHomePage.goToBO(page);
+        await foDefaultHomePage.goToBO(page);
 
         const pageTitle = await boDashboardPage.getPageTitle(page);
         expect(pageTitle).to.contains(boDashboardPage.pageTitle);
@@ -215,34 +218,34 @@ describe('FO - Header and Footer : Change language', async () => {
       it('should go to FO home page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToFO2', baseContext);
 
-        await foHummingbirdHomePage.goToFo(page);
+        await foDefaultHomePage.goToFo(page);
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.eq(true);
       });
 
       it('should check that the languages list is visible', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'checkLanguageListVisible', baseContext);
 
-        const isVisible = await foHummingbirdHomePage.isLanguageListVisible(page);
+        const isVisible = await foDefaultHomePage.isLanguageListVisible(page);
         expect(isVisible, 'Language list is not visible!').to.eq(true);
       });
 
       it('should change the shop language to \'French\'', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'ChangeLanguageToFrench', baseContext);
 
-        await foHummingbirdHomePage.changeLanguage(page, 'fr');
+        await foDefaultHomePage.changeLanguage(page, 'fr');
 
-        const language = await foHummingbirdHomePage.getDefaultShopLanguage(page);
+        const language = await foDefaultHomePage.getDefaultShopLanguage(page);
         expect(language, 'Language is not changed to French!').to.equal('Français');
       });
 
       it('should change the shop language to \'English\'', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'ChangeLanguageToEnglish', baseContext);
 
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.changeLanguage(page, 'en');
 
-        const language = await foHummingbirdHomePage.getDefaultShopLanguage(page);
+        const language = await foDefaultHomePage.getDefaultShopLanguage(page);
         expect(language, 'Language is not changed to English!').to.equal('English');
       });
     });

@@ -3,9 +3,12 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultModalQuickViewPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
-  foHummingbirdHomePage,
-  foHummingbirdModalQuickViewPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -36,18 +39,18 @@ describe('FO - Product page - Quick view : Share links', async () => {
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should quick view the third product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'quickView', baseContext);
 
-      await foHummingbirdHomePage.quickViewProduct(page, 3);
+      await foDefaultHomePage.quickViewProduct(page, 3);
 
-      const isModalVisible = await foHummingbirdModalQuickViewPage.isQuickViewProductModalVisible(page);
+      const isModalVisible = await foDefaultModalQuickViewPage.isQuickViewProductModalVisible(page);
       expect(isModalVisible).to.eq(true);
     });
 
@@ -88,7 +91,7 @@ describe('FO - Product page - Quick view : Share links', async () => {
       it(`should check the share link '${test.args.name}'`, async function () {
         await testContext.addContextItem(this, 'testIdentifier', `checkLink${index}`, baseContext);
 
-        const url = await foHummingbirdModalQuickViewPage.getSocialSharingLink(page, test.args.name);
+        const url = await foDefaultModalQuickViewPage.getSocialSharingLink(page, test.args.name);
         expect(url).to.contain(test.result.url);
       });
     });

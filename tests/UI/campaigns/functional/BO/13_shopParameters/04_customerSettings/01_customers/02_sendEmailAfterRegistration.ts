@@ -4,6 +4,12 @@ import {expect} from 'chai';
 import {setupSmtpConfigTest, resetSmtpConfigTest} from '@commonTests/BO/advancedParameters/smtp';
 
 import {
+  foDefaultCreateAccountPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCustomersPage,
   boCustomerSettingsPage,
   boDashboardPage,
@@ -11,9 +17,6 @@ import {
   boLoginPage,
   type BrowserContext,
   FakerCustomer,
-  foHummingbirdCreateAccountPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
   type MailDev,
   type MailDevEmail,
   type Page,
@@ -121,9 +124,9 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable send an emai
 
         // Go to FO
         page = await boCustomerSettingsPage.viewMyShop(page);
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.changeLanguage(page, 'en');
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.eq(true);
       });
 
@@ -131,11 +134,11 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable send an emai
         await testContext.addContextItem(this, 'testIdentifier', `createCustomerAccount${index}`, baseContext);
 
         // Create account
-        await foHummingbirdHomePage.goToLoginPage(page);
-        await foHummingbirdLoginPage.goToCreateAccountPage(page);
-        await foHummingbirdCreateAccountPage.createAccount(page, test.args.customer);
+        await foDefaultHomePage.goToLoginPage(page);
+        await foDefaultLoginPage.goToCreateAccountPage(page);
+        await foDefaultCreateAccountPage.createAccount(page, test.args.customer);
 
-        const connected = await foHummingbirdCreateAccountPage.isCustomerConnected(page);
+        const connected = await foDefaultCreateAccountPage.isCustomerConnected(page);
         expect(connected, 'Customer is not created in FO').to.eq(true);
       });
 
@@ -143,9 +146,9 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable send an emai
         await testContext.addContextItem(this, 'testIdentifier', `logoutFO_${index}`, baseContext);
 
         // Logout from FO
-        await foHummingbirdCreateAccountPage.logout(page);
+        await foDefaultCreateAccountPage.logout(page);
 
-        const connected = await foHummingbirdHomePage.isCustomerConnected(page);
+        const connected = await foDefaultHomePage.isCustomerConnected(page);
         expect(connected, 'Customer is connected in FO').to.eq(false);
       });
 
@@ -160,7 +163,7 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable send an emai
       it('should go back to BO', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `goBackTOBO${index}`, baseContext);
 
-        page = await foHummingbirdCreateAccountPage.closePage(browserContext, page, 0);
+        page = await foDefaultCreateAccountPage.closePage(browserContext, page, 0);
 
         const pageTitle = await boCustomerSettingsPage.getPageTitle(page);
         expect(pageTitle).to.contains(boCustomerSettingsPage.pageTitle);

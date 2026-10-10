@@ -3,12 +3,15 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductSettingsPage,
   type BrowserContext,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -69,37 +72,37 @@ describe('BO - Shop Parameters - Product Settings : Display the "add to cart" bu
 
         page = await boProductSettingsPage.viewMyShop(page);
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage, 'Home page was not opened').to.eq(true);
       });
 
       it('should go to the All products page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `goToFeaturedProductsPage${index}`, baseContext);
 
-        await foHummingbirdHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
+        await foDefaultHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
 
-        const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+        const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
         expect(isCategoryPageVisible).to.eq(true);
       });
 
       it('should check the add to cart button in the 2nd popular product', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `checkAddToCartButton${index}`, baseContext);
 
-        const isAddToCartButtonVisible = await foHummingbirdCategoryPage.isAddToCartButtonVisible(page, 2);
+        const isAddToCartButtonVisible = await foDefaultCategoryPage.isAddToCartButtonVisible(page, 2);
         expect(isAddToCartButtonVisible).to.eq(args.enable);
       });
 
       it('should check that the add to cart button in the 6th popular product is visible', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `checkAddToCartButton2${index}`, baseContext);
 
-        const isAddToCartButtonVisible = await foHummingbirdCategoryPage.isAddToCartButtonVisible(page, 6);
+        const isAddToCartButtonVisible = await foDefaultCategoryPage.isAddToCartButtonVisible(page, 6);
         expect(isAddToCartButtonVisible).to.eq(true);
       });
 
       it('should close the page and go back to BO', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `closePageAndBackToBO${index}`, baseContext);
 
-        page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+        page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
         const pageTitle = await boProductSettingsPage.getPageTitle(page);
         expect(pageTitle).to.contains(boProductSettingsPage.pageTitle);

@@ -2,6 +2,16 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultCheckoutOrderConfirmationPage,
+  foDefaultHomePage,
+  foDefaultModalBlockCartPage,
+  foDefaultModalQuickViewPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boOrdersPage,
@@ -10,13 +20,6 @@ import {
   dataCustomers,
   dataPaymentMethods,
   dataProducts,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdCheckoutOrderConfirmationPage,
-  foHummingbirdHomePage,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdModalQuickViewPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -48,50 +51,50 @@ describe('FO - Order confirmation : Order details and totals - Recap of payment 
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'openFoShop', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToFo(page);
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should go to home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToHomePage', baseContext);
 
-      await foHummingbirdHomePage.goToHomePage(page);
+      await foDefaultHomePage.goToHomePage(page);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it(`should add the product ${dataProducts.demo_6.name} to cart by quick view`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addDemo3ByQuickView', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_6.name);
-      await foHummingbirdSearchResultsPage.quickViewProduct(page, 1);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_6.name);
+      await foDefaultSearchResultsPage.quickViewProduct(page, 1);
 
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should validate shopping cart and go to checkout page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToCheckoutPage', baseContext);
 
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage).to.equal(true);
     });
 
     it('should sign in by default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFO', baseContext);
 
-      await foHummingbirdCheckoutPage.clickOnSignIn(page);
+      await foDefaultCheckoutPage.clickOnSignIn(page);
 
-      const isCustomerConnected = await foHummingbirdCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
+      const isCustomerConnected = await foDefaultCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
       expect(isCustomerConnected, 'Customer is not connected!').to.equal(true);
     });
 
@@ -99,29 +102,29 @@ describe('FO - Order confirmation : Order details and totals - Recap of payment 
       await testContext.addContextItem(this, 'testIdentifier', 'goToDeliveryStep', baseContext);
 
       // Address step - Go to delivery step
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete, 'Step Address is not complete').to.equal(true);
     });
 
     it('should select the first carrier and go to payment step', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkShippingPrice1', baseContext);
 
-      await foHummingbirdCheckoutPage.chooseShippingMethod(page, dataCarriers.clickAndCollect.id);
+      await foDefaultCheckoutPage.chooseShippingMethod(page, dataCarriers.clickAndCollect.id);
 
-      const isPaymentStep = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+      const isPaymentStep = await foDefaultCheckoutPage.goToPaymentStep(page);
       expect(isPaymentStep).to.eq(true);
     });
 
     it('should Pay by check and confirm order', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'confirmOrder', baseContext);
 
-      await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.checkPayment.moduleName);
+      await foDefaultCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.checkPayment.moduleName);
 
-      const pageTitle = await foHummingbirdCheckoutOrderConfirmationPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCheckoutOrderConfirmationPage.pageTitle);
+      const pageTitle = await foDefaultCheckoutOrderConfirmationPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCheckoutOrderConfirmationPage.pageTitle);
 
-      const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-      expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+      const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+      expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
     });
   });
 
@@ -165,34 +168,34 @@ describe('FO - Order confirmation : Order details and totals - Recap of payment 
     it('should check the subtotal', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkSubTotal', baseContext);
 
-      const orderSubTotal = await foHummingbirdCheckoutOrderConfirmationPage.getOrderSubTotal(page);
+      const orderSubTotal = await foDefaultCheckoutOrderConfirmationPage.getOrderSubTotal(page);
       expect(orderSubTotal).to.equal(`€${dataProducts.demo_6.combinations[0].priceTI.toFixed(2)}`);
     });
 
     it('should check the shipping total', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkShippingTotal', baseContext);
 
-      const orderSubTotal = await foHummingbirdCheckoutOrderConfirmationPage.getOrderShippingTotal(page);
+      const orderSubTotal = await foDefaultCheckoutOrderConfirmationPage.getOrderShippingTotal(page);
       expect(orderSubTotal).to.equal('Free');
     });
 
     it('should check the total (tax incl.)', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkTotalTaxInc', baseContext);
 
-      const orderTotalTaxInc = await foHummingbirdCheckoutOrderConfirmationPage.getOrderTotal(page);
+      const orderTotalTaxInc = await foDefaultCheckoutOrderConfirmationPage.getOrderTotal(page);
       expect(orderTotalTaxInc).to.equal(`€${dataProducts.demo_6.combinations[0].priceTI.toFixed(2)}`);
     });
 
     it('should check the order details', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkOrderDetails', baseContext);
 
-      const paymentMethod = await foHummingbirdCheckoutOrderConfirmationPage.getPaymentMethod(page);
+      const paymentMethod = await foDefaultCheckoutOrderConfirmationPage.getPaymentMethod(page);
       expect(paymentMethod).to.contains(dataPaymentMethods.checkPayment.displayName);
 
-      const orderReferenceValue = await foHummingbirdCheckoutOrderConfirmationPage.getOrderReferenceValue(page);
+      const orderReferenceValue = await foDefaultCheckoutOrderConfirmationPage.getOrderReferenceValue(page);
       expect(orderReferenceValue).to.contains(orderReference);
 
-      const shippingMethod = await foHummingbirdCheckoutOrderConfirmationPage.getShippingMethod(page);
+      const shippingMethod = await foDefaultCheckoutOrderConfirmationPage.getShippingMethod(page);
       expect(shippingMethod).to.contains(`${dataCarriers.clickAndCollect.name} - ${dataCarriers.clickAndCollect.transitName}`);
     });
   });

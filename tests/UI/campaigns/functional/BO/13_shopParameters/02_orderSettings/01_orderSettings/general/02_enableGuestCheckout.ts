@@ -3,14 +3,17 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boOrderSettingsPage,
   type BrowserContext,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -82,9 +85,9 @@ describe('BO - Shop Parameters - Order Settings : Enable/Disable guest checkout'
       // Click on view my shop
       page = await boOrderSettingsPage.viewMyShop(page);
       // Change FO language
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
@@ -92,12 +95,12 @@ describe('BO - Shop Parameters - Order Settings : Enable/Disable guest checkout'
       await testContext.addContextItem(this, 'testIdentifier', `addProductToCart${index}`, baseContext);
 
       // Go to the first product page
-      await foHummingbirdHomePage.goToProductPage(page, 1);
+      await foDefaultHomePage.goToProductPage(page, 1);
 
       // Add the product to the cart
-      await foHummingbirdProductPage.addProductToTheCart(page);
+      await foDefaultProductPage.addProductToTheCart(page);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(index + 1);
     });
 
@@ -105,24 +108,24 @@ describe('BO - Shop Parameters - Order Settings : Enable/Disable guest checkout'
       await testContext.addContextItem(this, 'testIdentifier', `checkIfNoticeVisible${index}`, baseContext);
 
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
       // Check guest checkout
-      const isNoticeVisible = await foHummingbirdCheckoutPage.getActiveLinkFromPersonalInformationBlock(page);
+      const isNoticeVisible = await foDefaultCheckoutPage.getActiveLinkFromPersonalInformationBlock(page);
       expect(isNoticeVisible).to.be.equal(test.args.tabName);
     });
 
     it('should verify the guest checkout', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `checkGuestCheckout${index}`, baseContext);
 
-      const isPasswordRequired = await foHummingbirdCheckoutPage.isPasswordRequired(page);
+      const isPasswordRequired = await foDefaultCheckoutPage.isPasswordRequired(page);
       expect(isPasswordRequired).to.be.equal(test.args.pwdRequired);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `goBackToBO${index}`, baseContext);
 
-      page = await foHummingbirdCheckoutPage.closePage(browserContext, page, 0);
+      page = await foDefaultCheckoutPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boOrderSettingsPage.getPageTitle(page);
       expect(pageTitle).to.contains(boOrderSettingsPage.pageTitle);

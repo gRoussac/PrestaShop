@@ -3,13 +3,16 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductSettingsPage,
   type BrowserContext,
   dataProducts,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -70,27 +73,27 @@ describe('BO - Shop Parameters - Product Settings : Update label of in-stock pro
 
       page = await boProductSettingsPage.viewMyShop(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page was not opened').to.eq(true);
     });
 
     it('should go to the first product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `goToFirstProductPage_${index}`, baseContext);
 
-      await foHummingbirdHomePage.goToProductPage(page, 1);
+      await foDefaultHomePage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle.toUpperCase()).to.contains(dataProducts.demo_1.name.toUpperCase());
     });
 
     it('should check the label of in-stock product in FO product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `checkLabelInStock_${index}`, baseContext);
 
-      const isVisible = await foHummingbirdProductPage.hasProductAvailabilityLabel(page);
+      const isVisible = await foDefaultProductPage.hasProductAvailabilityLabel(page);
       expect(isVisible).to.be.equal(test.args.exist);
 
       if (test.args.exist) {
-        const availabilityLabel = await foHummingbirdProductPage.getProductAvailabilityLabel(page);
+        const availabilityLabel = await foDefaultProductPage.getProductAvailabilityLabel(page);
         expect(availabilityLabel).to.contains(test.args.labelToCheck);
       }
     });
@@ -98,7 +101,7 @@ describe('BO - Shop Parameters - Product Settings : Update label of in-stock pro
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `goBackToBo${index}`, baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductSettingsPage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductSettingsPage.pageTitle);

@@ -2,6 +2,11 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCustomersPage,
   boCustomersCreatePage,
   boCustomersViewPage,
@@ -9,8 +14,6 @@ import {
   boLoginPage,
   type BrowserContext,
   FakerCustomer,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -100,19 +103,19 @@ describe('BO - Customers - Customers : CRUD Customer in BO', async () => {
       // View shop
       page = await boCustomersPage.viewMyShop(page);
       // Change language in FO
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should sign in by new customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInWithNewCustomer', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
-      await foHummingbirdLoginPage.customerLogin(page, createCustomerData);
+      await foDefaultHomePage.goToLoginPage(page);
+      await foDefaultLoginPage.customerLogin(page, createCustomerData);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected).to.eq(true);
     });
 
@@ -120,9 +123,9 @@ describe('BO - Customers - Customers : CRUD Customer in BO', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'logOutFO', baseContext);
 
       // Logout in FO
-      await foHummingbirdHomePage.logout(page);
+      await foDefaultHomePage.logout(page);
 
-      const isCustomerConnected = await foHummingbirdHomePage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultHomePage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected!').to.eq(false);
     });
 
@@ -130,7 +133,7 @@ describe('BO - Customers - Customers : CRUD Customer in BO', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO1', baseContext);
 
       // Go back to BO
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCustomersPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCustomersPage.pageTitle);
@@ -227,9 +230,9 @@ describe('BO - Customers - Customers : CRUD Customer in BO', async () => {
       // View shop
       page = await boCustomersPage.viewMyShop(page);
       // Change language in FO
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -237,21 +240,21 @@ describe('BO - Customers - Customers : CRUD Customer in BO', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'checkFOSignInWithUpdatedCustomer', baseContext);
 
       // Try to log in
-      await foHummingbirdHomePage.goToLoginPage(page);
-      await foHummingbirdLoginPage.customerLogin(page, editCustomerData);
+      await foDefaultHomePage.goToLoginPage(page);
+      await foDefaultLoginPage.customerLogin(page, editCustomerData);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected).to.eq(false);
 
-      const loginError = await foHummingbirdLoginPage.getLoginError(page);
-      expect(loginError).to.contains(foHummingbirdLoginPage.disabledAccountErrorText);
+      const loginError = await foDefaultLoginPage.getLoginError(page);
+      expect(loginError).to.contains(foDefaultLoginPage.disabledAccountErrorText);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO2', baseContext);
 
       // Go back to BO
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCustomersPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCustomersPage.pageTitle);

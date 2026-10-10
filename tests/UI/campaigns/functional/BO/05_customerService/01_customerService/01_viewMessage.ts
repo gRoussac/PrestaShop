@@ -2,14 +2,17 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultContactUsPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boCustomerServicePage,
   boCustomerServiceViewPage,
   boDashboardPage,
   boLoginPage,
   type BrowserContext,
   FakerContactMessage,
-  foHummingbirdContactUsPage,
-  foHummingbirdHomePage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -47,9 +50,9 @@ describe('BO - Customer Service : View message', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'openShop', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -57,19 +60,19 @@ describe('BO - Customer Service : View message', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goOnContactPage', baseContext);
 
       // Go to contact us page
-      await foHummingbirdHomePage.goToFooterLink(page, 'Contact us');
+      await foDefaultHomePage.goToFooterLink(page, 'Contact us');
 
-      const pageTitle = await foHummingbirdContactUsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdContactUsPage.pageTitle);
+      const pageTitle = await foDefaultContactUsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultContactUsPage.pageTitle);
     });
 
     it('should send message to customer service', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sendMessage', baseContext);
 
-      await foHummingbirdContactUsPage.sendMessage(page, contactUsData, `${contactUsData.fileName}.jpg`);
+      await foDefaultContactUsPage.sendMessage(page, contactUsData, `${contactUsData.fileName}.jpg`);
 
-      const validationMessage = await foHummingbirdContactUsPage.getAlertSuccess(page);
-      expect(validationMessage).to.equal(foHummingbirdContactUsPage.validationMessage);
+      const validationMessage = await foDefaultContactUsPage.getAlertSuccess(page);
+      expect(validationMessage).to.equal(foDefaultContactUsPage.validationMessage);
     });
   });
 

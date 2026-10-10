@@ -3,10 +3,13 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataCategories,
   FakerCategory,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -36,9 +39,9 @@ describe('FO - Menu and Navigation - Navigate in Categories : Check categories a
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFO', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -46,9 +49,9 @@ describe('FO - Menu and Navigation - Navigate in Categories : Check categories a
       it(`should check category '${test.name}' link`, async function () {
         await testContext.addContextItem(this, 'testIdentifier', `check${test.name}Link`, baseContext);
 
-        await foHummingbirdHomePage.goToCategory(page, test.id);
+        await foDefaultHomePage.goToCategory(page, test.id);
 
-        const pageTitle = await foHummingbirdHomePage.getPageTitle(page);
+        const pageTitle = await foDefaultHomePage.getPageTitle(page);
         expect(pageTitle).to.equal(test.name);
       });
     });
@@ -62,9 +65,9 @@ describe('FO - Menu and Navigation - Navigate in Categories : Check categories a
       it(`should check subcategory '${test.args.subcategory.name}' link`, async function () {
         await testContext.addContextItem(this, 'testIdentifier', `check${test.args.subcategory.name}Link`, baseContext);
 
-        await foHummingbirdHomePage.goToSubCategory(page, test.args.category.id, test.args.subcategory.id);
+        await foDefaultHomePage.goToSubCategory(page, test.args.category.id, test.args.subcategory.id);
 
-        const pageTitle = await foHummingbirdHomePage.getPageTitle(page);
+        const pageTitle = await foDefaultHomePage.getPageTitle(page);
         expect(pageTitle).to.equal(test.args.subcategory.name);
       });
     });

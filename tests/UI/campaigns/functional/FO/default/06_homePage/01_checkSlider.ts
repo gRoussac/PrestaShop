@@ -3,8 +3,11 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -28,40 +31,40 @@ describe('FO - Home Page : Check slider', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'openShopFO', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should click in right arrow of the slider', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnRightSlideArrow', baseContext);
 
-      let isVisible = await foHummingbirdHomePage.isSliderVisible(page, 1);
+      let isVisible = await foDefaultHomePage.isSliderVisible(page, 1);
       expect(isVisible).to.equal(true);
 
-      await foHummingbirdHomePage.clickOnLeftOrRightArrow(page, 'next');
+      await foDefaultHomePage.clickOnLeftOrRightArrow(page, 'next');
 
-      isVisible = await foHummingbirdHomePage.isSliderVisible(page, 2);
+      isVisible = await foDefaultHomePage.isSliderVisible(page, 2);
       expect(isVisible).to.equal(true);
     });
 
     it('should click in left arrow of the slider', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnLeftSlideArrow', baseContext);
 
-      let isVisible = await foHummingbirdHomePage.isSliderVisible(page, 2);
+      let isVisible = await foDefaultHomePage.isSliderVisible(page, 2);
       expect(isVisible).to.equal(true);
 
-      await foHummingbirdHomePage.clickOnLeftOrRightArrow(page, 'prev');
+      await foDefaultHomePage.clickOnLeftOrRightArrow(page, 'prev');
 
-      isVisible = await foHummingbirdHomePage.isSliderVisible(page, 1);
+      isVisible = await foDefaultHomePage.isSliderVisible(page, 1);
       expect(isVisible).to.equal(true);
     });
 
     it('should check the slider URL', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkSliderURL', baseContext);
 
-      const currentURL = await foHummingbirdHomePage.getSliderURL(page);
+      const currentURL = await foDefaultHomePage.getSliderURL(page);
       expect(currentURL).to.contains('www.prestashop-project.org');
     });
   });

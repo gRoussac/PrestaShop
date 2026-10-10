@@ -6,6 +6,12 @@ import {createProductTest, deleteProductTest} from '@commonTests/BO/catalog/prod
 
 import {expect} from 'chai';
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
@@ -13,9 +19,6 @@ import {
   type BrowserContext,
   dataModules,
   FakerProduct,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsCore,
   utilsPlaywright,
@@ -134,49 +137,49 @@ describe('Mail alerts module - Disable/Enable module', async () => {
           await testContext.addContextItem(this, 'testIdentifier', `goToFo${index}`, baseContext);
 
           page = await boModuleManagerPage.viewMyShop(page);
-          await foHummingbirdHomePage.changeLanguage(page, 'en');
+          await foDefaultHomePage.changeLanguage(page, 'en');
 
-          const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+          const isHomePage = await foDefaultHomePage.isHomePage(page);
           expect(isHomePage).to.eq(true);
         });
 
         it('should go to the category Page', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goToCategoryPage${index}`, baseContext);
 
-          await foHummingbirdHomePage.goToAllProductsPage(page);
+          await foDefaultHomePage.goToAllProductsPage(page);
 
-          const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+          const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
           expect(isCategoryPageVisible, 'Home category page was not opened').to.eq(true);
         });
 
         it('should go to the next page', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goToNextCategoryPage${index}`, baseContext);
 
-          await foHummingbirdCategoryPage.goToNextPage(page);
+          await foDefaultCategoryPage.goToNextPage(page);
 
-          nthProduct = await foHummingbirdCategoryPage.getNThChildFromIDProduct(page, idProduct);
+          nthProduct = await foDefaultCategoryPage.getNThChildFromIDProduct(page, idProduct);
           expect(nthProduct).to.not.eq(null);
         });
 
         it('should go to the product page', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goToProductPage${index}`, baseContext);
 
-          await foHummingbirdCategoryPage.goToProductPage(page, nthProduct!);
+          await foDefaultCategoryPage.goToProductPage(page, nthProduct!);
 
-          const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+          const pageTitle = await foDefaultProductPage.getPageTitle(page);
           expect(pageTitle.toUpperCase()).to.contains(productOutOfStockNotAllowed.name.toUpperCase());
 
-          const hasFlagOutOfStock = await foHummingbirdProductPage.hasProductFlag(page, 'out_of_stock');
+          const hasFlagOutOfStock = await foDefaultProductPage.hasProductFlag(page, 'out_of_stock');
           expect(hasFlagOutOfStock).to.be.equal(true);
 
-          const hasBlockMailAlert = await foHummingbirdProductPage.hasBlockMailAlert(page);
+          const hasBlockMailAlert = await foDefaultProductPage.hasBlockMailAlert(page);
           expect(hasBlockMailAlert).to.be.equal(test.state);
         });
 
         it('should close the page', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `closePage${index}`, baseContext);
 
-          page = await foHummingbirdCategoryPage.closePage(browserContext, page);
+          page = await foDefaultCategoryPage.closePage(browserContext, page);
 
           const pageTitle = await boModuleManagerPage.getPageTitle(page);
           expect(pageTitle).to.contains(boModuleManagerPage.pageTitle);

@@ -3,13 +3,16 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
   type BrowserContext,
   dataModules,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
   modPsFacetedsearchBoFilterTemplate,
   modPsFacetedsearchBoMain,
   type Page,
@@ -118,22 +121,22 @@ describe('Faceted search module - Edit template - Product Price filter', async (
 
       page = await modPsFacetedsearchBoMain.viewMyShop(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.be.eq(true);
     });
 
     it('should check the "All products" page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `goToAllProductsPage_${index}`, baseContext);
 
-      await foHummingbirdHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
+      await foDefaultHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
 
-      const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+      const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
       expect(isCategoryPageVisible).to.be.eq(true);
 
-      const hasSearchFilters = await foHummingbirdCategoryPage.hasSearchFilters(page);
+      const hasSearchFilters = await foDefaultCategoryPage.hasSearchFilters(page);
       expect(hasSearchFilters).to.be.eq(test.expectedHasSearchFilters);
 
-      const isSearchFilterSlider = await foHummingbirdCategoryPage.isSearchFilterSlider(
+      const isSearchFilterSlider = await foDefaultCategoryPage.isSearchFilterSlider(
         page,
         'price',
       );
@@ -143,7 +146,7 @@ describe('Faceted search module - Edit template - Product Price filter', async (
     it('should close the page and return to the backOffice', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `closePageFo_${index}`, baseContext);
 
-      page = await foHummingbirdCategoryPage.closePage(browserContext, page, 0);
+      page = await foDefaultCategoryPage.closePage(browserContext, page, 0);
 
       const pageTitle = await modPsFacetedsearchBoMain.getPageSubtitle(page);
       expect(pageTitle).to.eq(modPsFacetedsearchBoMain.pageSubTitle);

@@ -2,6 +2,11 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
@@ -9,8 +14,6 @@ import {
   boSearchPage,
   type BrowserContext,
   dataLanguages,
-  foHummingbirdHomePage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -105,31 +108,31 @@ describe('BO - Shop Parameters - Search : Blacklisted words', async () => {
     await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop', baseContext);
 
     page = await boProductsCreatePage.viewMyShop(page);
-    await foHummingbirdHomePage.changeLanguage(page, 'en');
+    await foDefaultHomePage.changeLanguage(page, 'en');
 
-    const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+    const isHomePage = await foDefaultHomePage.isHomePage(page);
     expect(isHomePage).to.eq(true);
   });
 
   it(`should search the word "${searchWord}"`, async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'searchWordWithError', baseContext);
 
-    await foHummingbirdHomePage.searchProduct(page, searchWord);
+    await foDefaultHomePage.searchProduct(page, searchWord);
 
-    const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-    expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+    const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+    expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-    const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+    const hasResults = await foDefaultSearchResultsPage.hasResults(page);
     expect(hasResults).to.eq(false);
 
-    const searchInputValue = await foHummingbirdSearchResultsPage.getSearchValue(page);
+    const searchInputValue = await foDefaultSearchResultsPage.getSearchValue(page);
     expect(searchInputValue).to.be.equal(searchWord);
   });
 
   it('should return to \'Shop Parameters > Search\' page', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'returnToSearchPage', baseContext);
 
-    page = await foHummingbirdSearchResultsPage.changePage(browserContext, 0);
+    page = await foDefaultSearchResultsPage.changePage(browserContext, 0);
     await boDashboardPage.goToSubMenu(
       page,
       boDashboardPage.shopParametersParentLink,
@@ -154,23 +157,23 @@ describe('BO - Shop Parameters - Search : Blacklisted words', async () => {
   it(`should search the word "${searchWord}"`, async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'searchWordWithSuccess', baseContext);
 
-    page = await foHummingbirdSearchResultsPage.changePage(browserContext, 1);
+    page = await foDefaultSearchResultsPage.changePage(browserContext, 1);
     await page.reload();
 
-    const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-    expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+    const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+    expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-    const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+    const hasResults = await foDefaultSearchResultsPage.hasResults(page);
     expect(hasResults).to.eq(true);
 
-    const searchInputValue = await foHummingbirdSearchResultsPage.getSearchValue(page);
+    const searchInputValue = await foDefaultSearchResultsPage.getSearchValue(page);
     expect(searchInputValue).to.be.equal(searchWord);
   });
 
   it('should reset the list', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'resetList', baseContext);
 
-    page = await foHummingbirdSearchResultsPage.changePage(browserContext, 0);
+    page = await foDefaultSearchResultsPage.changePage(browserContext, 0);
 
     const textResult = await boSearchPage.setBlacklistedWords(page, dataLanguages.english.id, blacklistedWordsListEN);
     expect(textResult).to.be.eq(boSearchPage.settingsUpdateMessage);

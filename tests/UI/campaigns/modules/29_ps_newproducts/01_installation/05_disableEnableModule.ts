@@ -3,12 +3,15 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
   type BrowserContext,
   dataModules,
-  foHummingbirdHomePage,
   modPsNewProductsBoMain,
   type Page,
   utilsPlaywright,
@@ -82,23 +85,23 @@ describe('New products block module - Disable/Enable module', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFOAfterDisable', baseContext);
 
       page = await modPsNewProductsBoMain.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should check if the "New Products" block is not visible', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNotVisible', baseContext);
 
-      const hasProductsBlock = await foHummingbirdHomePage.hasProductsBlock(page, 'ps-newproducts');
+      const hasProductsBlock = await foDefaultHomePage.hasProductsBlock(page, 'ps-newproducts');
       expect(hasProductsBlock).to.eq(false);
     });
 
     it('should return to the back office', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'returnBO', baseContext);
 
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boModuleManagerPage.getPageTitle(page);
       expect(pageTitle).to.contains(boModuleManagerPage.pageTitle);
@@ -122,16 +125,16 @@ describe('New products block module - Disable/Enable module', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFOAfterEnable', baseContext);
 
       page = await modPsNewProductsBoMain.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should check if the "New Products" block is visible', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkVisible', baseContext);
 
-      const hasProductsBlock = await foHummingbirdHomePage.hasProductsBlock(page, 'ps-newproducts');
+      const hasProductsBlock = await foDefaultHomePage.hasProductsBlock(page, 'ps-newproducts');
       expect(hasProductsBlock).to.eq(true);
     });
   });

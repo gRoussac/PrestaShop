@@ -3,13 +3,16 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
   boProductSettingsPage,
   type BrowserContext,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
   type Page,
   utilsCore,
   utilsPlaywright,
@@ -109,26 +112,26 @@ describe('FO - Menu and navigation : Sort products', async () => {
 
       // Click on view my shop
       page = await boProductSettingsPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it('should go to all products page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAllProducts', baseContext);
 
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
-      await foHummingbirdHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
+      await foDefaultHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
 
-      const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+      const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
       expect(isCategoryPageVisible, 'Home category page was not opened').to.eq(true);
     });
 
     it('should check that the products as sorted by relevance', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDefaultSort', baseContext);
 
-      const isSortingLinkVisible = await foHummingbirdCategoryPage.getSortByValue(page);
+      const isSortingLinkVisible = await foDefaultCategoryPage.getSortByValue(page);
       expect(isSortingLinkVisible).to.contain('Relevance');
     });
 
@@ -175,9 +178,9 @@ describe('FO - Menu and navigation : Sort products', async () => {
       it(`should sort by '${test.args.sortName}'`, async function () {
         await testContext.addContextItem(this, 'testIdentifier', test.args.testIdentifier, baseContext);
 
-        const nonSortedTable = await foHummingbirdCategoryPage.getAllProductsAttribute(page, test.args.attribute);
-        await foHummingbirdCategoryPage.sortProductsList(page, test.args.sortBy);
-        const sortedTable = await foHummingbirdCategoryPage.getAllProductsAttribute(page, test.args.attribute);
+        const nonSortedTable = await foDefaultCategoryPage.getAllProductsAttribute(page, test.args.attribute);
+        await foDefaultCategoryPage.sortProductsList(page, test.args.sortBy);
+        const sortedTable = await foDefaultCategoryPage.getAllProductsAttribute(page, test.args.attribute);
 
         const expectedResult: string[] = await utilsCore.sortArray(nonSortedTable);
 
@@ -195,7 +198,7 @@ describe('FO - Menu and navigation : Sort products', async () => {
     it('should close the FO page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closeFo', baseContext);
 
-      page = await foHummingbirdCategoryPage.closePage(browserContext, page, 0);
+      page = await foDefaultCategoryPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductSettingsPage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductSettingsPage.pageTitle);

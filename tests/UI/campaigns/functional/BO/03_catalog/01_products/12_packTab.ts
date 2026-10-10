@@ -3,6 +3,13 @@ import {deleteProductTest} from '@commonTests/BO/catalog/product';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultCheckoutOrderConfirmationPage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boOrdersPage,
@@ -16,10 +23,6 @@ import {
   dataPaymentMethods,
   dataProducts,
   FakerProduct,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdCheckoutOrderConfirmationPage,
-  foHummingbirdProductPage,
   type Page,
   utilsCore,
   utilsPlaywright,
@@ -300,20 +303,20 @@ describe('BO - Catalog - Products : Pack Tab', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'previewPack', baseContext);
 
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle: string = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle: string = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(productNameEn);
     });
 
     it('should check product information', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkProductInformation', baseContext);
 
-      const productInformation = await foHummingbirdProductPage.getProductInformation(page);
+      const productInformation = await foDefaultProductPage.getProductInformation(page);
       const taxValue = utilsCore.percentage(productRetailPrice, mostUsedTaxValue);
       expect(productRetailPrice + taxValue).to.eq(productInformation.price);
 
-      const productsPrice = await foHummingbirdProductPage.getPackProductsPrice(page);
+      const productsPrice = await foDefaultProductPage.getPackProductsPrice(page);
       const calculatedPrice = (
         ((
           (dataProducts.demo_1.price - (dataProducts.demo_1.price * (dataProducts.demo_1.specificPrice.discount / 100)))
@@ -323,7 +326,7 @@ describe('BO - Catalog - Products : Pack Tab', async () => {
       ).toFixed(2);
       expect(calculatedPrice).to.eq(productsPrice.toString());
 
-      const product1 = await foHummingbirdProductPage.getProductInPackList(page, 1);
+      const product1 = await foDefaultProductPage.getProductInPackList(page, 1);
       await Promise.all([
         expect(product1.name).to.equals(
           `${dataProducts.demo_1.name} `
@@ -334,7 +337,7 @@ describe('BO - Catalog - Products : Pack Tab', async () => {
         expect(product1.quantity).to.equals(productQuantity),
       ]);
 
-      const product2 = await foHummingbirdProductPage.getProductInPackList(page, 2);
+      const product2 = await foDefaultProductPage.getProductInPackList(page, 2);
       await Promise.all([
         expect(product2.name).to.equals(
           `${dataProducts.demo_9.name} `
@@ -351,34 +354,34 @@ describe('BO - Catalog - Products : Pack Tab', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'orderPack1', baseContext);
 
       // Add product to the cart
-      await foHummingbirdProductPage.addProductToTheCart(page);
+      await foDefaultProductPage.addProductToTheCart(page);
 
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
       // Connect
-      await foHummingbirdCheckoutPage.clickOnSignIn(page);
-      await foHummingbirdCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultCheckoutPage.clickOnSignIn(page);
+      await foDefaultCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
 
       // Address step - Go to delivery step
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete).to.be.eq(true);
 
       // Delivery step - Go to payment step
-      const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+      const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
       expect(isStepDeliveryComplete).to.be.eq(true);
 
       // Payment step - Choose payment step
-      await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
+      await foDefaultCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
 
       // Check the confirmation message
-      const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-      expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+      const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+      expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
     });
 
     it('should return to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'returnToBackOffice', baseContext);
 
-      page = await foHummingbirdCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
+      page = await foDefaultCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
       await page.reload();
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
@@ -483,9 +486,9 @@ describe('BO - Catalog - Products : Pack Tab', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'previewPack2', baseContext);
 
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle: string = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle: string = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(productNameEn);
     });
 
@@ -493,31 +496,31 @@ describe('BO - Catalog - Products : Pack Tab', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'orderPack2', baseContext);
 
       // Add product to the cart
-      await foHummingbirdProductPage.addProductToTheCart(page);
+      await foDefaultProductPage.addProductToTheCart(page);
 
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
       // Address step - Go to delivery step
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete).to.be.eq(true);
 
       // Delivery step - Go to payment step
-      const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+      const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
       expect(isStepDeliveryComplete).to.be.eq(true);
 
       // Payment step - Choose payment step
-      await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
+      await foDefaultCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
 
       // Check the confirmation message
-      const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-      expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+      const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+      expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
     });
 
     it('should return to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'returnToBackOffice1', baseContext);
 
-      page = await foHummingbirdCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
+      page = await foDefaultCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);

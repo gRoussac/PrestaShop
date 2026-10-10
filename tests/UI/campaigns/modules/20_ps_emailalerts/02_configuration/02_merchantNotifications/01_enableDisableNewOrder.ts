@@ -5,6 +5,15 @@ import {expect} from 'chai';
 import {setupSmtpConfigTest, resetSmtpConfigTest} from '@commonTests/BO/advancedParameters/smtp';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultCheckoutOrderConfirmationPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
@@ -16,12 +25,6 @@ import {
   dataPaymentMethods,
   dataProducts,
   FakerOrder,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdCheckoutOrderConfirmationPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdProductPage,
   type MailDev,
   type MailDevEmail,
   modPsEmailAlertsBoMain,
@@ -146,31 +149,31 @@ describe('Mail alerts module - Merchant notifications : Enable/Disable new order
       await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop', baseContext);
 
       page = await boOrdersViewBasePage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
     it('should login', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'loginFO', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultHomePage.goToLoginPage(page);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected).to.eq(true);
     });
 
     it('should add product to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdLoginPage.goToHomePage(page);
-      await foHummingbirdHomePage.goToProductPage(page, orderData.products[0].product.id);
+      await foDefaultLoginPage.goToHomePage(page);
+      await foDefaultHomePage.goToProductPage(page, orderData.products[0].product.id);
       // Add the product to the cart
-      await foHummingbirdProductPage.addProductToTheCart(page, orderData.products[0].quantity);
+      await foDefaultProductPage.addProductToTheCart(page, orderData.products[0].quantity);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(orderData.products[0].quantity);
     });
 
@@ -178,10 +181,10 @@ describe('Mail alerts module - Merchant notifications : Enable/Disable new order
       await testContext.addContextItem(this, 'testIdentifier', 'goToDeliveryStep', baseContext);
 
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
       // Address step - Go to delivery step
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
     });
 
@@ -189,7 +192,7 @@ describe('Mail alerts module - Merchant notifications : Enable/Disable new order
       await testContext.addContextItem(this, 'testIdentifier', 'goToPaymentStep', baseContext);
 
       // Delivery step - Go to payment step
-      const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+      const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
       expect(isStepDeliveryComplete, 'Step Address is not complete').to.eq(true);
     });
 
@@ -197,17 +200,17 @@ describe('Mail alerts module - Merchant notifications : Enable/Disable new order
       await testContext.addContextItem(this, 'testIdentifier', 'confirmOrder', baseContext);
 
       // Payment step - Choose payment step
-      await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, orderData.paymentMethod.moduleName);
+      await foDefaultCheckoutPage.choosePaymentAndOrder(page, orderData.paymentMethod.moduleName);
 
       // Check the confirmation message
-      const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-      expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+      const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+      expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
     });
 
     it('should close the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closeShop', baseContext);
 
-      page = await foHummingbirdCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
+      page = await foDefaultCheckoutOrderConfirmationPage.closePage(browserContext, page, 0);
 
       const pageTitle = await modPsEmailAlertsBoMain.getPageSubtitle(page);
       expect(pageTitle).to.equal(modPsEmailAlertsBoMain.pageTitle);
@@ -315,9 +318,9 @@ describe('Mail alerts module - Merchant notifications : Enable/Disable new order
       await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop2', baseContext);
 
       page = await boOrdersViewBasePage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
@@ -325,13 +328,13 @@ describe('Mail alerts module - Merchant notifications : Enable/Disable new order
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart2', baseContext);
 
       // Go to home page
-      await foHummingbirdLoginPage.goToHomePage(page);
+      await foDefaultLoginPage.goToHomePage(page);
       // Go to the first product page
-      await foHummingbirdHomePage.goToProductPage(page, orderData.products[0].product.id);
+      await foDefaultHomePage.goToProductPage(page, orderData.products[0].product.id);
       // Add the product to the cart
-      await foHummingbirdProductPage.addProductToTheCart(page, orderData.products[0].quantity);
+      await foDefaultProductPage.addProductToTheCart(page, orderData.products[0].quantity);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(orderData.products[0].quantity);
     });
 
@@ -339,10 +342,10 @@ describe('Mail alerts module - Merchant notifications : Enable/Disable new order
       await testContext.addContextItem(this, 'testIdentifier', 'goToDeliveryStep2', baseContext);
 
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
       // Address step - Go to delivery step
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
     });
 
@@ -350,7 +353,7 @@ describe('Mail alerts module - Merchant notifications : Enable/Disable new order
       await testContext.addContextItem(this, 'testIdentifier', 'goToPaymentStep2', baseContext);
 
       // Delivery step - Go to payment step
-      const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+      const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
       expect(isStepDeliveryComplete, 'Step Address is not complete').to.eq(true);
     });
 
@@ -358,11 +361,11 @@ describe('Mail alerts module - Merchant notifications : Enable/Disable new order
       await testContext.addContextItem(this, 'testIdentifier', 'confirmOrder2', baseContext);
 
       // Payment step - Choose payment step
-      await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, orderData.paymentMethod.moduleName);
+      await foDefaultCheckoutPage.choosePaymentAndOrder(page, orderData.paymentMethod.moduleName);
 
       // Check the confirmation message
-      const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-      expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+      const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+      expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
     });
   });
 

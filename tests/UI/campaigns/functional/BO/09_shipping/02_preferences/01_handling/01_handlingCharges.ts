@@ -2,6 +2,14 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCarriersPage,
   boCarriersCreatePage,
   boCustomerGroupsPage,
@@ -14,11 +22,6 @@ import {
   dataCustomers,
   dataGroups,
   FakerCarrier,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdProductPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -209,27 +212,27 @@ describe('BO - Shipping - Preferences : Test handling charges for carriers in FO
       // Click on view my shop
       page = await boCarriersPage.viewMyShop(page);
       // Change language
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'firstGoToLoginPageFO1', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'firstSighInFO1', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
@@ -237,35 +240,35 @@ describe('BO - Shipping - Preferences : Test handling charges for carriers in FO
       await testContext.addContextItem(this, 'testIdentifier', 'firstCreateOrder', baseContext);
 
       // Go to home page
-      await foHummingbirdLoginPage.goToHomePage(page);
+      await foDefaultLoginPage.goToHomePage(page);
       // Go to the first product page
-      await foHummingbirdHomePage.goToProductPage(page, 1);
+      await foDefaultHomePage.goToProductPage(page, 1);
       // Add the created product to the cart
-      await foHummingbirdProductPage.addProductToTheCart(page);
+      await foDefaultProductPage.addProductToTheCart(page);
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
       // Address step - Go to delivery step
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
     });
 
     it('should select the new carrier and check the chipping costs', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkShippingCost1', baseContext);
 
-      await foHummingbirdCheckoutPage.chooseShippingMethodAndAddComment(page, newCarrierID);
+      await foDefaultCheckoutPage.chooseShippingMethodAndAddComment(page, newCarrierID);
 
-      const shippingCost = await foHummingbirdCheckoutPage.getShippingCost(page);
+      const shippingCost = await foDefaultCheckoutPage.getShippingCost(page);
       expect(shippingCost).to.contains(defaultHandlingChargesValue + createCarrierPrice);
     });
 
     it('should sign out from FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signOutFO1', baseContext);
 
-      await foHummingbirdCheckoutPage.goToHomePage(page);
-      await foHummingbirdCheckoutPage.logout(page);
+      await foDefaultCheckoutPage.goToHomePage(page);
+      await foDefaultCheckoutPage.logout(page);
 
-      const isCustomerConnected = await foHummingbirdCheckoutPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultCheckoutPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected').to.eq(false);
     });
   });
@@ -275,7 +278,7 @@ describe('BO - Shipping - Preferences : Test handling charges for carriers in FO
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO1', baseContext);
 
-      page = await foHummingbirdCheckoutPage.closePage(browserContext, page, 0);
+      page = await foDefaultCheckoutPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCarriersPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCarriersPage.pageTitle);
@@ -306,27 +309,27 @@ describe('BO - Shipping - Preferences : Test handling charges for carriers in FO
       // Click on view my shop
       page = await boCarriersPage.viewMyShop(page);
       // Change language
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'firstGoToLoginPageFO2', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'firstSighInFO2', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
@@ -334,35 +337,35 @@ describe('BO - Shipping - Preferences : Test handling charges for carriers in FO
       await testContext.addContextItem(this, 'testIdentifier', 'secondCreateOrder', baseContext);
 
       // Go to home page
-      await foHummingbirdLoginPage.goToHomePage(page);
+      await foDefaultLoginPage.goToHomePage(page);
       // Go to the first product page
-      await foHummingbirdHomePage.goToProductPage(page, 1);
+      await foDefaultHomePage.goToProductPage(page, 1);
       // Add the created product to the cart
-      await foHummingbirdProductPage.addProductToTheCart(page);
+      await foDefaultProductPage.addProductToTheCart(page);
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
       // Address step - Go to delivery step
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
     });
 
     it('should select the new carrier and check the chipping costs', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkShippingCost2', baseContext);
 
-      await foHummingbirdCheckoutPage.chooseShippingMethodAndAddComment(page, newCarrierID);
+      await foDefaultCheckoutPage.chooseShippingMethodAndAddComment(page, newCarrierID);
 
-      const shippingCost = await foHummingbirdCheckoutPage.getShippingCost(page);
+      const shippingCost = await foDefaultCheckoutPage.getShippingCost(page);
       expect(shippingCost).to.contains(updateHandlingChargesValue + createCarrierPrice);
     });
 
     it('should sign out from FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signOutFo2', baseContext);
 
-      await foHummingbirdCheckoutPage.goToHomePage(page);
-      await foHummingbirdCheckoutPage.logout(page);
+      await foDefaultCheckoutPage.goToHomePage(page);
+      await foDefaultCheckoutPage.logout(page);
 
-      const isCustomerConnected = await foHummingbirdCheckoutPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultCheckoutPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected').to.eq(false);
     });
   });
@@ -372,7 +375,7 @@ describe('BO - Shipping - Preferences : Test handling charges for carriers in FO
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO2', baseContext);
 
-      page = await foHummingbirdCheckoutPage.closePage(browserContext, page, 0);
+      page = await foDefaultCheckoutPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boShippingPreferencesPage.getPageTitle(page);
       expect(pageTitle).to.contains(boShippingPreferencesPage.pageTitle);

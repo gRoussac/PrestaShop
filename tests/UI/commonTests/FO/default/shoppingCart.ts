@@ -3,13 +3,16 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultCartPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultProductPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   FakerOrder,
-  foHummingbirdCartPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdProductPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -38,60 +41,60 @@ function createShoppingCart(orderData: FakerOrder, baseContext: string = 'common
       await testContext.addContextItem(this, 'testIdentifier', 'openFO', baseContext);
 
       // Go to FO and change language
-      await foHummingbirdHomePage.goToFo(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToFo(page);
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPageFO', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFO', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, orderData.customer);
+      await foDefaultLoginPage.customerLogin(page, orderData.customer);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it(`should search for the product ${orderData.products[0].product.name}`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchForProduct', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, orderData.products[0].product.name);
+      await foDefaultHomePage.searchProduct(page, orderData.products[0].product.name);
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it('should add product to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+      await foDefaultSearchResultsPage.goToProductPage(page, 1);
       // Add the product to the cart
-      await foHummingbirdProductPage.addProductToTheCart(page, orderData.products[0].quantity);
+      await foDefaultProductPage.addProductToTheCart(page, orderData.products[0].quantity);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(orderData.products[0].quantity);
     });
 
     it('should sign out from FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signOutFo', baseContext);
 
-      await foHummingbirdHomePage.logout(page);
+      await foDefaultHomePage.logout(page);
 
-      const isCustomerConnected = await foHummingbirdHomePage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultHomePage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected').to.eq(false);
 
-      const notificationNumber = await foHummingbirdHomePage.getCartNotificationsNumber(page);
+      const notificationNumber = await foDefaultHomePage.getCartNotificationsNumber(page);
       expect(notificationNumber).to.be.equal(0);
     });
   });

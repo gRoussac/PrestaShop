@@ -5,6 +5,14 @@ import {faker} from '@faker-js/faker';
 import {createOrderByCustomerTest, createOrderByGuestTest} from '@commonTests/FO/default/order';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyOrderDetailsPage,
+  foDefaultMyOrderHistoryPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCustomerServicePage,
   boCustomersViewPage,
   boDashboardPage,
@@ -19,11 +27,6 @@ import {
   FakerAddress,
   FakerCustomer,
   FakerOrder,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyOrderDetailsPage,
-  foHummingbirdMyOrderHistoryPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -131,54 +134,54 @@ describe('BO - Header : Check notifications', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'viewMySHop', baseContext);
 
       page = await boOrdersPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginFO', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in with default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFO', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to order history page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToOrderHistoryPage', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
-      await foHummingbirdMyAccountPage.goToHistoryAndDetailsPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
+      await foDefaultMyAccountPage.goToHistoryAndDetailsPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyOrderHistoryPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyOrderHistoryPage.pageTitle);
     });
 
     it('Go to order details and send message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sendMessage', baseContext);
 
-      await foHummingbirdMyOrderHistoryPage.goToDetailsPage(page);
+      await foDefaultMyOrderHistoryPage.goToDetailsPage(page);
 
-      const successMessageText = await foHummingbirdMyOrderDetailsPage.addAMessage(page, messageOption, messageSend);
-      expect(successMessageText).to.equal(foHummingbirdMyOrderDetailsPage.successMessageText);
+      const successMessageText = await foDefaultMyOrderDetailsPage.addAMessage(page, messageOption, messageSend);
+      expect(successMessageText).to.equal(foDefaultMyOrderDetailsPage.successMessageText);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo', baseContext);
 
       // Close tab and init other page objects with new current tab
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       await boDashboardPage.reloadPage(page);
 

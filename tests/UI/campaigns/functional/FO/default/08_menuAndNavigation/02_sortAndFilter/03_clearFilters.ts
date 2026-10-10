@@ -3,13 +3,16 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
   boProductSettingsPage,
   type BrowserContext,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -83,33 +86,33 @@ describe('FO - Menu and Navigation - Sort and filter : Clear filters', async () 
 
       // Click on view my shop
       page = await boProductSettingsPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should go to all products page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAllProducts', baseContext);
 
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
-      await foHummingbirdHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
+      await foDefaultHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
 
-      const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+      const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
       expect(isCategoryPageVisible, 'Home category page was not opened').to.eq(true);
     });
 
     it('should filter products by composition \'Ceramic - Cotton\'', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'filterByComposition', baseContext);
 
-      await foHummingbirdCategoryPage.filterByCheckbox(page, 'Composition', 'Composition-Ceramic', true);
-      await foHummingbirdCategoryPage.filterByCheckbox(page, 'Composition', 'Composition-Ceramic-Cotton', true);
+      await foDefaultCategoryPage.filterByCheckbox(page, 'Composition', 'Composition-Ceramic', true);
+      await foDefaultCategoryPage.filterByCheckbox(page, 'Composition', 'Composition-Ceramic-Cotton', true);
     });
 
     it('should check the active filters', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'getActiveFilters1', baseContext);
 
-      const activeFilters = await foHummingbirdCategoryPage.getActiveFilters(page);
+      const activeFilters = await foDefaultCategoryPage.getActiveFilters(page);
       expect(activeFilters).to.contains('Composition: Ceramic')
         .and.to.contains('Composition: Cotton');
     });
@@ -117,23 +120,23 @@ describe('FO - Menu and Navigation - Sort and filter : Clear filters', async () 
     it('should get the number of products', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'getNumberOfProducts4', baseContext);
 
-      productsNumber = await foHummingbirdCategoryPage.getNumberOfProducts(page);
+      productsNumber = await foDefaultCategoryPage.getNumberOfProducts(page);
       expect(productsNumber).to.be.above(1);
     });
 
     it('should close the second filter', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closeActiveFilter', baseContext);
 
-      await foHummingbirdCategoryPage.closeFilter(page, 2);
+      await foDefaultCategoryPage.closeFilter(page, 2);
 
-      const isNotVisible = await foHummingbirdCategoryPage.isActiveFilterNotVisible(page);
+      const isNotVisible = await foDefaultCategoryPage.isActiveFilterNotVisible(page);
       expect(isNotVisible).to.equal(false);
     });
 
     it('should check the filter \'Composition: Ceramic\'', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkActiveFilters1', baseContext);
 
-      const activeFilters = await foHummingbirdCategoryPage.getActiveFilters(page);
+      const activeFilters = await foDefaultCategoryPage.getActiveFilters(page);
       expect(activeFilters).to.contains('Composition: Ceramic')
         .and.not.to.contains('Composition: Cotton');
     });
@@ -143,13 +146,13 @@ describe('FO - Menu and Navigation - Sort and filter : Clear filters', async () 
     it('should filter products by availability \'In Stock\'', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'filterByAvailability', baseContext);
 
-      await foHummingbirdCategoryPage.filterByCheckbox(page, 'Availability', 'Availability-In+stock', true);
+      await foDefaultCategoryPage.filterByCheckbox(page, 'Availability', 'Availability-In+stock', true);
     });
 
     it('should check the active filters', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'getActiveFilters2', baseContext);
 
-      const activeFilters = await foHummingbirdCategoryPage.getActiveFilters(page);
+      const activeFilters = await foDefaultCategoryPage.getActiveFilters(page);
       expect(activeFilters).to.contains('Availability: In stock')
         .and.to.contains('Composition: Ceramic');
     });
@@ -158,16 +161,16 @@ describe('FO - Menu and Navigation - Sort and filter : Clear filters', async () 
       await testContext.addContextItem(this, 'testIdentifier', 'closeActiveFilter2', baseContext);
 
       await page.waitForTimeout(5000);
-      await foHummingbirdCategoryPage.closeFilter(page, 1);
+      await foDefaultCategoryPage.closeFilter(page, 1);
 
-      const isNotVisible = await foHummingbirdCategoryPage.isActiveFilterNotVisible(page);
+      const isNotVisible = await foDefaultCategoryPage.isActiveFilterNotVisible(page);
       expect(isNotVisible).to.equal(false);
     });
 
     it('should check the active filters', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'getActiveFilters3', baseContext);
 
-      const activeFilters = await foHummingbirdCategoryPage.getActiveFilters(page);
+      const activeFilters = await foDefaultCategoryPage.getActiveFilters(page);
       expect(activeFilters).to.contains('Composition: Ceramic')
         .and.to.not.contains('Availability: In stock');
     });
@@ -175,14 +178,14 @@ describe('FO - Menu and Navigation - Sort and filter : Clear filters', async () 
     it('should clear all filters', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clearAllFilters5', baseContext);
 
-      const isActiveFilterNotVisible = await foHummingbirdCategoryPage.clearAllFilters(page);
+      const isActiveFilterNotVisible = await foDefaultCategoryPage.clearAllFilters(page);
       expect(isActiveFilterNotVisible).to.eq(true);
     });
 
     it('should check the number of products', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'getNumberOfProducts2', baseContext);
 
-      const productsNumberAfterClearFilter = await foHummingbirdCategoryPage.getNumberOfProducts(page);
+      const productsNumberAfterClearFilter = await foDefaultCategoryPage.getNumberOfProducts(page);
       expect(productsNumberAfterClearFilter).to.equal(numberOfActiveProducts);
     });
   });

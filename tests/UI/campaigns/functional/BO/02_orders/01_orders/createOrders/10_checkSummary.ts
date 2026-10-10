@@ -6,6 +6,10 @@ import {resetSmtpConfigTest, setupSmtpConfigTest} from '@commonTests/BO/advanced
 import {createCartRuleTest, deleteCartRuleTest} from '@commonTests/BO/catalog/cartRule';
 
 import {
+  foDefaultCheckoutPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boOrdersPage,
@@ -18,7 +22,6 @@ import {
   dataPaymentMethods,
   dataProducts,
   FakerCartRule,
-  foHummingbirdCheckoutPage,
   type MailDev,
   type MailDevEmail,
   type Page,
@@ -285,14 +288,14 @@ describe('BO - Orders - Create order : Check summary', async () => {
 
         page = await boOrdersCreatePage.setMoreActionsProceedToCheckout(page);
 
-        const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+        const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
         expect(isCheckoutPage, 'Not redirected to checkout page!').to.eq(true);
       });
 
       it('should close the checkout page and go back to BO', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo', baseContext);
 
-        page = await foHummingbirdCheckoutPage.closePage(browserContext, page, 0);
+        page = await foDefaultCheckoutPage.closePage(browserContext, page, 0);
 
         const pageTitle = await boOrdersCreatePage.getPageTitle(page);
         expect(pageTitle, 'Fo page not closed!').to.contains(boOrdersCreatePage.pageTitle);

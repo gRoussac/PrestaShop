@@ -2,6 +2,13 @@ import {expect} from 'chai';
 import testContext from '@utils/testContext';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCarriersPage,
   boCarriersCreatePage,
   boDashboardPage,
@@ -10,10 +17,6 @@ import {
   dataCarriers,
   dataCustomers,
   FakerCarrier,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -111,9 +114,9 @@ describe('BO - Shipping - Carriers : Bulk actions', async () => {
     await testContext.addContextItem(this, 'testIdentifier', 'openTheShopPage', baseContext);
 
     page = await boCarriersPage.viewMyShop(page);
-    await foHummingbirdHomePage.changeLanguage(page, 'en');
+    await foDefaultHomePage.changeLanguage(page, 'en');
 
-    const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+    const isHomePage = await foDefaultHomePage.isHomePage(page);
     expect(isHomePage).to.eq(true);
   });
 
@@ -121,22 +124,22 @@ describe('BO - Shipping - Carriers : Bulk actions', async () => {
     await testContext.addContextItem(this, 'testIdentifier', 'addFirstProductToCart', baseContext);
 
     // Go to the first product page
-    await foHummingbirdHomePage.goToProductPage(page, 1);
+    await foDefaultHomePage.goToProductPage(page, 1);
     // Add the product to the cart
-    await foHummingbirdProductPage.addProductToTheCart(page);
+    await foDefaultProductPage.addProductToTheCart(page);
     // Proceed to checkout the shopping cart
-    await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+    await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-    const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+    const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
     expect(isCheckoutPage).to.equal(true);
   });
 
   it('should login and go to address step', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'loginToFO', baseContext);
 
-    await foHummingbirdCheckoutPage.clickOnSignIn(page);
+    await foDefaultCheckoutPage.clickOnSignIn(page);
 
-    const isStepLoginComplete = await foHummingbirdCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
+    const isStepLoginComplete = await foDefaultCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
     expect(isStepLoginComplete, 'Step Personal information is not complete').to.equal(true);
   });
 
@@ -144,21 +147,21 @@ describe('BO - Shipping - Carriers : Bulk actions', async () => {
     await testContext.addContextItem(this, 'testIdentifier', 'goToDeliveryStep', baseContext);
 
     // Address step - Go to delivery step
-    const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+    const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
     expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
   });
 
   it('should check there are no carriers', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'checkNoCarriers', baseContext);
 
-    const message = await foHummingbirdCheckoutPage.getCarrierErrorMessage(page);
-    expect(message).to.equals(foHummingbirdCheckoutPage.noCarriersMessage);
+    const message = await foDefaultCheckoutPage.getCarrierErrorMessage(page);
+    expect(message).to.equals(foDefaultCheckoutPage.noCarriersMessage);
   });
 
   it('should select all and enable them', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'selectAllEnable', baseContext);
 
-    page = await foHummingbirdCheckoutPage.changePage(browserContext, 0);
+    page = await foDefaultCheckoutPage.changePage(browserContext, 0);
 
     const message = await boCarriersPage.bulkSetStatus(page, 'Enable');
     expect(message).to.be.contains(boCarriersPage.successfulUpdateStatusMessage);
@@ -179,14 +182,14 @@ describe('BO - Shipping - Carriers : Bulk actions', async () => {
     page = await boCarriersPage.changePage(browserContext, 1);
     await page.reload();
 
-    const carrierNames = await foHummingbirdCheckoutPage.getAllCarriersNames(page);
+    const carrierNames = await foDefaultCheckoutPage.getAllCarriersNames(page);
     expect(carrierNames.length).to.equals(numberOfCarriers);
   });
 
   it('should select all', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'selectAll', baseContext);
 
-    page = await foHummingbirdCheckoutPage.changePage(browserContext, 0);
+    page = await foDefaultCheckoutPage.changePage(browserContext, 0);
 
     await boCarriersPage.bulkSetSelection(page, true);
 
@@ -241,14 +244,14 @@ describe('BO - Shipping - Carriers : Bulk actions', async () => {
     page = await boCarriersPage.changePage(browserContext, 1);
     await page.reload();
 
-    const carrierNames = await foHummingbirdCheckoutPage.getAllCarriersNames(page);
+    const carrierNames = await foDefaultCheckoutPage.getAllCarriersNames(page);
     expect(carrierNames.length).to.equals(numberOfCarriers + 1);
   });
 
   it('should filter list by name', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'filterForBulkDelete', baseContext);
 
-    page = await foHummingbirdCheckoutPage.changePage(browserContext, 0);
+    page = await foDefaultCheckoutPage.changePage(browserContext, 0);
     await boCarriersPage.filterTable(
       page,
       'input',
@@ -277,7 +280,7 @@ describe('BO - Shipping - Carriers : Bulk actions', async () => {
     it(`should reset in disabled mode the carrier "${carrier.name}"`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', `resetCarrier${index}`, baseContext);
 
-      page = await foHummingbirdCheckoutPage.changePage(browserContext, 0);
+      page = await foDefaultCheckoutPage.changePage(browserContext, 0);
       await boCarriersPage.filterTable(
         page,
         'input',

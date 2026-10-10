@@ -6,12 +6,15 @@ import {setupSmtpConfigTest, resetSmtpConfigTest} from '@commonTests/BO/advanced
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
   type BrowserContext,
   dataModules,
-  foHummingbirdHomePage,
   MailDev,
   type MailDevEmail,
   modPsEmailSubscriptionBoMain,
@@ -120,15 +123,15 @@ describe('Mail alerts module : Check welcome voucher code', async () => {
 
       page = await modPsEmailSubscriptionBoMain.viewMyShop(page);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should subscribe to newsletter', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'subscribeToNewsletter', baseContext);
 
-      const newsletterSubscribeAlertMessage = await foHummingbirdHomePage.subscribeToNewsletter(page, 'bonjour4@prestashop.com');
-      expect(newsletterSubscribeAlertMessage).to.contains(foHummingbirdHomePage.successSubscriptionMessage);
+      const newsletterSubscribeAlertMessage = await foDefaultHomePage.subscribeToNewsletter(page, 'bonjour4@prestashop.com');
+      expect(newsletterSubscribeAlertMessage).to.contains(foDefaultHomePage.successSubscriptionMessage);
     });
 
     it('should check the voucher email', async function () {
@@ -144,7 +147,7 @@ describe('Mail alerts module : Check welcome voucher code', async () => {
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO', baseContext);
 
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await modPsEmailSubscriptionBoMain.getPageSubtitle(page);
       expect(pageTitle).to.equal(modPsEmailSubscriptionBoMain.pageTitle);
@@ -164,15 +167,15 @@ describe('Mail alerts module : Check welcome voucher code', async () => {
 
       page = await modPsEmailSubscriptionBoMain.viewMyShop(page);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should subscribe to newsletter', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'subscribeToNewsletter2', baseContext);
 
-      const newsletterSubscribeAlertMessage = await foHummingbirdHomePage.subscribeToNewsletter(page, 'hola2@prestashop.com');
-      expect(newsletterSubscribeAlertMessage).to.contains(foHummingbirdHomePage.successSubscriptionMessage);
+      const newsletterSubscribeAlertMessage = await foDefaultHomePage.subscribeToNewsletter(page, 'hola2@prestashop.com');
+      expect(newsletterSubscribeAlertMessage).to.contains(foDefaultHomePage.successSubscriptionMessage);
     });
 
     it('should check that no voucher email is sent', async function () {

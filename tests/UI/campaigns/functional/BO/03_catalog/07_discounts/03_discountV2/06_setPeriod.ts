@@ -4,6 +4,13 @@ import {expect} from 'chai';
 import setFeatureFlag from '@commonTests/BO/advancedParameters/newFeatures';
 
 import {
+  foDefaultSearchResultsPage,
+  foDefaultModalQuickViewPage,
+  foDefaultModalBlockCartPage,
+  foDefaultCartPage,
+} from '@utils/foDefaultPages';
+
+import {
   // BO pages
   boDiscountsPage,
   boDiscountsCreatePage,
@@ -11,11 +18,7 @@ import {
   boLoginPage,
   boFeatureFlagPage,
   // FO pages
-  foHummingbirdHomePage,
-  foHummingbirdSearchResultsPage,
-  foHummingbirdModalQuickViewPage,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdCartPage,
+  foDefaultHomePage,
   // Data
   dataProducts,
   FakerDiscount,
@@ -250,46 +253,46 @@ describe('BO - Catalog - Discounts : Set period', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop', baseContext);
 
       page = await boDiscountsCreatePage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.equal(true);
     });
 
     it(`should search for the product '${dataProducts.demo_15.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct_1', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_15.name);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_15.name);
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it(`should add the product '${dataProducts.demo_15.name}' to the cart`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart_1', baseContext);
 
-      await foHummingbirdSearchResultsPage.quickViewProduct(page, 1);
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultSearchResultsPage.quickViewProduct(page, 1);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
-      const shoppingCarts = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const shoppingCarts = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(shoppingCarts).to.equal(1);
     });
 
     it('should check the cart total', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkTotal', baseContext);
 
-      const totalAfterDiscount = await foHummingbirdCartPage.getATIPrice(page);
+      const totalAfterDiscount = await foDefaultCartPage.getATIPrice(page);
       expect(totalAfterDiscount.toString()).to.equal(dataProducts.demo_15.price.toFixed(2));
     });
 
     it('should add the promo code and check the error message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addPromoCode_1', baseContext);
 
-      await foHummingbirdCartPage.addPromoCode(page, discountPeriodNeverExpiresData.discountCode);
+      await foDefaultCartPage.addPromoCode(page, discountPeriodNeverExpiresData.discountCode);
 
-      const voucherErrorText = await foHummingbirdCartPage.getCartRuleErrorMessage(page);
-      expect(voucherErrorText).to.equal(foHummingbirdCartPage.VoucherNotWithTheseProductsErrorMessage);
+      const voucherErrorText = await foDefaultCartPage.getCartRuleErrorMessage(page);
+      expect(voucherErrorText).to.equal(foDefaultCartPage.VoucherNotWithTheseProductsErrorMessage);
     });
   });
 
@@ -297,7 +300,7 @@ describe('BO - Catalog - Discounts : Set period', async () => {
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO', baseContext);
 
-      page = await foHummingbirdCartPage.changePage(browserContext, 0);
+      page = await foDefaultCartPage.changePage(browserContext, 0);
 
       const pageTitle = await boDiscountsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boDiscountsCreatePage.pageTitle);
@@ -404,18 +407,18 @@ describe('BO - Catalog - Discounts : Set period', async () => {
 
       page = await boDiscountsCreatePage.changePage(browserContext, 1);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultCartPage.pageTitle);
     });
 
     it('should add the promo code and check the error message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addPromoCode_2', baseContext);
 
-      await foHummingbirdCartPage.reloadPage(page);
-      await foHummingbirdCartPage.addPromoCode(page, discountPeriodNeverExpiresData.discountCode);
+      await foDefaultCartPage.reloadPage(page);
+      await foDefaultCartPage.addPromoCode(page, discountPeriodNeverExpiresData.discountCode);
 
-      const voucherErrorText = await foHummingbirdCartPage.getCartRuleErrorMessage(page);
-      expect(voucherErrorText).to.equal(foHummingbirdCartPage.expiredDiscountErrorMessage);
+      const voucherErrorText = await foDefaultCartPage.getCartRuleErrorMessage(page);
+      expect(voucherErrorText).to.equal(foDefaultCartPage.expiredDiscountErrorMessage);
     });
   });
 
@@ -423,7 +426,7 @@ describe('BO - Catalog - Discounts : Set period', async () => {
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO_2', baseContext);
 
-      page = await foHummingbirdCartPage.changePage(browserContext, 0);
+      page = await foDefaultCartPage.changePage(browserContext, 0);
 
       const pageTitle = await boDiscountsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boDiscountsCreatePage.pageTitle);

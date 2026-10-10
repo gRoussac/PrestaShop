@@ -2,15 +2,18 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultModalBlockCartPage,
+  foDefaultModalQuickViewPage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataProducts,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdModalQuickViewPage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -44,62 +47,62 @@ describe('FO - Checkout : Show details', async () => {
     it('should go to FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToFo(page);
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should add the first product to cart then close block cart modal', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart1', baseContext);
 
-      await foHummingbirdHomePage.quickViewProduct(page, 1);
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.closeBlockCartModal(page);
+      await foDefaultHomePage.quickViewProduct(page, 1);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.closeBlockCartModal(page);
 
-      const isModalVisible = await foHummingbirdModalBlockCartPage.isBlockCartModalVisible(page);
+      const isModalVisible = await foDefaultModalBlockCartPage.isBlockCartModalVisible(page);
       expect(isModalVisible).to.eq(false);
     });
 
     it('should add the third product to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart2', baseContext);
 
-      await foHummingbirdLoginPage.goToHomePage(page);
-      await foHummingbirdHomePage.quickViewProduct(page, 3);
-      await foHummingbirdModalQuickViewPage.setQuantityAndAddToCart(page, 2);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultLoginPage.goToHomePage(page);
+      await foDefaultHomePage.quickViewProduct(page, 3);
+      await foDefaultModalQuickViewPage.setQuantityAndAddToCart(page, 2);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should proceed to checkout and go to checkout page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'proceedToCheckout', baseContext);
 
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage).to.eq(true);
     });
 
     it('should check the items number', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkItemsNumber', baseContext);
 
-      const itemsNumber = await foHummingbirdCheckoutPage.getItemsNumber(page);
+      const itemsNumber = await foDefaultCheckoutPage.getItemsNumber(page);
       expect(itemsNumber).to.equal('3 items');
     });
 
     it('should click on \'Show details\' link', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'showDetails', baseContext);
 
-      const isProductsListVisible = await foHummingbirdCheckoutPage.clickOnShowDetailsLink(page);
+      const isProductsListVisible = await foDefaultCheckoutPage.clickOnShowDetailsLink(page);
       expect(isProductsListVisible).to.eq(true);
     });
 
     it('should check the first product details', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkFirstProductDetails', baseContext);
-      const result = await foHummingbirdCheckoutPage.getProductDetails(page, 1);
+      const result = await foDefaultCheckoutPage.getProductDetails(page, 1);
       await Promise.all([
         expect(result.image).to.contains(dataProducts.demo_1.coverImage),
         expect(result.name).to.equal(dataProducts.demo_1.name),
@@ -107,13 +110,13 @@ describe('FO - Checkout : Show details', async () => {
         expect(result.price).to.equal(dataProducts.demo_1.finalPrice),
       ]);
 
-      const attributes = await foHummingbirdCheckoutPage.getProductAttributes(page, 1);
+      const attributes = await foDefaultCheckoutPage.getProductAttributes(page, 1);
       expect(attributes).to.equal('Size: S');
     });
 
     it('should check the second product details', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkSecondProductDetails', baseContext);
-      const result = await foHummingbirdCheckoutPage.getProductDetails(page, 2);
+      const result = await foDefaultCheckoutPage.getProductDetails(page, 2);
       await Promise.all([
         expect(result.image).to.contains(dataProducts.demo_6.coverImage),
         expect(result.name).to.equal(dataProducts.demo_6.name),
@@ -121,26 +124,26 @@ describe('FO - Checkout : Show details', async () => {
         expect(result.price).to.equal(dataProducts.demo_6.combinations[0].priceTI * 2),
       ]);
 
-      const attributes = await foHummingbirdCheckoutPage.getProductAttributes(page, 2);
+      const attributes = await foDefaultCheckoutPage.getProductAttributes(page, 2);
       expect(attributes).to.equal('Dimension: 40x60cm');
     });
 
     it('click on first product name', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnFirstProductName', baseContext);
 
-      page = await foHummingbirdCheckoutPage.clickOnProductName(page, 1);
+      page = await foDefaultCheckoutPage.clickOnProductName(page, 1);
 
-      const productInformation = await foHummingbirdProductPage.getProductInformation(page);
+      const productInformation = await foDefaultProductPage.getProductInformation(page);
       expect(productInformation.name).to.equal(dataProducts.demo_1.name);
     });
 
     it('should close the page and click on the first product image', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnFirstProductImage', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
-      await foHummingbirdCheckoutPage.clickOnProductImage(page, 1);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
+      await foDefaultCheckoutPage.clickOnProductImage(page, 1);
 
-      const productInformation = await foHummingbirdProductPage.getProductInformation(page);
+      const productInformation = await foDefaultProductPage.getProductInformation(page);
       expect(productInformation.name).to.equal(dataProducts.demo_1.name);
     });
   });

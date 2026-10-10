@@ -2,6 +2,18 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultCheckoutOrderConfirmationPage,
+  foDefaultContactUsPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultModalBlockCartPage,
+  foDefaultModalQuickViewPage,
+  foDefaultMyAccountPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCustomerServicePage,
   boCustomerServiceViewPage,
   boDashboardPage,
@@ -11,15 +23,6 @@ import {
   dataPaymentMethods,
   dataProducts,
   FakerContactMessage,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdCheckoutOrderConfirmationPage,
-  foHummingbirdContactUsPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdModalQuickViewPage,
-  foHummingbirdMyAccountPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -73,51 +76,51 @@ describe('FO - Order confirmation : Contact us', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'openFoShop', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFOLoginPage', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageHeaderTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdLoginPage.pageTitle);
+      const pageHeaderTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFo', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
-      const isCustomerConnected = await foHummingbirdMyAccountPage.isCustomerConnected(page);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      const isCustomerConnected = await foDefaultMyAccountPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToHomePage', baseContext);
 
-      await foHummingbirdHomePage.goToHomePage(page);
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      await foDefaultHomePage.goToHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it('should add first product to cart and Proceed to checkout', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdHomePage.quickViewProduct(page, 1);
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultHomePage.quickViewProduct(page, 1);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should check the cart details', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCartDetails', baseContext);
 
-      const result = await foHummingbirdCartPage.getProductDetail(page, 1);
+      const result = await foDefaultCartPage.getProductDetail(page, 1);
       await Promise.all([
         expect(result.name).to.equal(dataProducts.demo_1.name),
         expect(result.price).to.equal(dataProducts.demo_1.finalPrice),
@@ -128,14 +131,14 @@ describe('FO - Order confirmation : Contact us', async () => {
     it('should proceed to checkout and check Step Address', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkAddressStep', baseContext);
 
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage, 'Browser is not in checkout Page').to.eq(true);
 
-      const isStepPersonalInformationComplete = await foHummingbirdCheckoutPage.isStepCompleted(
+      const isStepPersonalInformationComplete = await foDefaultCheckoutPage.isStepCompleted(
         page,
-        foHummingbirdCheckoutPage.personalInformationStepForm,
+        foDefaultCheckoutPage.personalInformationStepForm,
       );
       expect(isStepPersonalInformationComplete, 'Step Personal information is not complete').to.eq(true);
     });
@@ -143,26 +146,26 @@ describe('FO - Order confirmation : Contact us', async () => {
     it('should validate Step Address and go to Delivery Step', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDeliveryStep', baseContext);
 
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
     });
 
     it('should validate Step Delivery and go to Payment Step', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToPaymentStep', baseContext);
 
-      const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+      const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
       expect(isStepDeliveryComplete, 'Step Address is not complete').to.eq(true);
     });
 
     it('should Pay by bank wire and confirm order', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'confirmOrder', baseContext);
 
-      await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
-      const pageTitle = await foHummingbirdCheckoutOrderConfirmationPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCheckoutOrderConfirmationPage.pageTitle);
+      await foDefaultCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
+      const pageTitle = await foDefaultCheckoutOrderConfirmationPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCheckoutOrderConfirmationPage.pageTitle);
 
-      const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-      expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+      const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+      expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
     });
   });
 
@@ -170,7 +173,7 @@ describe('FO - Order confirmation : Contact us', async () => {
     it('should get the order reference value', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'getOrderReferenceValue', baseContext);
 
-      contactUsData.reference = await foHummingbirdCheckoutOrderConfirmationPage.getOrderReferenceValue(page);
+      contactUsData.reference = await foDefaultCheckoutOrderConfirmationPage.getOrderReferenceValue(page);
       contactUsData.message += ` ${contactUsData.reference}`;
       expect(contactUsData.reference).to.not.have.lengthOf(0);
     });
@@ -178,10 +181,10 @@ describe('FO - Order confirmation : Contact us', async () => {
     it('should go to the "contact us" page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToTheContactUsPage', baseContext);
 
-      await foHummingbirdCheckoutOrderConfirmationPage.goToContactUsPage(page);
+      await foDefaultCheckoutOrderConfirmationPage.goToContactUsPage(page);
 
-      const pageTitle = await foHummingbirdContactUsPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdContactUsPage.pageTitle);
+      const pageTitle = await foDefaultContactUsPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultContactUsPage.pageTitle);
     });
   });
 
@@ -189,17 +192,17 @@ describe('FO - Order confirmation : Contact us', async () => {
     it('should check the pre-filled email field', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkTheFormInfos', baseContext);
 
-      const emailFieldValue = await foHummingbirdContactUsPage.getEmailFieldValue(page);
+      const emailFieldValue = await foDefaultContactUsPage.getEmailFieldValue(page);
       expect(emailFieldValue).to.contains(dataCustomers.johnDoe.email);
     });
 
     it('should send the message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sendTheMessage', baseContext);
 
-      await foHummingbirdContactUsPage.sendMessage(page, contactUsData, filename);
+      await foDefaultContactUsPage.sendMessage(page, contactUsData, filename);
 
-      const sendMessageSuccessAlert = await foHummingbirdContactUsPage.getAlertSuccess(page);
-      expect(sendMessageSuccessAlert).to.contains(foHummingbirdContactUsPage.validationMessage);
+      const sendMessageSuccessAlert = await foDefaultContactUsPage.getAlertSuccess(page);
+      expect(sendMessageSuccessAlert).to.contains(foDefaultContactUsPage.validationMessage);
     });
   });
 

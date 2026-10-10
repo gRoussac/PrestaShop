@@ -5,18 +5,21 @@ import {deleteCustomerTest} from '@commonTests/BO/customers/customer';
 import {createAccountTest} from '@commonTests/FO/default/account';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyAddressesPage,
+  foDefaultMyAddressesCreatePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataProducts,
   FakerAddress,
   FakerCustomer,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyAddressesPage,
-  foHummingbirdMyAddressesCreatePage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -64,53 +67,53 @@ describe('FO - Account : CRUD address', async () => {
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFoHomePage', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginFoPage', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageHeaderTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdLoginPage.pageTitle);
+      const pageHeaderTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultLoginPage.pageTitle);
     });
 
     it('Should sign in FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFo', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, newCustomerData);
+      await foDefaultLoginPage.customerLogin(page, newCustomerData);
 
-      const isCustomerConnected = await foHummingbirdMyAccountPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultMyAccountPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to \'My Account\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToMyAccountPage', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAccountPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyAccountPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAccountPage.pageTitle);
     });
 
     it('should go to \'Add first address\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAddFirstAddressPage', baseContext);
 
-      await foHummingbirdMyAccountPage.goToAddressesPage(page);
+      await foDefaultMyAccountPage.goToAddressesPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyAddressesPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAddressesPage.addressPageTitle);
+      const pageHeaderTitle = await foDefaultMyAddressesPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAddressesPage.addressPageTitle);
     });
 
     it('should create new address', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'createAddress', baseContext);
 
-      const textResult = await foHummingbirdMyAddressesCreatePage.setAddress(page, createAddressData);
-      expect(textResult).to.equal(foHummingbirdMyAddressesPage.addAddressSuccessfulMessage);
+      const textResult = await foDefaultMyAddressesCreatePage.setAddress(page, createAddressData);
+      expect(textResult).to.equal(foDefaultMyAddressesPage.addAddressSuccessfulMessage);
     });
   });
 
@@ -118,33 +121,33 @@ describe('FO - Account : CRUD address', async () => {
     it('should go to edit address page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToEditAddressPage', baseContext);
 
-      const addressPosition = await foHummingbirdMyAddressesPage.getAddressPosition(page, createAddressData.alias);
-      await foHummingbirdMyAddressesPage.goToEditAddressPage(page, addressPosition);
+      const addressPosition = await foDefaultMyAddressesPage.getAddressPosition(page, createAddressData.alias);
+      await foDefaultMyAddressesPage.goToEditAddressPage(page, addressPosition);
 
-      const pageHeaderTitle = await foHummingbirdMyAddressesCreatePage.getHeaderTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAddressesCreatePage.updateFormTitle);
+      const pageHeaderTitle = await foDefaultMyAddressesCreatePage.getHeaderTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAddressesCreatePage.updateFormTitle);
     });
 
     it('should update the address', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'updateAddress', baseContext);
 
-      const textResult = await foHummingbirdMyAddressesCreatePage.setAddress(page, editAddressData);
-      expect(textResult).to.equal(foHummingbirdMyAddressesPage.updateAddressSuccessfulMessage);
+      const textResult = await foDefaultMyAddressesCreatePage.setAddress(page, editAddressData);
+      expect(textResult).to.equal(foDefaultMyAddressesPage.updateAddressSuccessfulMessage);
     });
 
     it('should go back to \'Your account page\'', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackYourAccountPage', baseContext);
 
-      await foHummingbirdMyAddressesCreatePage.clickOnBreadCrumbLink(page, 'my-account');
+      await foDefaultMyAddressesCreatePage.clickOnBreadCrumbLink(page, 'my-account');
 
-      const pageHeaderTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAccountPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyAccountPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAccountPage.pageTitle);
     });
 
     it('should check that \'Add first address\' is changed to \'Addresses\'', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkAddFirstAddress', baseContext);
 
-      const isAddFirstAddressLinkVisible = await foHummingbirdMyAccountPage.isAddFirstAddressLinkVisible(page);
+      const isAddFirstAddressLinkVisible = await foDefaultMyAccountPage.isAddFirstAddressLinkVisible(page);
       expect(isAddFirstAddressLinkVisible, 'Add first address link is still visible!').to.eq(false);
     });
   });
@@ -153,26 +156,26 @@ describe('FO - Account : CRUD address', async () => {
     it('should go to \'Addresses\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAddressesPage', baseContext);
 
-      await foHummingbirdMyAccountPage.goToAddressesPage(page);
+      await foDefaultMyAccountPage.goToAddressesPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyAddressesPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAddressesPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyAddressesPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAddressesPage.pageTitle);
     });
 
     it('should go to \'Create new address\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToNewAddressPage', baseContext);
 
-      await foHummingbirdMyAddressesPage.openNewAddressForm(page);
+      await foDefaultMyAddressesPage.openNewAddressForm(page);
 
-      const pageHeaderTitle = await foHummingbirdMyAddressesCreatePage.getHeaderTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAddressesCreatePage.creationFormTitle);
+      const pageHeaderTitle = await foDefaultMyAddressesCreatePage.getHeaderTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAddressesCreatePage.creationFormTitle);
     });
 
     it('should create new address', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'createAddress2', baseContext);
 
-      const textResult = await foHummingbirdMyAddressesCreatePage.setAddress(page, secondAddressData);
-      expect(textResult).to.equal(foHummingbirdMyAddressesPage.addAddressSuccessfulMessage);
+      const textResult = await foDefaultMyAddressesCreatePage.setAddress(page, secondAddressData);
+      expect(textResult).to.equal(foDefaultMyAddressesPage.addAddressSuccessfulMessage);
     });
   });
 
@@ -180,27 +183,27 @@ describe('FO - Account : CRUD address', async () => {
     it('should go to home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToHomePage', baseContext);
 
-      await foHummingbirdHomePage.goToHomePage(page);
+      await foDefaultHomePage.goToHomePage(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
     it('should go to product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage', baseContext);
 
-      await foHummingbirdHomePage.goToProductPage(page, 1);
+      await foDefaultHomePage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(dataProducts.demo_1.name);
     });
 
     it('should add product to the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdProductPage.addProductToTheCart(page);
+      await foDefaultProductPage.addProductToTheCart(page);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.equal(1);
     });
 
@@ -208,9 +211,9 @@ describe('FO - Account : CRUD address', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCreatedAddresses1', baseContext);
 
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const addressesNumber = await foHummingbirdCheckoutPage.getNumberOfAddresses(page);
+      const addressesNumber = await foDefaultCheckoutPage.getNumberOfAddresses(page);
       expect(addressesNumber, 'The addresses number is not equal to 2!').to.equal(2);
     });
   });
@@ -219,96 +222,96 @@ describe('FO - Account : CRUD address', async () => {
     it('should go to home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToHomePageToDeleteAddress', baseContext);
 
-      await foHummingbirdHomePage.goToHomePage(page);
+      await foDefaultHomePage.goToHomePage(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
     it('should go to \'My Account\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToMyAccountPageToDeleteAddress', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAccountPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyAccountPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAccountPage.pageTitle);
     });
 
     it('should go to addresses page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAddressesPageToDeleteAddress', baseContext);
 
-      await foHummingbirdMyAccountPage.goToAddressesPage(page);
+      await foDefaultMyAccountPage.goToAddressesPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyAddressesPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAddressesPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyAddressesPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAddressesPage.pageTitle);
     });
 
     it('should try to delete the first address and check the error message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'deleteAddress', baseContext);
 
-      firstAddressPosition = await foHummingbirdMyAddressesPage.getAddressPosition(page, editAddressData.alias);
-      secondAddressPosition = await foHummingbirdMyAddressesPage.getAddressPosition(page, secondAddressData.alias);
+      firstAddressPosition = await foDefaultMyAddressesPage.getAddressPosition(page, editAddressData.alias);
+      secondAddressPosition = await foDefaultMyAddressesPage.getAddressPosition(page, secondAddressData.alias);
 
-      const textResult = await foHummingbirdMyAddressesPage.deleteAddress(page, firstAddressPosition);
-      expect(textResult).to.equal(foHummingbirdMyAddressesPage.deleteAddressErrorMessage);
+      const textResult = await foDefaultMyAddressesPage.deleteAddress(page, firstAddressPosition);
+      expect(textResult).to.equal(foDefaultMyAddressesPage.deleteAddressErrorMessage);
     });
 
     it('should go to cart page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToShoppingCartPage', baseContext);
 
-      await foHummingbirdMyAddressesPage.goToCartPage(page);
+      await foDefaultMyAddressesPage.goToCartPage(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should select the second address and continue', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'selectSecondAddress', baseContext);
 
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      await foHummingbirdCheckoutPage.chooseDeliveryAddress(page, secondAddressPosition);
+      await foDefaultCheckoutPage.chooseDeliveryAddress(page, secondAddressPosition);
 
       // Address step - Go to delivery step
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
     });
 
     it('should go to home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToHomePageToDeleteAddress2', baseContext);
 
-      await foHummingbirdHomePage.goToHomePage(page);
+      await foDefaultHomePage.goToHomePage(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
     it('should go to \'My Account\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToMyAccountPageToDeleteAddress2', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAccountPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyAccountPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAccountPage.pageTitle);
     });
 
     it('should go to addresses page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAddressesPageToDeleteAddress2', baseContext);
 
-      await foHummingbirdMyAccountPage.goToAddressesPage(page);
+      await foDefaultMyAccountPage.goToAddressesPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyAddressesPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAddressesPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyAddressesPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAddressesPage.pageTitle);
     });
 
     it('should delete the first address and check the success message', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'deleteAddress2', baseContext);
 
-      const addressPosition = await foHummingbirdMyAddressesPage.getAddressPosition(page, editAddressData.alias);
+      const addressPosition = await foDefaultMyAddressesPage.getAddressPosition(page, editAddressData.alias);
 
-      const textResult = await foHummingbirdMyAddressesPage.deleteAddress(page, addressPosition);
-      expect(textResult).to.equal(foHummingbirdMyAddressesPage.deleteAddressSuccessfulMessage);
+      const textResult = await foDefaultMyAddressesPage.deleteAddress(page, addressPosition);
+      expect(textResult).to.equal(foDefaultMyAddressesPage.deleteAddressSuccessfulMessage);
     });
   });
 

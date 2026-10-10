@@ -3,6 +3,10 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
@@ -10,7 +14,6 @@ import {
   boThemeAdvancedConfigurationPage,
   type BrowserContext,
   dataModules,
-  foHummingbirdHomePage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -145,7 +148,7 @@ describe('BO - Design - Theme & Logo - Advanced Customization', async () => {
       expect(isModalClosed, 'Modal not closed').to.eq(true);
     });
 
-    // remove the child_hummingbird.zip from themes folder
+    // remove the child_default.zip from themes folder
     it('should remove the zip file of the child theme from the themes folder', async function () {
       await testContext
         .addContextItem(this, 'testIdentifier', 'removeZipFileChildThemeFromThemesFolder', baseContext);
@@ -195,16 +198,16 @@ describe('BO - Design - Theme & Logo - Advanced Customization', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnViewMyShop', baseContext);
 
       page = await boThemeAndLogoPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should close the current page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closeCurrentPage', baseContext);
 
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boThemeAndLogoPage.getPageTitle(page);
       expect(pageTitle).to.contains(boThemeAndLogoPage.pageTitle);

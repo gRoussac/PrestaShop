@@ -5,15 +5,18 @@ import testContext from '@utils/testContext';
 import {disableModule, enableModule, resetModule} from '@commonTests/BO/modules/moduleManager';
 
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
   type BrowserContext,
   dataCustomers,
   dataModules,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
   modBlockwishlistBoMain,
   modBlockwishlistBoStatistics,
   type Page,
@@ -106,36 +109,36 @@ describe('Wishlist module - Statistics tab settings', async () => {
         await testContext.addContextItem(this, 'testIdentifier', 'goToFO', baseContext);
 
         page = await modBlockwishlistBoStatistics.viewMyShop(page);
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.changeLanguage(page, 'en');
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.eq(true);
       });
 
       it('should go to login page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPage', baseContext);
 
-        await foHummingbirdHomePage.goToLoginPage(page);
+        await foDefaultHomePage.goToLoginPage(page);
 
-        const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-        expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+        const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+        expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
       });
 
       it('should sign in with default customer', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'sighInFo', baseContext);
 
-        await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+        await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-        const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+        const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
         expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
       });
 
       it('should go to all products page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToAllProducts', baseContext);
 
-        await foHummingbirdHomePage.goToAllProductsPage(page);
+        await foDefaultHomePage.goToAllProductsPage(page);
 
-        const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+        const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
         expect(isCategoryPageVisible).to.eq(true);
       });
 
@@ -144,10 +147,10 @@ describe('Wishlist module - Statistics tab settings', async () => {
         it(`should add product #${idxProduct} to wishlist`, async function () {
           await testContext.addContextItem(this, 'testIdentifier', `addToFavorite${idxProduct}`, baseContext);
 
-          const textResult = await foHummingbirdCategoryPage.addToWishList(page, idxProduct);
-          expect(textResult).to.be.eq(foHummingbirdCategoryPage.messageAddedToWishlist);
+          const textResult = await foDefaultCategoryPage.addToWishList(page, idxProduct);
+          expect(textResult).to.be.eq(foDefaultCategoryPage.messageAddedToWishlist);
 
-          const isAddedToWishlist = await foHummingbirdCategoryPage.isAddedToWishlist(page, idxProduct);
+          const isAddedToWishlist = await foDefaultCategoryPage.isAddedToWishlist(page, idxProduct);
           expect(isAddedToWishlist).to.eq(true);
         });
       }
@@ -155,9 +158,9 @@ describe('Wishlist module - Statistics tab settings', async () => {
       it('should logout', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'foLogout', baseContext);
 
-        await foHummingbirdCategoryPage.logout(page);
+        await foDefaultCategoryPage.logout(page);
 
-        const isCustomerConnected = await foHummingbirdHomePage.isCustomerConnected(page);
+        const isCustomerConnected = await foDefaultHomePage.isCustomerConnected(page);
         expect(isCustomerConnected).to.eq(false);
       });
     });
@@ -166,7 +169,7 @@ describe('Wishlist module - Statistics tab settings', async () => {
       it('should go to BO', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToBoBack', baseContext);
 
-        page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+        page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
         const pageTitle = await modBlockwishlistBoStatistics.getPageTitle(page);
         expect(pageTitle).to.contains(modBlockwishlistBoStatistics.pageTitle);

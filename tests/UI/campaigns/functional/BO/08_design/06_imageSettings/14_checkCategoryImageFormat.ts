@@ -4,6 +4,11 @@ import {expect} from 'chai';
 import bulkDeleteCategoriesTest from '@commonTests/BO/catalog/category';
 
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boCategoriesPage,
   boCategoriesCreatePage,
   boDashboardPage,
@@ -11,8 +16,6 @@ import {
   boLoginPage,
   type BrowserContext,
   FakerCategory,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -150,8 +153,8 @@ describe('BO - Design - Image Settings : Check category image format', async () 
           it('should go to BO', async function () {
             await testContext.addContextItem(this, 'testIdentifier', `goToBoProducts${argExtension}`, baseContext);
 
-            page = await foHummingbirdCategoryPage.closePage(browserContext, page, 0);
-            await foHummingbirdCategoryPage.goToBO(page);
+            page = await foDefaultCategoryPage.closePage(browserContext, page, 0);
+            await foDefaultCategoryPage.goToBO(page);
 
             const pageTitle = await boDashboardPage.getPageTitle(page);
             expect(pageTitle).to.contains(boDashboardPage.pageTitle);
@@ -267,25 +270,25 @@ describe('BO - Design - Image Settings : Check category image format', async () 
           await testContext.addContextItem(this, 'testIdentifier', `goToFo${argExtension}`, baseContext);
 
           page = await boCategoriesCreatePage.viewMyShop(page);
-          await foHummingbirdHomePage.changeLanguage(page, 'en');
+          await foDefaultHomePage.changeLanguage(page, 'en');
 
-          const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+          const isHomePage = await foDefaultHomePage.isHomePage(page);
           expect(isHomePage).to.eq(true);
         });
 
         it('should go to all products page', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goToFoAllProducts${argExtension}`, baseContext);
 
-          await foHummingbirdHomePage.goToAllProductsPage(page);
+          await foDefaultHomePage.goToAllProductsPage(page);
 
-          const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+          const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
           expect(isCategoryPageVisible, 'Home category page was not opened').to.eq(true);
         });
 
         it('should check that the main image of the quick view is a WebP', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `checkMainImageQuickView${argExtension}`, baseContext);
 
-          const categoryImage = await foHummingbirdCategoryPage.getCategoryImageMain(page, arg.category.name);
+          const categoryImage = await foDefaultCategoryPage.getCategoryImageMain(page, arg.category.name);
           expect(categoryImage).to.not.eq(null);
 
           await utilsFile.downloadFile(categoryImage as string, 'image.img');

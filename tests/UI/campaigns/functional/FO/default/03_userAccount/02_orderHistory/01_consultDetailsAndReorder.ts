@@ -8,6 +8,16 @@ import {createAccountTest} from '@commonTests/FO/default/account';
 import {createOrderByCustomerTest} from '@commonTests/FO/default/order';
 
 import {
+  foDefaultCheckoutPage,
+  foDefaultCheckoutOrderConfirmationPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyOrderDetailsPage,
+  foDefaultMyOrderHistoryPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataOrderStatuses,
   dataPaymentMethods,
@@ -15,13 +25,6 @@ import {
   FakerAddress,
   FakerCustomer,
   FakerOrder,
-  foHummingbirdCheckoutPage,
-  foHummingbirdCheckoutOrderConfirmationPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyOrderDetailsPage,
-  foHummingbirdMyOrderHistoryPage,
   type Page,
   utilsDate,
   utilsPlaywright,
@@ -85,44 +88,44 @@ describe('FO - User account - Order history : Consult details and Reorder', asyn
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFoToCreateAccount', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginFoPage', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageHeaderTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdLoginPage.pageTitle);
+      const pageHeaderTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFo', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, customerData);
+      await foDefaultLoginPage.customerLogin(page, customerData);
 
-      const isCustomerConnected = await foHummingbirdMyAccountPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultMyAccountPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to order history page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToOrderHistoryPage', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
-      await foHummingbirdMyAccountPage.goToHistoryAndDetailsPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
+      await foDefaultMyAccountPage.goToHistoryAndDetailsPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyOrderHistoryPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyOrderHistoryPage.pageTitle);
     });
 
     it('should check number of orders', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNumberOfOrders1', baseContext);
 
-      const numberOfOrders = await foHummingbirdMyOrderHistoryPage.getNumberOfOrders(page);
+      const numberOfOrders = await foDefaultMyOrderHistoryPage.getNumberOfOrders(page);
       expect(numberOfOrders).to.equal(0);
     });
   });
@@ -134,23 +137,23 @@ describe('FO - User account - Order history : Consult details and Reorder', asyn
     it('should reload the FO page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'reloadPage', baseContext);
 
-      await foHummingbirdMyOrderHistoryPage.reloadPage(page);
+      await foDefaultMyOrderHistoryPage.reloadPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyOrderHistoryPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyOrderHistoryPage.pageTitle);
     });
 
     it('should check the number of orders', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNumberOfOrders2', baseContext);
 
-      const numberOfOrders = await foHummingbirdMyOrderHistoryPage.getNumberOfOrders(page);
+      const numberOfOrders = await foDefaultMyOrderHistoryPage.getNumberOfOrders(page);
       expect(numberOfOrders).to.equal(1);
     });
 
     it('should check the order information', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkOrderInformation', baseContext);
 
-      const result = await foHummingbirdMyOrderHistoryPage.getOrderHistoryDetails(page);
+      const result = await foDefaultMyOrderHistoryPage.getOrderHistoryDetails(page);
       await Promise.all([
         expect(result.reference).not.null,
         expect(result.date).to.equal(today),
@@ -164,28 +167,28 @@ describe('FO - User account - Order history : Consult details and Reorder', asyn
     it('should go to order details page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFoToOrderDetails', baseContext);
 
-      await foHummingbirdMyOrderHistoryPage.goToDetailsPage(page);
+      await foDefaultMyOrderHistoryPage.goToDetailsPage(page);
 
-      const pageTitle = await foHummingbirdMyOrderDetailsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdMyOrderDetailsPage.pageTitle);
+      const pageTitle = await foDefaultMyOrderDetailsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultMyOrderDetailsPage.pageTitle);
     });
 
     it('should go to order history page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToOrderHistoryPage2', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
-      await foHummingbirdMyAccountPage.goToHistoryAndDetailsPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
+      await foDefaultMyAccountPage.goToHistoryAndDetailsPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyOrderHistoryPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyOrderHistoryPage.pageTitle);
     });
 
     it('should reorder the last order', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'reorderLastOrder', baseContext);
 
-      await foHummingbirdMyOrderHistoryPage.clickOnReorderLink(page);
+      await foDefaultMyOrderHistoryPage.clickOnReorderLink(page);
 
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage, 'Browser is not in checkout Page').to.eq(true);
     });
 
@@ -193,7 +196,7 @@ describe('FO - User account - Order history : Consult details and Reorder', asyn
       await testContext.addContextItem(this, 'testIdentifier', 'goToDeliveryStep', baseContext);
 
       // Address step - Go to delivery step
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
     });
 
@@ -201,7 +204,7 @@ describe('FO - User account - Order history : Consult details and Reorder', asyn
       await testContext.addContextItem(this, 'testIdentifier', 'goToPaymentStep', baseContext);
 
       // Delivery step - Go to payment step
-      const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+      const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
       expect(isStepDeliveryComplete, 'Step Address is not complete').to.eq(true);
     });
 
@@ -209,11 +212,11 @@ describe('FO - User account - Order history : Consult details and Reorder', asyn
       await testContext.addContextItem(this, 'testIdentifier', 'confirmOrder', baseContext);
 
       // Payment step - Choose payment step
-      await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
+      await foDefaultCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
 
       // Check the confirmation message
-      const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-      expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+      const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+      expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
     });
   });
 

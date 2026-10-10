@@ -2,11 +2,14 @@ import {expect} from 'chai';
 import testContext from '@utils/testContext';
 
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boSeoUrlsPage,
   type BrowserContext,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -62,14 +65,14 @@ describe('BO - Shop Parameters - Traffic & SEO : Enable/Disable friendly URL', a
 
     page = await boSeoUrlsPage.viewMyShop(page);
 
-    const url = await foHummingbirdHomePage.getCurrentURL(page);
+    const url = await foDefaultHomePage.getCurrentURL(page);
     expect(url).to.contains('index.php');
   });
 
   it('should go back to BO', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO', baseContext);
 
-    page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+    page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
     const pageTitle = await boSeoUrlsPage.getPageTitle(page);
     expect(pageTitle).to.contains(boSeoUrlsPage.pageTitle);
@@ -87,9 +90,9 @@ describe('BO - Shop Parameters - Traffic & SEO : Enable/Disable friendly URL', a
 
     // Go to FO
     page = await boSeoUrlsPage.viewMyShop(page);
-    await foHummingbirdHomePage.changeLanguage(page, 'en');
+    await foDefaultHomePage.changeLanguage(page, 'en');
 
-    const url = await foHummingbirdHomePage.getCurrentURL(page);
+    const url = await foDefaultHomePage.getCurrentURL(page);
     expect(url).to.not.contains('index.php');
   });
 });

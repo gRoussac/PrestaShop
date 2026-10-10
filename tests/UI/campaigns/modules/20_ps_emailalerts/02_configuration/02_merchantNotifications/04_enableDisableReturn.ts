@@ -7,6 +7,15 @@ import {enableMerchandiseReturns, disableMerchandiseReturns} from '@commonTests/
 import {setupSmtpConfigTest, resetSmtpConfigTest} from '@commonTests/BO/advancedParameters/smtp';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyMerchandiseReturnsPage,
+  foDefaultMyOrderDetailsPage,
+  foDefaultMyOrderHistoryPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
@@ -19,12 +28,6 @@ import {
   dataPaymentMethods,
   dataProducts,
   FakerOrder,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyMerchandiseReturnsPage,
-  foHummingbirdMyOrderDetailsPage,
-  foHummingbirdMyOrderHistoryPage,
   type MailDev,
   type MailDevEmail,
   modPsEmailAlertsBoMain,
@@ -217,56 +220,56 @@ describe('Mail alerts module - Merchant notifications : Enable/Disable returns',
       await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop', baseContext);
 
       page = await boOrdersViewBasePage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
     it('should login', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'loginFO', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultHomePage.goToLoginPage(page);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected).to.eq(true);
     });
 
     it('should go to my account page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAccountPage1', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
 
-      const pageTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdMyAccountPage.pageTitle);
+      const pageTitle = await foDefaultMyAccountPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultMyAccountPage.pageTitle);
     });
 
     it('should go to \'Order history and details\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToOrderHistoryPage', baseContext);
 
-      await foHummingbirdMyAccountPage.goToHistoryAndDetailsPage(page);
+      await foDefaultMyAccountPage.goToHistoryAndDetailsPage(page);
 
-      const pageTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdMyOrderHistoryPage.pageTitle);
+      const pageTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultMyOrderHistoryPage.pageTitle);
     });
 
     it('should go to the first order in the list and check the existence of order return form', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'isOrderReturnFormVisible', baseContext);
 
-      await foHummingbirdMyOrderHistoryPage.goToDetailsPage(page, 1);
+      await foDefaultMyOrderHistoryPage.goToDetailsPage(page, 1);
 
-      const result = await foHummingbirdMyOrderDetailsPage.isOrderReturnFormVisible(page);
+      const result = await foDefaultMyOrderDetailsPage.isOrderReturnFormVisible(page);
       expect(result).to.eq(true);
     });
 
     it('should create a merchandise return', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'createMerchandiseReturn', baseContext);
 
-      await foHummingbirdMyOrderDetailsPage.requestMerchandiseReturn(page, 'message test');
+      await foDefaultMyOrderDetailsPage.requestMerchandiseReturn(page, 'message test');
 
-      const pageTitle = await foHummingbirdMyMerchandiseReturnsPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdMyMerchandiseReturnsPage.pageTitle);
+      const pageTitle = await foDefaultMyMerchandiseReturnsPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultMyMerchandiseReturnsPage.pageTitle);
     });
 
     it('should check that the confirmation mail is in mailbox', async function () {
@@ -278,7 +281,7 @@ describe('Mail alerts module - Merchant notifications : Enable/Disable returns',
     it('should close the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closeShop', baseContext);
 
-      page = await foHummingbirdMyMerchandiseReturnsPage.closePage(browserContext, page, 0);
+      page = await foDefaultMyMerchandiseReturnsPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boOrdersViewBasePage.getPageTitle(page);
       expect(pageTitle).to.contains(boOrdersViewBasePage.pageTitle);
@@ -329,46 +332,46 @@ describe('Mail alerts module - Merchant notifications : Enable/Disable returns',
       await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop2', baseContext);
 
       page = await boOrdersViewBasePage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
     it('should go to my account page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAccountPage2', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
 
-      const pageTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdMyAccountPage.pageTitle);
+      const pageTitle = await foDefaultMyAccountPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultMyAccountPage.pageTitle);
     });
 
     it('should go to \'Order history and details\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToOrderHistoryPage2', baseContext);
 
-      await foHummingbirdMyAccountPage.goToHistoryAndDetailsPage(page);
+      await foDefaultMyAccountPage.goToHistoryAndDetailsPage(page);
 
-      const pageTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdMyOrderHistoryPage.pageTitle);
+      const pageTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultMyOrderHistoryPage.pageTitle);
     });
 
     it('should go to the second order in the list and check the existence of order return form', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'isOrderReturnFormVisible2', baseContext);
 
-      await foHummingbirdMyOrderHistoryPage.goToDetailsPage(page, 2);
+      await foDefaultMyOrderHistoryPage.goToDetailsPage(page, 2);
 
-      const result = await foHummingbirdMyOrderDetailsPage.isOrderReturnFormVisible(page);
+      const result = await foDefaultMyOrderDetailsPage.isOrderReturnFormVisible(page);
       expect(result).to.eq(true);
     });
 
     it('should create a merchandise return', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'createMerchandiseReturn2', baseContext);
 
-      await foHummingbirdMyOrderDetailsPage.requestMerchandiseReturn(page, 'message test');
+      await foDefaultMyOrderDetailsPage.requestMerchandiseReturn(page, 'message test');
 
-      const pageTitle = await foHummingbirdMyMerchandiseReturnsPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdMyMerchandiseReturnsPage.pageTitle);
+      const pageTitle = await foDefaultMyMerchandiseReturnsPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultMyMerchandiseReturnsPage.pageTitle);
     });
 
     it('should check that the confirmation mail is in mailbox', async function () {

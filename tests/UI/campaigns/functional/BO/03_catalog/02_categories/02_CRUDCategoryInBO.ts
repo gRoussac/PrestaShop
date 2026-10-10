@@ -2,6 +2,12 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultCategoryPage,
+  foDefaultSitemapPage,
+} from '@utils/foDefaultPages';
+
+import {
   type APIRequestContext,
   boCategoriesPage,
   boCategoriesCreatePage,
@@ -11,9 +17,6 @@ import {
   type CategoryRedirection,
   dataCategories,
   FakerCategory,
-  foHummingbirdHomePage,
-  foHummingbirdCategoryPage,
-  foHummingbirdSitemapPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -146,9 +149,9 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
         // View Shop
         page = await boCategoriesPage.viewMyShop(page);
         // Change FO language
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.changeLanguage(page, 'en');
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.eq(true);
       });
 
@@ -156,27 +159,27 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
         await testContext.addContextItem(this, 'testIdentifier', 'checkCreatedCategoryFO', baseContext);
 
         // Go to sitemap page
-        await foHummingbirdHomePage.goToFooterLink(page, 'Sitemap');
+        await foDefaultHomePage.goToFooterLink(page, 'Sitemap');
 
-        const pageTitle = await foHummingbirdSitemapPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdSitemapPage.pageTitle);
+        const pageTitle = await foDefaultSitemapPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultSitemapPage.pageTitle);
 
         // Check category name
-        const categoryName = await foHummingbirdSitemapPage.getCategoryName(page, categoryID);
+        const categoryName = await foDefaultSitemapPage.getCategoryName(page, categoryID);
         expect(categoryName).to.contains(createCategoryData.name);
       });
 
       it('should view the created category', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'viewCreatedCategoryFO', baseContext);
 
-        await foHummingbirdSitemapPage.viewCreatedCategory(page, categoryID);
+        await foDefaultSitemapPage.viewCreatedCategory(page, categoryID);
 
         // Check category name
-        const pageTitle = await foHummingbirdCategoryPage.getHeaderPageName(page);
+        const pageTitle = await foDefaultCategoryPage.getHeaderPageName(page);
         expect(pageTitle).to.contains(createCategoryData.name);
 
         // Check category description
-        const categoryDescription = await foHummingbirdCategoryPage.getCategoryDescription(page);
+        const categoryDescription = await foDefaultCategoryPage.getCategoryDescription(page);
         expect(categoryDescription).to.equal(createCategoryData.description);
       });
 
@@ -184,7 +187,7 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
         await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo1', baseContext);
 
         // Close tab and init other page objects with new current tab
-        page = await foHummingbirdCategoryPage.closePage(browserContext, page, 0);
+        page = await foDefaultCategoryPage.closePage(browserContext, page, 0);
 
         const pageTitle = await boCategoriesPage.getPageTitle(page);
         expect(pageTitle).to.contains(boCategoriesPage.pageTitle);
@@ -239,29 +242,29 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
         // View shop
         page = await boCategoriesPage.viewMyShop(page);
         // Change language in FO
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.changeLanguage(page, 'en');
         // Go to sitemap page
-        await foHummingbirdHomePage.goToFooterLink(page, 'Sitemap');
+        await foDefaultHomePage.goToFooterLink(page, 'Sitemap');
 
-        const pageTitle = await foHummingbirdSitemapPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdSitemapPage.pageTitle);
+        const pageTitle = await foDefaultSitemapPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultSitemapPage.pageTitle);
 
         // Check category
-        const categoryName = await foHummingbirdSitemapPage.getCategoryName(page, subcategoryID);
+        const categoryName = await foDefaultSitemapPage.getCategoryName(page, subcategoryID);
         expect(categoryName).to.contains(createSubCategoryData.name);
       });
 
       it('should view the created subcategory', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'viewCreatedSubcategoryFO', baseContext);
 
-        await foHummingbirdSitemapPage.viewCreatedCategory(page, subcategoryID);
+        await foDefaultSitemapPage.viewCreatedCategory(page, subcategoryID);
 
         // Check subcategory name
-        const pageTitle = await foHummingbirdCategoryPage.getHeaderPageName(page);
+        const pageTitle = await foDefaultCategoryPage.getHeaderPageName(page);
         expect(pageTitle).to.contains(createSubCategoryData.name);
 
         // Check subcategory description
-        const subcategoryDescription = await foHummingbirdCategoryPage.getCategoryDescription(page);
+        const subcategoryDescription = await foDefaultCategoryPage.getCategoryDescription(page);
         expect(subcategoryDescription).to.equal(createSubCategoryData.description);
       });
 
@@ -269,7 +272,7 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
         await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo2', baseContext);
 
         // Close tab and init other page objects with new current tab
-        page = await foHummingbirdCategoryPage.closePage(browserContext, page, 0);
+        page = await foDefaultCategoryPage.closePage(browserContext, page, 0);
 
         const pageTitle = await boCategoriesPage.getPageTitle(page);
         expect(pageTitle).to.contains(createCategoryData.name);
@@ -403,15 +406,15 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
         // View shop
         page = await boCategoriesPage.viewMyShop(page);
         // Change FO language
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.changeLanguage(page, 'en');
         // Go to sitemap page
-        await foHummingbirdHomePage.goToFooterLink(page, 'Sitemap');
+        await foDefaultHomePage.goToFooterLink(page, 'Sitemap');
 
-        const pageTitle = await foHummingbirdSitemapPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdSitemapPage.pageTitle);
+        const pageTitle = await foDefaultSitemapPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultSitemapPage.pageTitle);
 
         // Check category name
-        const categoryName = await foHummingbirdSitemapPage.isVisibleCategory(page, idCategory);
+        const categoryName = await foDefaultSitemapPage.isVisibleCategory(page, idCategory);
         expect(categoryName).to.eq(false);
       });
 
@@ -421,7 +424,7 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
         const idCategory: number = arg.type === 'category' ? categoryID : subcategoryID;
 
         // Check if it is an error page
-        const response = await foHummingbirdCategoryPage.goTo(page, `${global.FO.URL}en/${idCategory}-${categoryFriendlyURL}`);
+        const response = await foDefaultCategoryPage.goTo(page, `${global.FO.URL}en/${idCategory}-${categoryFriendlyURL}`);
         expect(response).to.be.not.equal(null);
         const requestRedirectFrom = response!.request().redirectedFrom();
         expect(requestRedirectFrom).to.be.not.equal(null);
@@ -430,7 +433,7 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
         expect(responseBeforeRedirection!.status()).to.be.equal(parseInt(arg.category.redirectionWhenNotDisplayed, 10));
 
         // Check if it is redirected to the category
-        const categoryName = await foHummingbirdCategoryPage.getHeaderPageName(page);
+        const categoryName = await foDefaultCategoryPage.getHeaderPageName(page);
         expect(categoryName).to.contains(arg.category.redirectedCategory!.name);
       });
 
@@ -442,7 +445,7 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
           : boCategoriesPage.pageCategoryTitle(createCategoryData.name);
 
         // Close tab and init other page objects with new current tab
-        page = await foHummingbirdSitemapPage.closePage(browserContext, page, 0);
+        page = await foDefaultSitemapPage.closePage(browserContext, page, 0);
 
         const pageTitle = await boCategoriesPage.getPageTitle(page);
         expect(pageTitle).to.contains(titlePage);
@@ -523,15 +526,15 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
         // View shop
         page = await boCategoriesPage.viewMyShop(page);
         // Change FO language
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.changeLanguage(page, 'en');
         // Go to sitemap page
-        await foHummingbirdHomePage.goToFooterLink(page, 'Sitemap');
+        await foDefaultHomePage.goToFooterLink(page, 'Sitemap');
 
-        const pageTitle = await foHummingbirdSitemapPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdSitemapPage.pageTitle);
+        const pageTitle = await foDefaultSitemapPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultSitemapPage.pageTitle);
 
         // Check category name
-        const categoryName = await foHummingbirdSitemapPage.isVisibleCategory(page, idCategory);
+        const categoryName = await foDefaultSitemapPage.isVisibleCategory(page, idCategory);
         expect(categoryName).to.eq(false);
       });
 
@@ -554,7 +557,7 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
           : boCategoriesPage.pageCategoryTitle(createCategoryData.name);
 
         // Close tab and init other page objects with new current tab
-        page = await foHummingbirdSitemapPage.closePage(browserContext, page, 0);
+        page = await foDefaultSitemapPage.closePage(browserContext, page, 0);
 
         const pageTitle = await boCategoriesPage.getPageTitle(page);
         expect(pageTitle).to.contains(titlePage);
@@ -609,9 +612,9 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
       // View shop
       page = await boCategoriesPage.viewMyShop(page);
       // Change FO language
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -619,12 +622,12 @@ describe('BO - Catalog - Categories : CRUD Category in BO', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDeletedCategoryFO', baseContext);
 
       // Go to sitemap page
-      await foHummingbirdHomePage.goToFooterLink(page, 'Sitemap');
+      await foDefaultHomePage.goToFooterLink(page, 'Sitemap');
 
-      const pageTitle = await foHummingbirdSitemapPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSitemapPage.pageTitle);
+      const pageTitle = await foDefaultSitemapPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSitemapPage.pageTitle);
 
-      const categoryName = await foHummingbirdSitemapPage.isVisibleCategory(page, categoryID);
+      const categoryName = await foDefaultSitemapPage.isVisibleCategory(page, categoryID);
       expect(categoryName, 'Category is visible in FO!').to.eq(false);
     });
   });

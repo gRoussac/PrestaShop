@@ -3,14 +3,17 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
   type BrowserContext,
   dataCategories,
   dataModules,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -103,25 +106,25 @@ describe('Faceted search module - Uninstall and delete module', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
       page = await boModuleManagerPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to the category Page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToCategoryPage', baseContext);
 
-      await foHummingbirdHomePage.goToCategory(page, dataCategories.clothes.id);
+      await foDefaultHomePage.goToCategory(page, dataCategories.clothes.id);
 
-      const pageTitle = await foHummingbirdHomePage.getPageTitle(page);
+      const pageTitle = await foDefaultHomePage.getPageTitle(page);
       expect(pageTitle).to.equal(dataCategories.clothes.name);
     });
 
     it(`should check that ${dataModules.psFacetedSearch.name} is not present`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkModuleNotPresent', baseContext);
 
-      const hasFilters = await foHummingbirdCategoryPage.hasSearchFilters(page);
+      const hasFilters = await foDefaultCategoryPage.hasSearchFilters(page);
       expect(hasFilters).to.eq(false);
     });
   });

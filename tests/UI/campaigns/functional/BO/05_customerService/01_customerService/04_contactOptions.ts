@@ -2,14 +2,17 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultContactUsPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boCustomerServicePage,
   boCustomerServiceViewPage,
   boDashboardPage,
   boLoginPage,
   type BrowserContext,
   FakerContactMessage,
-  foHummingbirdContactUsPage,
-  foHummingbirdHomePage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -80,7 +83,7 @@ describe('BO - Customer Service : Contact options', async () => {
 
       page = await boCustomerServicePage.viewMyShop(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -88,21 +91,21 @@ describe('BO - Customer Service : Contact options', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goToContactPage', baseContext);
 
       // Go to contact us page
-      await foHummingbirdHomePage.goToFooterLink(page, 'Contact us');
+      await foDefaultHomePage.goToFooterLink(page, 'Contact us');
 
-      const pageTitle = await foHummingbirdContactUsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdContactUsPage.pageTitle);
+      const pageTitle = await foDefaultContactUsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultContactUsPage.pageTitle);
     });
 
     it('should send message to customer service then close the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sendMessage', baseContext);
 
-      await foHummingbirdContactUsPage.sendMessage(page, contactUsData, `${contactUsData.fileName}.jpg`);
+      await foDefaultContactUsPage.sendMessage(page, contactUsData, `${contactUsData.fileName}.jpg`);
 
-      const validationMessage = await foHummingbirdContactUsPage.getAlertSuccess(page);
-      expect(validationMessage).to.equal(foHummingbirdContactUsPage.validationMessage);
+      const validationMessage = await foDefaultContactUsPage.getAlertSuccess(page);
+      expect(validationMessage).to.equal(foDefaultContactUsPage.validationMessage);
 
-      page = await foHummingbirdContactUsPage.closePage(browserContext, page, 0);
+      page = await foDefaultContactUsPage.closePage(browserContext, page, 0);
     });
   });
 
@@ -162,30 +165,30 @@ describe('BO - Customer Service : Contact options', async () => {
 
         page = await boCustomerServicePage.viewMyShop(page);
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.eq(true);
       });
 
       it('should go to contact us page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `goToContactUsPage${index}`, baseContext);
 
-        await foHummingbirdHomePage.clickOnHeaderLink(page, 'Contact us');
+        await foDefaultHomePage.clickOnHeaderLink(page, 'Contact us');
 
-        const pageTitle = await foHummingbirdContactUsPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdContactUsPage.pageTitle);
+        const pageTitle = await foDefaultContactUsPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultContactUsPage.pageTitle);
       });
 
       it('should check the existence of attachment input in contact us form', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `checkUploadFile${index}`, baseContext);
 
-        const isVisible = await foHummingbirdContactUsPage.isAttachmentInputVisible(page);
+        const isVisible = await foDefaultContactUsPage.isAttachmentInputVisible(page);
         expect(isVisible).to.be.equal(test.args.enable);
       });
 
       it('should go back to BO', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `goBackToBO${index}`, baseContext);
 
-        page = await foHummingbirdContactUsPage.closePage(browserContext, page, 0);
+        page = await foDefaultContactUsPage.closePage(browserContext, page, 0);
 
         const pageTitle = await boCustomerServicePage.getPageTitle(page);
         expect(pageTitle).to.contains(boCustomerServicePage.pageTitle);
