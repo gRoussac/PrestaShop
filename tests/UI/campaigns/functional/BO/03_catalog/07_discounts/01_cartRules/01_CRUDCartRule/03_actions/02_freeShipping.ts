@@ -4,6 +4,15 @@ import {expect} from 'chai';
 import {deleteCartRuleTest} from '@commonTests/BO/catalog/cartRule';
 
 import {
+  foDefaultCartPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultProductPage,
+  foDefaultSearchResultsPage,
+  foDefaultCheckoutPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCartRulesPage,
   boCartRulesCreatePage,
   boDashboardPage,
@@ -13,14 +22,8 @@ import {
   dataCustomers,
   dataProducts,
   FakerCartRule,
-  foHummingbirdCartPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdProductPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
-  foHummingbirdCheckoutPage,
 } from '@prestashop-core/ui-testing';
 
 const baseContext: string = 'functional_BO_catalog_discounts_cartRules_CRUDCartRule_actions_freeShipping';
@@ -93,9 +96,9 @@ describe('BO - Cart rules - Actions : Free shipping', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop', baseContext);
 
       page = await boCartRulesCreatePage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
   });
@@ -104,102 +107,102 @@ describe('BO - Cart rules - Actions : Free shipping', async () => {
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPage', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.eq(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.eq(foDefaultLoginPage.pageTitle);
     });
 
     it('should login', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'loginFO', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected!').to.eq(true);
     });
 
     it(`should search for the product '${dataProducts.demo_6.name}' and go to product page`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_6.name);
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_6.name);
+      await foDefaultSearchResultsPage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(dataProducts.demo_6.name);
     });
 
     it('should add the product to cart and continue to cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addProductToCart', baseContext);
 
-      await foHummingbirdProductPage.addProductToTheCart(page, 1);
+      await foDefaultProductPage.addProductToTheCart(page, 1);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it('should check that discount is automatically applied to the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDiscountApplied', baseContext);
 
-      const subTotal = await foHummingbirdCartPage.getSubtotalShippingValue(page);
+      const subTotal = await foDefaultCartPage.getSubtotalShippingValue(page);
       expect(subTotal).to.eq('Free');
 
-      const priceATI = await foHummingbirdCartPage.getATIPrice(page);
+      const priceATI = await foDefaultCartPage.getATIPrice(page);
       expect(priceATI).to.eq(dataProducts.demo_6.combinations[0].priceTI);
     });
 
     it('should proceed to checkout', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'proceedToCheckout', baseContext);
 
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage).to.eq(true);
     });
 
     it('should go to delivery step', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToDeliveryStep', baseContext);
 
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
 
-      const allCarriersPrices = await foHummingbirdCheckoutPage.getAllCarriersPrices(page);
+      const allCarriersPrices = await foDefaultCheckoutPage.getAllCarriersPrices(page);
       expect(allCarriersPrices).to.deep.equals(['Free', `€${dataCarriers.myCarrier.priceTTC.toFixed(2)} tax incl.`]);
     });
 
     it(`should choose a carrier "${dataCarriers.myCarrier.name}"`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'chooseCarrer', baseContext);
 
-      await foHummingbirdCheckoutPage.chooseShippingMethod(page, dataCarriers.myCarrier.id);
+      await foDefaultCheckoutPage.chooseShippingMethod(page, dataCarriers.myCarrier.id);
 
-      const shippingCost = await foHummingbirdCheckoutPage.getShippingCost(page);
+      const shippingCost = await foDefaultCheckoutPage.getShippingCost(page);
       expect(shippingCost).to.equal(`€${dataCarriers.myCarrier.priceTTC.toFixed(2)}`);
     });
 
     it('should add the voucher', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addVoucher', baseContext);
 
-      await foHummingbirdCheckoutPage.addPromoCode(page, cartRuleData.code);
+      await foDefaultCheckoutPage.addPromoCode(page, cartRuleData.code);
 
-      const shippingCost = await foHummingbirdCheckoutPage.getShippingCost(page);
+      const shippingCost = await foDefaultCheckoutPage.getShippingCost(page);
       expect(shippingCost).to.equal('Free');
 
-      const discountCost = await foHummingbirdCheckoutPage.getDiscountCost(page);
+      const discountCost = await foDefaultCheckoutPage.getDiscountCost(page);
       expect(discountCost).to.equal(`- €${dataCarriers.myCarrier.priceTTC.toFixed(2)}`);
 
-      const cartRuleName = await foHummingbirdCheckoutPage.getCartRuleName(page);
+      const cartRuleName = await foDefaultCheckoutPage.getCartRuleName(page);
       expect(cartRuleName).to.contains(cartRuleData.name);
 
-      const cartRuleValue = await foHummingbirdCheckoutPage.getCartRuleValue(page);
+      const cartRuleValue = await foDefaultCheckoutPage.getCartRuleValue(page);
       expect(cartRuleValue).to.contains('Free shipping');
     });
 
     it('should reload page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'reloadPage', baseContext);
 
-      await foHummingbirdCheckoutPage.reloadPage(page);
+      await foDefaultCheckoutPage.reloadPage(page);
 
-      const allCarriersPrices = await foHummingbirdCheckoutPage.getAllCarriersPrices(page);
+      const allCarriersPrices = await foDefaultCheckoutPage.getAllCarriersPrices(page);
       expect(allCarriersPrices).to.deep.equals(['Free', 'Free']);
     });
   });

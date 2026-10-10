@@ -2,8 +2,11 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
-  foHummingbirdHomePage,
   installPage,
   type Page,
   utilsPlaywright,
@@ -227,7 +230,7 @@ describe('Install Prestashop', async () => {
 
     page = await installPage.goToFOAfterInstall(page);
 
-    const result = await foHummingbirdHomePage.isHomePage(page);
+    const result = await foDefaultHomePage.isHomePage(page);
     expect(result).to.eq(true);
   });
 });

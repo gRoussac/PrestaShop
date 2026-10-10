@@ -6,11 +6,14 @@ import {createProductTest, deleteProductTest} from '@commonTests/BO/catalog/prod
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultModalQuickViewPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   FakerProduct,
-  foHummingbirdHomePage,
-  foHummingbirdModalQuickViewPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -61,45 +64,45 @@ describe('FO - Product page - Quick view : Change image', async () => {
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.equal(true);
     });
 
     it('should search for the created product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchCreatedProduct', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, productWith2Images.name);
+      await foDefaultHomePage.searchProduct(page, productWith2Images.name);
 
-      const productsNumber = await foHummingbirdSearchResultsPage.getSearchResultsNumber(page);
+      const productsNumber = await foDefaultSearchResultsPage.getSearchResultsNumber(page);
       expect(productsNumber).to.equal(1);
     });
 
     it('should quick view the created product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'quickView', baseContext);
 
-      await foHummingbirdSearchResultsPage.quickViewProduct(page, 1);
+      await foDefaultSearchResultsPage.quickViewProduct(page, 1);
 
-      const isModalVisible = await foHummingbirdModalQuickViewPage.isQuickViewProductModalVisible(page);
+      const isModalVisible = await foDefaultModalQuickViewPage.isQuickViewProductModalVisible(page);
       expect(isModalVisible).to.equal(true);
     });
 
     it('should display the second image', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'displaySecondImage', baseContext);
 
-      const firstCoverImageURL = await foHummingbirdModalQuickViewPage.getQuickViewImageMain(page);
-      await foHummingbirdModalQuickViewPage.selectThumbImage(page, 2);
-      const secondCoverImageURL = await foHummingbirdModalQuickViewPage.getQuickViewImageMain(page);
+      const firstCoverImageURL = await foDefaultModalQuickViewPage.getQuickViewImageMain(page);
+      await foDefaultModalQuickViewPage.selectThumbImage(page, 2);
+      const secondCoverImageURL = await foDefaultModalQuickViewPage.getQuickViewImageMain(page);
       expect(firstCoverImageURL).to.not.equal(secondCoverImageURL);
     });
 
     it('should display the first image', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'displayFirstImage', baseContext);
 
-      const firstCoverImageURL = await foHummingbirdModalQuickViewPage.getQuickViewImageMain(page);
-      await foHummingbirdModalQuickViewPage.selectThumbImage(page, 1);
-      const secondCoverImageURL = await foHummingbirdModalQuickViewPage.getQuickViewImageMain(page);
+      const firstCoverImageURL = await foDefaultModalQuickViewPage.getQuickViewImageMain(page);
+      await foDefaultModalQuickViewPage.selectThumbImage(page, 1);
+      const secondCoverImageURL = await foDefaultModalQuickViewPage.getQuickViewImageMain(page);
       expect(firstCoverImageURL).to.not.equal(secondCoverImageURL);
     });
   });

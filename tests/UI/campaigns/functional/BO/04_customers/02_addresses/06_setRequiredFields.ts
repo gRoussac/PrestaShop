@@ -2,17 +2,20 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyAddressesPage,
+  foDefaultMyAddressesCreatePage,
+} from '@utils/foDefaultPages';
+
+import {
   boAddressesPage,
   boDashboardPage,
   boLoginPage,
   type BrowserContext,
   dataCustomers,
   FakerAddress,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyAddressesPage,
-  foHummingbirdMyAddressesCreatePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -83,9 +86,9 @@ describe('BO - Customers - Addresses : Set required fields for addresses', async
       // View shop
       page = await boAddressesPage.viewMyShop(page);
       // Change language in FO
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -93,45 +96,45 @@ describe('BO - Customers - Addresses : Set required fields for addresses', async
       await testContext.addContextItem(this, 'testIdentifier', `loginFO${index}`, baseContext);
 
       // Go to create account page
-      await foHummingbirdHomePage.goToLoginPage(page);
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultHomePage.goToLoginPage(page);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const connected = await foHummingbirdHomePage.isCustomerConnected(page);
+      const connected = await foDefaultHomePage.isCustomerConnected(page);
       expect(connected, 'Customer is not connected in FO').to.eq(true);
     });
 
     it('should go to \'Customers > Addresses\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `goToFOAddressesPage${index}`, baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
-      await foHummingbirdMyAccountPage.goToAddressesPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
+      await foDefaultMyAccountPage.goToAddressesPage(page);
 
-      const pageHeaderTitle = await foHummingbirdMyAddressesPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAddressesPage.pageTitle);
+      const pageHeaderTitle = await foDefaultMyAddressesPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAddressesPage.pageTitle);
     });
 
     it('should go to create address page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `goToNewAddressPage${index}`, baseContext);
 
-      await foHummingbirdMyAddressesPage.openNewAddressForm(page);
+      await foDefaultMyAddressesPage.openNewAddressForm(page);
 
-      const pageHeaderTitle = await foHummingbirdMyAddressesCreatePage.getHeaderTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdMyAddressesCreatePage.creationFormTitle);
+      const pageHeaderTitle = await foDefaultMyAddressesCreatePage.getHeaderTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultMyAddressesCreatePage.creationFormTitle);
     });
 
     it('should check if \'Vat number\' is required', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `checkOptionalLabel${index}`, baseContext);
 
-      const result = await foHummingbirdMyAddressesCreatePage.isVatNumberRequired(page);
+      const result = await foDefaultMyAddressesCreatePage.isVatNumberRequired(page);
       expect(result).to.equal(test.args.exist);
     });
 
     it('should sign out from FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `signOutFO${index}`, baseContext);
 
-      await foHummingbirdMyAddressesCreatePage.logout(page);
+      await foDefaultMyAddressesCreatePage.logout(page);
 
-      const isCustomerConnected = await foHummingbirdMyAddressesCreatePage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultMyAddressesCreatePage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected').to.eq(false);
     });
 
@@ -139,7 +142,7 @@ describe('BO - Customers - Addresses : Set required fields for addresses', async
       await testContext.addContextItem(this, 'testIdentifier', `goBackToBO${index}`, baseContext);
 
       // Go back to BO
-      page = await foHummingbirdMyAddressesCreatePage.closePage(browserContext, page, 0);
+      page = await foDefaultMyAddressesCreatePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boAddressesPage.getPageTitle(page);
       expect(pageTitle).to.contains(boAddressesPage.pageTitle);

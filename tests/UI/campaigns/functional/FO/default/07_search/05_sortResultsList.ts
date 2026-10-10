@@ -3,9 +3,12 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
-  foHummingbirdHomePage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsCore,
   utilsPlaywright,
@@ -40,32 +43,32 @@ describe('FO - Search Page : Sort results list', async () => {
     it('should go to FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFO', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should put \'Mug\' in the search input and check result', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct1', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, 'mug');
+      await foDefaultHomePage.searchProduct(page, 'mug');
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it('should check the search result page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'countResult', baseContext);
 
-      const countResults = await foHummingbirdSearchResultsPage.getSearchResultsNumber(page);
+      const countResults = await foDefaultSearchResultsPage.getSearchResultsNumber(page);
       expect(countResults).to.equal(5);
     });
 
     it('should check that the products as sorted by relevance', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDefaultSort', baseContext);
 
-      const isSortingLinkVisible = await foHummingbirdSearchResultsPage.getSortByValue(page);
+      const isSortingLinkVisible = await foDefaultSearchResultsPage.getSortByValue(page);
       expect(isSortingLinkVisible).to.contain('Relevance');
     });
 
@@ -111,9 +114,9 @@ describe('FO - Search Page : Sort results list', async () => {
       it(`should sort by '${test.args.sortName}'`, async function () {
         await testContext.addContextItem(this, 'testIdentifier', test.args.testIdentifier, baseContext);
 
-        const nonSortedTable = await foHummingbirdSearchResultsPage.getAllProductsAttribute(page, test.args.attribute);
-        await foHummingbirdSearchResultsPage.sortProductsList(page, test.args.sortBy);
-        const sortedTable = await foHummingbirdSearchResultsPage.getAllProductsAttribute(page, test.args.attribute);
+        const nonSortedTable = await foDefaultSearchResultsPage.getAllProductsAttribute(page, test.args.attribute);
+        await foDefaultSearchResultsPage.sortProductsList(page, test.args.sortBy);
+        const sortedTable = await foDefaultSearchResultsPage.getAllProductsAttribute(page, test.args.attribute);
 
         const expectedResult: string[] = await utilsCore.sortArray(nonSortedTable);
 

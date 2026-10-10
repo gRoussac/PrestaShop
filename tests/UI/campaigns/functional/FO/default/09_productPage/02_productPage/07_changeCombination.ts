@@ -3,6 +3,12 @@ import {deleteProductTest} from '@commonTests/BO/catalog/product';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultProductPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boAttributesPage,
   boAttributesCreatePage,
   boAttributesValueCreatePage,
@@ -16,9 +22,6 @@ import {
   FakerAttribute,
   FakerAttributeValue,
   FakerProduct,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   type ProductAttribute,
   utilsFile,
@@ -246,27 +249,27 @@ describe('FO - Product page - Product page : Change combination', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFoToCreateAccount', baseContext);
 
       page = await boAttributesValueCreatePage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.equal(true);
     });
 
     it(`should search the product '${newProductData.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, newProductData.name);
+      await foDefaultHomePage.searchProduct(page, newProductData.name);
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it('should go to the product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToProductPage', baseContext);
 
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+      await foDefaultSearchResultsPage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
@@ -280,9 +283,9 @@ describe('FO - Product page - Product page : Change combination', async () => {
         },
       ];
 
-      await foHummingbirdProductPage.selectAttributes(page, 'select', combination);
+      await foDefaultProductPage.selectAttributes(page, 'select', combination);
 
-      const selectedAttribute = await foHummingbirdProductPage.getSelectedAttribute(page, 1, 'select');
+      const selectedAttribute = await foDefaultProductPage.getSelectedAttribute(page, 1, 'select');
       expect(selectedAttribute).to.equal('M');
     });
 
@@ -296,9 +299,9 @@ describe('FO - Product page - Product page : Change combination', async () => {
         },
       ];
 
-      await foHummingbirdProductPage.selectAttributes(page, 'radio', combination, 2);
+      await foDefaultProductPage.selectAttributes(page, 'radio', combination, 2);
 
-      const selectedAttribute = await foHummingbirdProductPage.getSelectedAttribute(page, 2, 'radio');
+      const selectedAttribute = await foDefaultProductPage.getSelectedAttribute(page, 2, 'radio');
       expect(selectedAttribute).to.contains('Carton');
     });
   });
@@ -307,7 +310,7 @@ describe('FO - Product page - Product page : Change combination', async () => {
     it('should close the FO tab', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closeFO', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);

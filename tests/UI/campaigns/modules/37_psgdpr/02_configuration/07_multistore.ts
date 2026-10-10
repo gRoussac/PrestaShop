@@ -2,6 +2,11 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultContactUsPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
@@ -13,8 +18,6 @@ import {
   type BrowserContext,
   dataModules,
   FakerShop,
-  foHummingbirdContactUsPage,
-  foHummingbirdHomePage,
   modPsGdprBoMain,
   modPsGdprBoTabDataConsent,
   type Page,
@@ -108,7 +111,7 @@ describe('BO - Modules - GDPR : Multistore', async () => {
       // View my shop and get the new tab
       page = await modPsGdprBoTabDataConsent.viewMyShop(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -116,21 +119,21 @@ describe('BO - Modules - GDPR : Multistore', async () => {
     it('should check on Contact Form the GDPR Label', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkContactFormGDPRLabel', baseContext);
 
-      await foHummingbirdHomePage.goToFooterLink(page, 'Contact us');
+      await foDefaultHomePage.goToFooterLink(page, 'Contact us');
 
-      const pageTitle = await foHummingbirdContactUsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdContactUsPage.pageTitle);
+      const pageTitle = await foDefaultContactUsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultContactUsPage.pageTitle);
 
       this.skip();
 
-      const hasGDPRLabel = await foHummingbirdContactUsPage.hasGDPRLabel(page);
+      const hasGDPRLabel = await foDefaultContactUsPage.hasGDPRLabel(page);
       expect(hasGDPRLabel).to.equal(false);
     });
 
     it('should go to \'Shop parameters > General\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToGeneralPage', baseContext);
 
-      page = await foHummingbirdContactUsPage.changePage(browserContext, 0);
+      page = await foDefaultContactUsPage.changePage(browserContext, 0);
       await boDashboardPage.goToSubMenu(
         page,
         boDashboardPage.shopParametersParentLink,

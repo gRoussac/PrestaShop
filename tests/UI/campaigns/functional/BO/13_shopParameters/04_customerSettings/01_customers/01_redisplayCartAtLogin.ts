@@ -2,15 +2,18 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultModalBlockCartPage,
+  foDefaultModalQuickViewPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCustomerSettingsPage,
   boDashboardPage,
   boLoginPage,
   type BrowserContext,
   dataCustomers,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdModalQuickViewPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -90,9 +93,9 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable re-display c
 
       // Go to FO
       page = await boCustomerSettingsPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -100,10 +103,10 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable re-display c
       await testContext.addContextItem(this, 'testIdentifier', `loginFO_${index}`, baseContext);
 
       // Login FO
-      await foHummingbirdHomePage.goToLoginPage(page);
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultHomePage.goToLoginPage(page);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const connected = await foHummingbirdHomePage.isCustomerConnected(page);
+      const connected = await foDefaultHomePage.isCustomerConnected(page);
       expect(connected, 'Customer is not connected in FO').to.eq(true);
     });
 
@@ -111,18 +114,18 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable re-display c
       await testContext.addContextItem(this, 'testIdentifier', `quickViewFirstProduct_${index}`, baseContext);
 
       // Add first product to the cart
-      await foHummingbirdHomePage.goToHomePage(page);
-      await foHummingbirdHomePage.quickViewProduct(page, 1);
+      await foDefaultHomePage.goToHomePage(page);
+      await foDefaultHomePage.quickViewProduct(page, 1);
     });
 
     it('should add the first product to the cart', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `addProductToTheCart_${index}`, baseContext);
 
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
       // Check number of product in cart
-      const notificationsNumber = await foHummingbirdHomePage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultHomePage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.be.above(0);
     });
 
@@ -130,9 +133,9 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable re-display c
       await testContext.addContextItem(this, 'testIdentifier', `logoutFO_${index}`, baseContext);
 
       // Logout from FO
-      await foHummingbirdHomePage.logout(page);
+      await foDefaultHomePage.logout(page);
 
-      const connected = await foHummingbirdHomePage.isCustomerConnected(page);
+      const connected = await foDefaultHomePage.isCustomerConnected(page);
       expect(connected, 'Customer is connected in FO').to.eq(false);
     });
 
@@ -140,10 +143,10 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable re-display c
       await testContext.addContextItem(this, 'testIdentifier', `loginFO_2_${index}`, baseContext);
 
       // Login FO
-      await foHummingbirdHomePage.goToLoginPage(page);
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultHomePage.goToLoginPage(page);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const connected = await foHummingbirdHomePage.isCustomerConnected(page);
+      const connected = await foDefaultHomePage.isCustomerConnected(page);
       expect(connected, 'Customer is not connected in FO').to.eq(true);
     });
 
@@ -151,12 +154,12 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable re-display c
       await testContext.addContextItem(this, 'testIdentifier', `checkNotificationNumber_${index}`, baseContext);
 
       // Check number of products in cart
-      const notificationsNumber = await foHummingbirdHomePage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultHomePage.getCartNotificationsNumber(page);
 
       if (test.args.enable) {
         expect(notificationsNumber).to.be.above(0);
         // Logout from FO
-        await foHummingbirdHomePage.logout(page);
+        await foDefaultHomePage.logout(page);
       } else {
         expect(notificationsNumber).to.be.equal(0);
       }
@@ -167,7 +170,7 @@ describe('BO - Shop Parameters - Customer Settings : Enable/Disable re-display c
         await testContext.addContextItem(this, 'testIdentifier', `goBackToBO_${index}`, baseContext);
 
         // Go back to BO
-        page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+        page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
         const pageTitle = await boCustomerSettingsPage.getPageTitle(page);
         expect(pageTitle).to.contains(boCustomerSettingsPage.pageTitle);

@@ -2,6 +2,14 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCreateAccountPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyGDPRPersonalDataPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boModuleManagerPage,
@@ -9,11 +17,6 @@ import {
   dataCustomers,
   dataModules,
   FakerCustomer,
-  foHummingbirdCreateAccountPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyGDPRPersonalDataPage,
   modPsGdprBoMain,
   modPsGdprBoTabCustomerActivity,
   type Page,
@@ -99,7 +102,7 @@ describe('BO - Modules - GDPR: Customer activity tracking', async () => {
       // View my shop and get the new tab
       page = await modPsGdprBoTabCustomerActivity.viewMyShop(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.equal(true);
     });
 
@@ -107,43 +110,43 @@ describe('BO - Modules - GDPR: Customer activity tracking', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnSignInLink', baseContext);
 
       // Check sign in link
-      await foHummingbirdHomePage.clickOnHeaderLink(page, 'Sign in');
+      await foDefaultHomePage.clickOnHeaderLink(page, 'Sign in');
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultLoginPage.pageTitle);
     });
 
     it('should login', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'foLogin', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdHomePage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultHomePage.isCustomerConnected(page);
       expect(isCustomerConnected).to.eq(true);
     });
 
     it('should go to account page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAccountPage', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
 
-      const pageTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdMyAccountPage.pageTitle);
+      const pageTitle = await foDefaultMyAccountPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultMyAccountPage.pageTitle);
     });
 
     it('should go to \'GDPR - Personal data\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToGDPRPage1', baseContext);
 
-      await foHummingbirdMyAccountPage.goToMyGDPRPersonalDataPage(page);
+      await foDefaultMyAccountPage.goToMyGDPRPersonalDataPage(page);
 
-      const pageTitle = await foHummingbirdMyGDPRPersonalDataPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdMyGDPRPersonalDataPage.pageTitle);
+      const pageTitle = await foDefaultMyGDPRPersonalDataPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultMyGDPRPersonalDataPage.pageTitle);
     });
 
     it('should click on \'Get my data to CSV file\'', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnGetMyDataToCSV', baseContext);
 
-      const filePath = await foHummingbirdMyGDPRPersonalDataPage.exportDataToCSV(page);
+      const filePath = await foDefaultMyGDPRPersonalDataPage.exportDataToCSV(page);
 
       const found = await utilsFile.doesFileExist(filePath);
       expect(found).to.equal(true);
@@ -155,7 +158,7 @@ describe('BO - Modules - GDPR: Customer activity tracking', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnGetMyDataToPDF', baseContext);
 
       await page.waitForTimeout(3000);
-      const filePath = await foHummingbirdMyGDPRPersonalDataPage.exportDataToPDF(page);
+      const filePath = await foDefaultMyGDPRPersonalDataPage.exportDataToPDF(page);
 
       const found = await utilsFile.doesFileExist(filePath);
       expect(found).to.equal(true);
@@ -164,16 +167,16 @@ describe('BO - Modules - GDPR: Customer activity tracking', async () => {
     it('should logout', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'foLogout', baseContext);
 
-      await foHummingbirdMyGDPRPersonalDataPage.logout(page);
+      await foDefaultMyGDPRPersonalDataPage.logout(page);
 
-      const isCustomerConnected = await foHummingbirdHomePage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultHomePage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is connected').to.eq(false);
     });
 
     it('should check the Customer Activity list', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCustomerActivityListAfterRequest', baseContext);
 
-      page = await foHummingbirdHomePage.changePage(browserContext, 0);
+      page = await foDefaultHomePage.changePage(browserContext, 0);
       await modPsGdprBoTabCustomerActivity.reloadPage(page);
 
       const numRows = await modPsGdprBoTabCustomerActivity.getNumberOfElementInGrid(page);
@@ -195,35 +198,35 @@ describe('BO - Modules - GDPR: Customer activity tracking', async () => {
     it('should click on the \'Sign in\' link', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnSignInLinkForRegister', baseContext);
 
-      page = await foHummingbirdHomePage.changePage(browserContext, 1);
-      await foHummingbirdHomePage.clickOnHeaderLink(page, 'Sign in');
+      page = await foDefaultHomePage.changePage(browserContext, 1);
+      await foDefaultHomePage.clickOnHeaderLink(page, 'Sign in');
 
-      const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdLoginPage.pageTitle);
+      const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultLoginPage.pageTitle);
     });
 
     it('should go to create account page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToCreateAccountPage', baseContext);
 
-      await foHummingbirdLoginPage.goToCreateAccountPage(page);
+      await foDefaultLoginPage.goToCreateAccountPage(page);
 
-      const pageHeaderTitle = await foHummingbirdCreateAccountPage.getHeaderTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdCreateAccountPage.formTitle);
+      const pageHeaderTitle = await foDefaultCreateAccountPage.getHeaderTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultCreateAccountPage.formTitle);
     });
 
     it('should create new account', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'createNewAccount', baseContext);
 
-      await foHummingbirdCreateAccountPage.createAccount(page, customerData);
+      await foDefaultCreateAccountPage.createAccount(page, customerData);
 
-      const isCustomerConnected = await foHummingbirdHomePage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultHomePage.isCustomerConnected(page);
       expect(isCustomerConnected).to.eq(true);
     });
 
     it('should check the Customer Activity list', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCustomerActivityListAfterRegistration', baseContext);
 
-      page = await foHummingbirdHomePage.changePage(browserContext, 0);
+      page = await foDefaultHomePage.changePage(browserContext, 0);
       await modPsGdprBoTabCustomerActivity.reloadPage(page);
 
       const numRows = await modPsGdprBoTabCustomerActivity.getNumberOfElementInGrid(page);

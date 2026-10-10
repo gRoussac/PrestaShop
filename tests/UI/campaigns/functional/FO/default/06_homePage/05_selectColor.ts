@@ -3,10 +3,13 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataProducts,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -31,25 +34,25 @@ describe('FO - Home Page : Select color', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToShopFO', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should select the color White for the first product in list', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'selectColor1', baseContext);
 
-      await foHummingbirdHomePage.selectProductColor(page, 1, 'White');
+      await foDefaultHomePage.selectProductColor(page, 1, 'White');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(dataProducts.demo_1.name);
     });
 
     it('should check that the displayed product is white', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDisplayedProduct', baseContext);
 
-      const pageURL = await foHummingbirdProductPage.getCurrentURL(page);
+      const pageURL = await foDefaultProductPage.getCurrentURL(page);
       expect(pageURL).to.contains('color-white');
       // @todo : https://github.com/PrestaShop/PrestaShop/issues/35481
       // .and.to.contains('size-m');
@@ -58,25 +61,25 @@ describe('FO - Home Page : Select color', async () => {
     it('should go to Home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToHomePage', baseContext);
 
-      await foHummingbirdProductPage.goToHomePage(page);
+      await foDefaultProductPage.goToHomePage(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
     it('should select the color Black for the first product in list', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'selectColor2', baseContext);
 
-      await foHummingbirdHomePage.selectProductColor(page, 1, 'Black');
+      await foDefaultHomePage.selectProductColor(page, 1, 'Black');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(dataProducts.demo_1.name);
     });
 
     it('should check that the displayed product is white', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkDisplayedProduct2', baseContext);
 
-      const pageURL = await foHummingbirdProductPage.getCurrentURL(page);
+      const pageURL = await foDefaultProductPage.getCurrentURL(page);
       expect(pageURL).to.contains('color-black');
       // @todo : https://github.com/PrestaShop/PrestaShop/issues/35481
       // .and.to.contains('size-m');

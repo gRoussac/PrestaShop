@@ -3,9 +3,12 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
-  foHummingbirdHomePage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -37,42 +40,42 @@ describe('FO - Search Page : Search no result', async () => {
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFO', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should search a string with less than 3 characters', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchSmallString', baseContext);
 
-      const hasSearchResult = await foHummingbirdHomePage.hasAutocompleteSearchResult(page, 'te');
+      const hasSearchResult = await foDefaultHomePage.hasAutocompleteSearchResult(page, 'te');
       expect(hasSearchResult, 'There are results in autocomplete search').to.eq(false);
 
-      await foHummingbirdHomePage.searchProduct(page, 'te');
+      await foDefaultHomePage.searchProduct(page, 'te');
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-      const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+      const hasResults = await foDefaultSearchResultsPage.hasResults(page);
       expect(hasResults, 'There are results!').to.equal(false);
 
-      const searchInputValue = await foHummingbirdSearchResultsPage.getSearchValue(page);
+      const searchInputValue = await foDefaultSearchResultsPage.getSearchValue(page);
       expect(searchInputValue, 'A search value exists').to.equal('te');
     });
 
     it('should search an empty string', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchEmptyString', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, '');
+      await foDefaultHomePage.searchProduct(page, '');
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-      const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+      const hasResults = await foDefaultSearchResultsPage.hasResults(page);
       expect(hasResults, 'There are results!').to.equal(false);
 
-      const searchInputValue = await foHummingbirdSearchResultsPage.getSearchValue(page);
+      const searchInputValue = await foDefaultSearchResultsPage.getSearchValue(page);
       expect(searchInputValue, 'A search value exists').to.equal('');
     });
   });

@@ -3,6 +3,12 @@ import {deleteProductTest} from '@commonTests/BO/catalog/product';
 import {expect} from 'chai';
 
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
@@ -10,9 +16,6 @@ import {
   boProductsCreateTabOptionsPage,
   type BrowserContext,
   FakerProduct,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -142,34 +145,34 @@ describe('FO - Product page - Product page : Display tag products (New, On sale,
 
       // Click on preview button
       page = await boProductsCreatePage.viewMyShop(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page is not displayed').to.eq(true);
     });
 
     it('should go to all products page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToAllProductsPage', baseContext);
 
-      await foHummingbirdHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
+      await foDefaultHomePage.goToAllProductsPage(page, 'ps-featuredproducts');
 
-      const isCategoryPageVisible = await foHummingbirdCategoryPage.isCategoryPage(page);
+      const isCategoryPageVisible = await foDefaultCategoryPage.isCategoryPage(page);
       expect(isCategoryPageVisible, 'Home category page was not opened').to.eq(true);
     });
 
     it('should go to the second product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToSecondProductsPage', baseContext);
 
-      await foHummingbirdCategoryPage.goToNextPage(page);
+      await foDefaultCategoryPage.goToNextPage(page);
 
-      productsNumber = await foHummingbirdCategoryPage.getProductsNumber(page);
+      productsNumber = await foDefaultCategoryPage.getProductsNumber(page);
       expect(productsNumber).to.not.equal(19);
     });
 
     it('should check the tag \'New, pack, out-of-stock and Online only\' for the created product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkTagsInAllProductPage', baseContext);
 
-      const flagText = await foHummingbirdCategoryPage.getProductTag(page, productsNumber - 12);
+      const flagText = await foDefaultCategoryPage.getProductTag(page, productsNumber - 12);
       expect(flagText).to.contains('Online only')
         .and.to.contain('New')
         .and.to.contain('Pack')
@@ -179,16 +182,16 @@ describe('FO - Product page - Product page : Display tag products (New, On sale,
     it('should go to the created product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToCreatedProductPage', baseContext);
 
-      await foHummingbirdCategoryPage.goToProductPage(page, productsNumber - 12);
+      await foDefaultCategoryPage.goToProductPage(page, productsNumber - 12);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check the tag \'New, pack, out-of-stock and Online only\'', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkOnSaleFlag', baseContext);
 
-      const flagText = await foHummingbirdProductPage.getProductTag(page);
+      const flagText = await foDefaultProductPage.getProductTag(page);
       expect(flagText).to.contains('Online only')
         .and.to.contain('New')
         .and.to.contain('Pack')

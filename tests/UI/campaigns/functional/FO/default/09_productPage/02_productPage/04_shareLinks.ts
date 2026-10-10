@@ -3,11 +3,14 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultProductPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataProducts,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -32,27 +35,27 @@ describe('FO - Product page - Product page : Share links', async () => {
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.equal(true);
     });
 
     it(`should search for the product '${dataProducts.demo_12.name}'`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchDemo12', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_12.name);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_12.name);
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
     });
 
     it('should go to the product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToProductPageDemo12', baseContext);
 
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+      await foDefaultSearchResultsPage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(dataProducts.demo_12.name);
     });
 
@@ -64,21 +67,21 @@ describe('FO - Product page - Product page : Share links', async () => {
       it(`should click on the ${args.socialNetwork} link and check it`, async function () {
         await testContext.addContextItem(this, 'testIdentifier', `click${args.socialNetwork}Link`, baseContext);
 
-        const socialLink = await foHummingbirdProductPage.getSocialSharingLink(page, args.socialNetwork);
+        const socialLink = await foDefaultProductPage.getSocialSharingLink(page, args.socialNetwork);
         expect(socialLink).to.contains(args.link);
 
-        page = await foHummingbirdProductPage.clickOnSocialSharingLink(page, args.socialNetwork);
+        page = await foDefaultProductPage.clickOnSocialSharingLink(page, args.socialNetwork);
 
-        const link = await foHummingbirdProductPage.getCurrentURL(page);
+        const link = await foDefaultProductPage.getCurrentURL(page);
         expect(link).to.contains(args.url);
       });
 
       it('should close the page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `close${args.link}Page`, baseContext);
 
-        page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+        page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
-        const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+        const pageTitle = await foDefaultProductPage.getPageTitle(page);
         expect(pageTitle).to.contains(dataProducts.demo_12.name);
       });
     });

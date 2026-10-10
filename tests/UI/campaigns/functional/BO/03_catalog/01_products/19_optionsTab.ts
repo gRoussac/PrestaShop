@@ -2,6 +2,14 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultCategoryPage,
+  foDefaultModalQuickViewPage,
+  foDefaultProductPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boProductsPage,
@@ -10,11 +18,6 @@ import {
   boProductsCreateTabOptionsPage,
   type BrowserContext,
   FakerProduct,
-  foHummingbirdHomePage,
-  foHummingbirdCategoryPage,
-  foHummingbirdModalQuickViewPage,
-  foHummingbirdProductPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -142,38 +145,38 @@ describe('BO - Catalog - Products : Options tab', async () => {
 
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should click on Clothes category', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickHomeCategory', baseContext);
 
-      await foHummingbirdProductPage.clickOnBreadCrumbLink(page, 'clothes');
+      await foDefaultProductPage.clickOnBreadCrumbLink(page, 'clothes');
 
-      const pageTitle = await foHummingbirdCategoryPage.getHeaderPageName(page);
+      const pageTitle = await foDefaultCategoryPage.getHeaderPageName(page);
       expect(pageTitle).to.contains(dataCategories.clothes.name);
     });
 
     it('should check that the created product is visible in clothes category list', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkThatProductIsVisible', baseContext);
 
-      productsNumber = await foHummingbirdCategoryPage.getProductsNumber(page);
-      await foHummingbirdCategoryPage.quickViewProduct(page, productsNumber);
+      productsNumber = await foDefaultCategoryPage.getProductsNumber(page);
+      await foDefaultCategoryPage.quickViewProduct(page, productsNumber);
 
-      const isModalVisible = await foHummingbirdModalQuickViewPage.isQuickViewProductModalVisible(page);
+      const isModalVisible = await foDefaultModalQuickViewPage.isQuickViewProductModalVisible(page);
       expect(isModalVisible).to.eq(true);
 
-      const result = await foHummingbirdModalQuickViewPage.getProductDetailsFromQuickViewModal(page);
+      const result = await foDefaultModalQuickViewPage.getProductDetailsFromQuickViewModal(page);
       expect(result.name).to.equal(newProductData.name);
     });
 
     it('should close the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closePage', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -193,42 +196,42 @@ describe('BO - Catalog - Products : Options tab', async () => {
 
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should click on Clothes category', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickClothesCategory2', baseContext);
 
-      await foHummingbirdProductPage.clickOnBreadCrumbLink(page, 'clothes');
+      await foDefaultProductPage.clickOnBreadCrumbLink(page, 'clothes');
 
-      const pageTitle = await foHummingbirdCategoryPage.getHeaderPageName(page);
+      const pageTitle = await foDefaultCategoryPage.getHeaderPageName(page);
       expect(pageTitle).to.contains(dataCategories.clothes.name);
     });
 
     it('should check that the created product is not visible in clothes category list', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkThatProductIsNotVisible', baseContext);
 
-      const productsNumberInCategory = await foHummingbirdCategoryPage.getProductsNumber(page);
+      const productsNumberInCategory = await foDefaultCategoryPage.getProductsNumber(page);
       expect(productsNumberInCategory).to.eq(productsNumber - 1);
     });
 
     it('should search for the created product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct', baseContext);
 
-      await foHummingbirdCategoryPage.searchProduct(page, newProductData.name);
-      await foHummingbirdSearchResultsPage.goToProductPage(page, 1);
+      await foDefaultCategoryPage.searchProduct(page, newProductData.name);
+      await foDefaultSearchResultsPage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should close the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closePage2', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -248,44 +251,44 @@ describe('BO - Catalog - Products : Options tab', async () => {
 
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should click on Clothes category', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickClothesCategory3', baseContext);
 
-      await foHummingbirdProductPage.clickOnBreadCrumbLink(page, 'clothes');
+      await foDefaultProductPage.clickOnBreadCrumbLink(page, 'clothes');
 
-      const pageTitle = await foHummingbirdCategoryPage.getHeaderPageName(page);
+      const pageTitle = await foDefaultCategoryPage.getHeaderPageName(page);
       expect(pageTitle).to.contains(dataCategories.clothes.name);
     });
 
     it('should check that the created product is not visible in clothes category list', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkThatProductIsNotVisible2', baseContext);
 
-      const productsNumberInCategory = await foHummingbirdCategoryPage.getProductsNumber(page);
+      const productsNumberInCategory = await foDefaultCategoryPage.getProductsNumber(page);
       expect(productsNumberInCategory).to.eq(productsNumber - 1);
     });
 
     it('should search for the created product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'searchProduct2', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, newProductData.name);
+      await foDefaultHomePage.searchProduct(page, newProductData.name);
 
-      const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+      const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-      const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+      const hasResults = await foDefaultSearchResultsPage.hasResults(page);
       expect(hasResults, 'There are results!').to.eq(false);
     });
 
     it('should close the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closePage3', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -306,23 +309,23 @@ describe('BO - Catalog - Products : Options tab', async () => {
 
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check that the add to cart button is disabled', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'isAddToCartButtonEnabled', baseContext);
 
-      const isVisible = await foHummingbirdProductPage.isAddToCartButtonEnabled(page);
+      const isVisible = await foDefaultProductPage.isAddToCartButtonEnabled(page);
       expect(isVisible).eq(false);
     });
 
     it('should close the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closePage4', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -342,23 +345,23 @@ describe('BO - Catalog - Products : Options tab', async () => {
 
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check that the price is not displayed', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'isPriceDisplayed', baseContext);
 
-      const isVisible = await foHummingbirdProductPage.isPriceDisplayed(page);
+      const isVisible = await foDefaultProductPage.isPriceDisplayed(page);
       expect(isVisible).to.equal(false);
     });
 
     it('should close the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closePage5', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);
@@ -379,23 +382,23 @@ describe('BO - Catalog - Products : Options tab', async () => {
 
       // Click on preview button
       page = await boProductsCreatePage.previewProduct(page);
-      await foHummingbirdProductPage.changeLanguage(page, 'en');
+      await foDefaultProductPage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle).to.contains(newProductData.name);
     });
 
     it('should check the online tag', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkOnlineTag', baseContext);
 
-      const flagText = await foHummingbirdProductPage.getProductTag(page);
+      const flagText = await foDefaultProductPage.getProductTag(page);
       expect(flagText).to.contains('Online only');
     });
 
     it('should close the page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'closePage6', baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductsCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductsCreatePage.pageTitle);

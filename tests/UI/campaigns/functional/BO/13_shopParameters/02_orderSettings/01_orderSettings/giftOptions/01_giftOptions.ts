@@ -2,6 +2,15 @@
 import testContext from '@utils/testContext';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultCheckoutOrderConfirmationPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boOrdersPage,
@@ -12,12 +21,6 @@ import {
   dataCustomers,
   dataPaymentMethods,
   dataTaxes,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdCheckoutOrderConfirmationPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -147,36 +150,36 @@ describe('BO - Shop Parameters - Order Settings : Update gift options ', async (
           await testContext.addContextItem(this, 'testIdentifier', `viewMyShop${index}`, baseContext);
 
           page = await boOrderSettingsPage.viewMyShop(page);
-          await foHummingbirdHomePage.changeLanguage(page, 'en');
+          await foDefaultHomePage.changeLanguage(page, 'en');
 
-          const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+          const isHomePage = await foDefaultHomePage.isHomePage(page);
           expect(isHomePage).to.eq(true);
         });
 
         it('should go to login page', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goToLoginPageFO${index}`, baseContext);
 
-          await foHummingbirdHomePage.goToLoginPage(page);
+          await foDefaultHomePage.goToLoginPage(page);
 
-          const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-          expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+          const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+          expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
         });
 
         it('should sign in with default customer', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `sighInFO${index}`, baseContext);
 
-          await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+          await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-          const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+          const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
           expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
         });
 
         it('should go to home page', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goToHomePage${index}`, baseContext);
 
-          await foHummingbirdLoginPage.goToHomePage(page);
+          await foDefaultLoginPage.goToHomePage(page);
 
-          const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+          const isHomePage = await foDefaultHomePage.isHomePage(page);
           expect(isHomePage, 'Fail to open home page!').to.eq(true);
         });
 
@@ -184,26 +187,26 @@ describe('BO - Shop Parameters - Order Settings : Update gift options ', async (
           await testContext.addContextItem(this, 'testIdentifier', `addProductToCart${index}`, baseContext);
 
           // Go to the fourth product page
-          await foHummingbirdHomePage.goToProductPage(page, 4);
-          await foHummingbirdProductPage.addProductToTheCart(page);
+          await foDefaultHomePage.goToProductPage(page, 4);
+          await foDefaultProductPage.addProductToTheCart(page);
 
-          const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+          const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
           expect(notificationsNumber).to.be.equal(1);
         });
 
         it('should click on proceed to checkout and go to delivery step', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goToDeliveryStep${index}`, baseContext);
 
-          await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+          await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-          const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+          const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
           expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
         });
 
         it(`should check that gift checkbox visibility is '${test.args.isGiftWrapping}'`, async function () {
           await testContext.addContextItem(this, 'testIdentifier', `checkGiftVisibility${index}`, baseContext);
 
-          const isGiftCheckboxVisible = await foHummingbirdCheckoutPage.isGiftCheckboxVisible(page);
+          const isGiftCheckboxVisible = await foDefaultCheckoutPage.isGiftCheckboxVisible(page);
           expect(
             isGiftCheckboxVisible,
             'Gift checkbox has not the correct status',
@@ -214,13 +217,13 @@ describe('BO - Shop Parameters - Order Settings : Update gift options ', async (
           it('should check the gift checkbox and set a gift message', async function () {
             await testContext.addContextItem(this, 'testIdentifier', `setGiftMessage${index}`, baseContext);
 
-            await foHummingbirdCheckoutPage.setGiftCheckBox(page);
+            await foDefaultCheckoutPage.setGiftCheckBox(page);
 
-            const isVisible = await foHummingbirdCheckoutPage.isGiftMessageTextareaVisible(page);
+            const isVisible = await foDefaultCheckoutPage.isGiftMessageTextareaVisible(page);
             expect(isVisible, 'Gift message textarea is not visible!').to.eq(true);
 
             if (isVisible) {
-              await foHummingbirdCheckoutPage.setGiftMessage(page, 'This is your gift');
+              await foDefaultCheckoutPage.setGiftMessage(page, 'This is your gift');
             }
           });
         }
@@ -229,7 +232,7 @@ describe('BO - Shop Parameters - Order Settings : Update gift options ', async (
           it('should check gift price and tax', async function () {
             await testContext.addContextItem(this, 'testIdentifier', `checkGiftPrice${index}`, baseContext);
 
-            const giftPrice = await foHummingbirdCheckoutPage.getGiftPrice(page);
+            const giftPrice = await foDefaultCheckoutPage.getGiftPrice(page);
             expect(giftPrice, 'Gift price is incorrect').to.equal(
               test.args.giftWrappingPrice === 0
                 ? 'Free'
@@ -246,38 +249,38 @@ describe('BO - Shop Parameters - Order Settings : Update gift options ', async (
           async function () {
             await testContext.addContextItem(this, 'testIdentifier', `checkRecycleDVisibility${index}`, baseContext);
 
-            const isRecycledPackagingCheckboxVisible = await foHummingbirdCheckoutPage.isRecycledPackagingCheckboxVisible(page);
+            const isRecycledPackagingCheckboxVisible = await foDefaultCheckoutPage.isRecycledPackagingCheckboxVisible(page);
             expect(
               isRecycledPackagingCheckboxVisible,
               'Recycled packaging checkbox has not the correct status',
             ).to.equal(test.args.isRecycledPackaging);
 
             if (test.args.isRecycledPackaging) {
-              await foHummingbirdCheckoutPage.setRecycledPackagingCheckbox(page);
+              await foDefaultCheckoutPage.setRecycledPackagingCheckbox(page);
             }
           });
 
         it('should continue to payment', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goToPaymentStep${index}`, baseContext);
 
-          const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+          const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
           expect(isStepDeliveryComplete, 'Step Address is not complete').to.eq(true);
         });
 
         it('should choose payment method and confirm the order', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `confirmOrder${index}`, baseContext);
 
-          await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
+          await foDefaultCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
 
-          const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-          expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+          const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+          expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
         });
 
         if (test.args.giftWrappingPrice !== 0) {
           it('should check the gift wrapping price', async function () {
             await testContext.addContextItem(this, 'testIdentifier', `checkGiftWrappingPrice${index}`, baseContext);
 
-            const giftWrappingValue = await foHummingbirdCheckoutOrderConfirmationPage.getGiftWrappingValue(page);
+            const giftWrappingValue = await foDefaultCheckoutOrderConfirmationPage.getGiftWrappingValue(page);
             expect(giftWrappingValue).to.equal(
               test.args.giftWrappingPrice * (test.args.isGiftWrappingTax === 'None' ? 1 : (1 + test.args.taxValue)),
             );
@@ -287,10 +290,10 @@ describe('BO - Shop Parameters - Order Settings : Update gift options ', async (
         it('should sign out from FO', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `sighOutFOAfterCheck${index}`, baseContext);
 
-          await foHummingbirdCheckoutPage.goToHomePage(page);
-          await foHummingbirdHomePage.logout(page);
+          await foDefaultCheckoutPage.goToHomePage(page);
+          await foDefaultHomePage.logout(page);
 
-          const isCustomerConnected = await foHummingbirdHomePage.isCustomerConnected(page);
+          const isCustomerConnected = await foDefaultHomePage.isCustomerConnected(page);
           expect(isCustomerConnected, 'Customer should be disconnected').to.eq(false);
         });
       });
@@ -299,7 +302,7 @@ describe('BO - Shop Parameters - Order Settings : Update gift options ', async (
         it('should go back to BO', async function () {
           await testContext.addContextItem(this, 'testIdentifier', `goBackToBoAfterCheck${index}`, baseContext);
 
-          page = await foHummingbirdCheckoutPage.closePage(browserContext, page, 0);
+          page = await foDefaultCheckoutPage.closePage(browserContext, page, 0);
 
           const pageTitle = await boOrderSettingsPage.getPageTitle(page);
           expect(pageTitle).to.contains(boOrderSettingsPage.pageTitle);

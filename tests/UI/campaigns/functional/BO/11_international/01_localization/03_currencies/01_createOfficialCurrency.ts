@@ -3,6 +3,10 @@ import testContext from '@utils/testContext';
 
 // Import pages
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boCurrenciesPage,
   boCurrenciesCreatePage,
   boDashboardPage,
@@ -10,7 +14,6 @@ import {
   boLoginPage,
   type BrowserContext,
   dataCurrencies,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -132,7 +135,7 @@ describe('BO - International - Currencies : Create official currency and check i
       // View my shop and int pages
       page = await boCurrenciesPage.viewMyShop(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
@@ -140,16 +143,16 @@ describe('BO - International - Currencies : Create official currency and check i
       await testContext.addContextItem(this, 'testIdentifier', 'changeFoCurrency1', baseContext);
 
       // Check currency
-      await foHummingbirdHomePage.changeCurrency(page, dataCurrencies.mad.isoCode, dataCurrencies.mad.symbol);
+      await foDefaultHomePage.changeCurrency(page, dataCurrencies.mad.isoCode, dataCurrencies.mad.symbol);
 
-      const shopCurrency = await foHummingbirdHomePage.getDefaultCurrency(page);
+      const shopCurrency = await foDefaultHomePage.getDefaultCurrency(page);
       expect(shopCurrency).to.contain(dataCurrencies.mad.isoCode);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo1', baseContext);
 
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCurrenciesPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCurrenciesPage.pageTitle);
@@ -201,21 +204,21 @@ describe('BO - International - Currencies : Create official currency and check i
       // View my shop and init pages
       page = await boCurrenciesPage.viewMyShop(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should check that the currencies list is not visible', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCurrency2', baseContext);
 
-      const found = await foHummingbirdHomePage.isCurrencyDropdownExist(page);
+      const found = await foDefaultHomePage.isCurrencyDropdownExist(page);
       expect(found, 'Currencies list is visible').to.eq(false);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo2', baseContext);
 
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCurrenciesPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCurrenciesPage.pageTitle);

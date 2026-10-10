@@ -3,10 +3,13 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultCategoryPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataCategories,
-  foHummingbirdCategoryPage,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -37,40 +40,40 @@ describe('FO - Catalog : Filter Products by categories in Home page', async () =
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToShopFO', baseContext);
 
-      await foHummingbirdHomePage.goTo(page, global.FO.URL);
+      await foDefaultHomePage.goTo(page, global.FO.URL);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it('should check and get the products number', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkNumberOfProducts', baseContext);
 
-      await foHummingbirdHomePage.goToAllProductsPage(page);
+      await foDefaultHomePage.goToAllProductsPage(page);
 
-      allProductsNumber = await foHummingbirdCategoryPage.getProductsNumber(page);
+      allProductsNumber = await foDefaultCategoryPage.getProductsNumber(page);
       expect(allProductsNumber).to.be.above(0);
     });
 
     it('should filter products by the category \'Accessories\' and check result', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'FilterProductByCategory', baseContext);
 
-      await foHummingbirdCategoryPage.goToCategory(page, dataCategories.accessories.id);
+      await foDefaultCategoryPage.goToCategory(page, dataCategories.accessories.id);
 
-      const pageTitle = await foHummingbirdCategoryPage.getPageTitle(page);
+      const pageTitle = await foDefaultCategoryPage.getPageTitle(page);
       expect(pageTitle).to.equal(dataCategories.accessories.name);
 
-      const numberOfProducts = await foHummingbirdCategoryPage.getProductsNumber(page);
+      const numberOfProducts = await foDefaultCategoryPage.getProductsNumber(page);
       expect(numberOfProducts).to.be.below(allProductsNumber);
     });
 
     it('should filter products by the subcategory \'Stationery\' and check result', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'FilterProductBySubCategory', baseContext);
 
-      await foHummingbirdCategoryPage.reloadPage(page);
-      await foHummingbirdCategoryPage.goToSubCategory(page, dataCategories.accessories.id, dataCategories.stationery.id);
+      await foDefaultCategoryPage.reloadPage(page);
+      await foDefaultCategoryPage.goToSubCategory(page, dataCategories.accessories.id, dataCategories.stationery.id);
 
-      const numberOfProducts = await foHummingbirdCategoryPage.getProductsNumber(page);
+      const numberOfProducts = await foDefaultCategoryPage.getProductsNumber(page);
       expect(numberOfProducts).to.be.below(allProductsNumber);
     });
   });

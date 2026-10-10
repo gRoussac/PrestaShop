@@ -2,6 +2,16 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultCheckoutOrderConfirmationPage,
+  foDefaultHomePage,
+  foDefaultModalBlockCartPage,
+  foDefaultModalQuickViewPage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boOrdersPage,
@@ -10,13 +20,6 @@ import {
   dataCustomers,
   dataPaymentMethods,
   dataProducts,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdCheckoutOrderConfirmationPage,
-  foHummingbirdHomePage,
-  foHummingbirdModalBlockCartPage,
-  foHummingbirdModalQuickViewPage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -47,88 +50,88 @@ describe('FO - Order confirmation : List of ordered products', async () => {
     it('should open the shop page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'openFoShop', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.goToFo(page);
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.equal(true);
     });
 
     it('should go to home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToHomePage', baseContext);
 
-      await foHummingbirdHomePage.goToHomePage(page);
+      await foDefaultHomePage.goToHomePage(page);
 
-      const result = await foHummingbirdHomePage.isHomePage(page);
+      const result = await foDefaultHomePage.isHomePage(page);
       expect(result).to.eq(true);
     });
 
     it(`should add the product ${dataProducts.demo_3.name} to cart by quick view`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addDemo3ByQuickView', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_3.name);
-      await foHummingbirdSearchResultsPage.quickViewProduct(page, 1);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_3.name);
+      await foDefaultSearchResultsPage.quickViewProduct(page, 1);
 
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.closeBlockCartModal(page);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.closeBlockCartModal(page);
     });
 
     it(`should add the product ${dataProducts.demo_5.name} to cart by quick view`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addDemo5ByQuickView', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_5.name);
-      await foHummingbirdSearchResultsPage.quickViewProduct(page, 1);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_5.name);
+      await foDefaultSearchResultsPage.quickViewProduct(page, 1);
 
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.closeBlockCartModal(page);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.closeBlockCartModal(page);
     });
 
     it(`should add the product ${dataProducts.demo_12.name} to cart by quick view`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'addDemo12ByQuickView', baseContext);
 
-      await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_12.name);
-      await foHummingbirdSearchResultsPage.quickViewProduct(page, 1);
+      await foDefaultHomePage.searchProduct(page, dataProducts.demo_12.name);
+      await foDefaultSearchResultsPage.quickViewProduct(page, 1);
 
-      await foHummingbirdModalQuickViewPage.addToCartByQuickView(page);
-      await foHummingbirdModalBlockCartPage.proceedToCheckout(page);
+      await foDefaultModalQuickViewPage.addToCartByQuickView(page);
+      await foDefaultModalBlockCartPage.proceedToCheckout(page);
 
-      const pageTitle = await foHummingbirdCartPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCartPage.pageTitle);
+      const pageTitle = await foDefaultCartPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCartPage.pageTitle);
     });
 
     it(`should update the quantity for the product ${dataProducts.demo_5.name}`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'updateDemoQuantity', baseContext);
 
-      await foHummingbirdCartPage.editProductQuantity(page, 2, 2);
+      await foDefaultCartPage.editProductQuantity(page, 2, 2);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.equal(4);
     });
 
     it(`should update the quantity for the product ${dataProducts.demo_12.name}`, async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'updateDemo12Quantity', baseContext);
 
-      await foHummingbirdCartPage.editProductQuantity(page, 3, 2);
+      await foDefaultCartPage.editProductQuantity(page, 3, 2);
 
-      const notificationsNumber = await foHummingbirdCartPage.getCartNotificationsNumber(page);
+      const notificationsNumber = await foDefaultCartPage.getCartNotificationsNumber(page);
       expect(notificationsNumber).to.equal(5);
     });
 
     it('should validate shopping cart and go to checkout page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToCheckoutPage', baseContext);
 
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage).to.equal(true);
     });
 
     it('should sign in by default customer', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFO', baseContext);
 
-      await foHummingbirdCheckoutPage.clickOnSignIn(page);
+      await foDefaultCheckoutPage.clickOnSignIn(page);
 
-      const isCustomerConnected = await foHummingbirdCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
+      const isCustomerConnected = await foDefaultCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
       expect(isCustomerConnected, 'Customer is not connected!').to.equal(true);
     });
 
@@ -136,29 +139,29 @@ describe('FO - Order confirmation : List of ordered products', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'goToDeliveryStep', baseContext);
 
       // Address step - Go to delivery step
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete, 'Step Address is not complete').to.equal(true);
     });
 
     it('should select the first carrier and go to payment step', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkShippingPrice1', baseContext);
 
-      await foHummingbirdCheckoutPage.chooseShippingMethod(page, dataCarriers.myCarrier.id);
+      await foDefaultCheckoutPage.chooseShippingMethod(page, dataCarriers.myCarrier.id);
 
-      const isPaymentStep = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+      const isPaymentStep = await foDefaultCheckoutPage.goToPaymentStep(page);
       expect(isPaymentStep).to.eq(true);
     });
 
     it('should Pay by bank wire and confirm order', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'confirmOrder', baseContext);
 
-      await foHummingbirdCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
+      await foDefaultCheckoutPage.choosePaymentAndOrder(page, dataPaymentMethods.wirePayment.moduleName);
 
-      const pageTitle = await foHummingbirdCheckoutOrderConfirmationPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdCheckoutOrderConfirmationPage.pageTitle);
+      const pageTitle = await foDefaultCheckoutOrderConfirmationPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultCheckoutOrderConfirmationPage.pageTitle);
 
-      const cardTitle = await foHummingbirdCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
-      expect(cardTitle).to.contains(foHummingbirdCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
+      const cardTitle = await foDefaultCheckoutOrderConfirmationPage.getOrderConfirmationCardTitle(page);
+      expect(cardTitle).to.contains(foDefaultCheckoutOrderConfirmationPage.orderConfirmationCardTitle);
     });
   });
 
@@ -204,7 +207,7 @@ describe('FO - Order confirmation : List of ordered products', async () => {
       const totalToPay: string = (dataProducts.demo_3.finalPrice + (2 * dataProducts.demo_5.finalPrice)
         + (2 * dataProducts.demo_12.finalPrice) + dataCarriers.myCarrier.priceTTC).toFixed(2);
 
-      const paymentInformation = await foHummingbirdCheckoutOrderConfirmationPage.getPaymentInformation(page);
+      const paymentInformation = await foDefaultCheckoutOrderConfirmationPage.getPaymentInformation(page);
       expect(paymentInformation).to.contains('You have chosen payment by '
         + `${dataPaymentMethods.wirePayment.displayName.toLowerCase()}`)
         .and.to.contains(`Amount €${totalToPay}`)
@@ -214,7 +217,7 @@ describe('FO - Order confirmation : List of ordered products', async () => {
     it('should check the order details', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkOrderDetails', baseContext);
 
-      const orderDetails = await foHummingbirdCheckoutOrderConfirmationPage.getOrderDetails(page);
+      const orderDetails = await foDefaultCheckoutOrderConfirmationPage.getOrderDetails(page);
       expect(orderDetails).to.equal(`Order reference: ${orderReference} Payment method: `
         + `${dataPaymentMethods.wirePayment.displayName} Shipping method: `
         + `${dataCarriers.myCarrier.name} - ${dataCarriers.myCarrier.transitName}`);
@@ -223,14 +226,14 @@ describe('FO - Order confirmation : List of ordered products', async () => {
     it('should check the products number', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkProductsNumber', baseContext);
 
-      const productsNumber = await foHummingbirdCheckoutOrderConfirmationPage.getNumberOfProducts(page);
+      const productsNumber = await foDefaultCheckoutOrderConfirmationPage.getNumberOfProducts(page);
       expect(productsNumber).to.equal(3);
     });
 
     it('should check the details of the first product in list', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkFirstProductDetails', baseContext);
 
-      const result = await foHummingbirdCheckoutOrderConfirmationPage.getProductDetailsInRow(page, 1);
+      const result = await foDefaultCheckoutOrderConfirmationPage.getProductDetailsInRow(page, 1);
       await Promise.all([
         expect(result.image).to.contains(dataProducts.demo_3.coverImage),
         expect(result.details).to.contains(dataProducts.demo_3.name),
@@ -243,7 +246,7 @@ describe('FO - Order confirmation : List of ordered products', async () => {
     it('should check the details of the second product in list', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkSecondProductDetails', baseContext);
 
-      const result = await foHummingbirdCheckoutOrderConfirmationPage.getProductDetailsInRow(page, 2);
+      const result = await foDefaultCheckoutOrderConfirmationPage.getProductDetailsInRow(page, 2);
       await Promise.all([
         expect(result.image).to.contains(dataProducts.demo_5.coverImage),
         expect(result.details).to.contains(dataProducts.demo_5.name),
@@ -256,7 +259,7 @@ describe('FO - Order confirmation : List of ordered products', async () => {
     it('should check the details of the third product in list', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkThirdProductDetails', baseContext);
 
-      const result = await foHummingbirdCheckoutOrderConfirmationPage.getProductDetailsInRow(page, 3);
+      const result = await foDefaultCheckoutOrderConfirmationPage.getProductDetailsInRow(page, 3);
       await Promise.all([
         expect(result.image).to.contains(dataProducts.demo_12.coverImage),
         expect(result.details).to.contains(dataProducts.demo_12.name),

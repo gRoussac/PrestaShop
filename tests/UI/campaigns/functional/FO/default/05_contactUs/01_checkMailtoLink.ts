@@ -3,10 +3,13 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultContactUsPage,
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataEmployees,
-  foHummingbirdContactUsPage,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -36,25 +39,25 @@ describe('FO - Contact us : Check mail link on contact us page', async () => {
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFO', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to \'Contact us\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToContactUsPage', baseContext);
 
-      await foHummingbirdHomePage.clickOnHeaderLink(page, 'Contact us');
+      await foDefaultHomePage.clickOnHeaderLink(page, 'Contact us');
 
-      const pageTitle = await foHummingbirdContactUsPage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdContactUsPage.pageTitle);
+      const pageTitle = await foDefaultContactUsPage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultContactUsPage.pageTitle);
     });
 
     it('should check email us link', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkEmailUsLink', baseContext);
 
-      const emailUsLinkHref = await foHummingbirdContactUsPage.getEmailUsLink(page);
+      const emailUsLinkHref = await foDefaultContactUsPage.getEmailUsLink(page);
       expect(emailUsLinkHref).to.equal(`mailto:${dataEmployees.defaultEmployee.email}`);
     });
   });

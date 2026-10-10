@@ -2,6 +2,11 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCartRulesPage,
   boCatalogPriceRulesPage,
   boCatalogPriceRulesCreatePage,
@@ -11,8 +16,6 @@ import {
   type BrowserContext,
   dataProducts,
   FakerCatalogPriceRule,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -138,35 +141,35 @@ describe('BO - Shop Parameters - Product Settings : Enable/Disable display disco
       await testContext.addContextItem(this, 'testIdentifier', `viewMyShop${index}`, baseContext);
 
       page = await boProductSettingsPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage, 'Home page was not opened').to.eq(true);
     });
 
     it('should go to first product page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `goToFirstProductPage${index}`, baseContext);
 
-      await foHummingbirdHomePage.goToProductPage(page, 1);
+      await foDefaultHomePage.goToProductPage(page, 1);
 
-      const pageTitle = await foHummingbirdProductPage.getPageTitle(page);
+      const pageTitle = await foDefaultProductPage.getPageTitle(page);
       expect(pageTitle.toUpperCase()).to.contains(dataProducts.demo_1.name.toUpperCase());
     });
 
     it('should check the existence of the unit value', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `checkUnitValue${index}`, baseContext);
 
-      const columnTitle = await foHummingbirdProductPage.getDiscountColumnTitle(page);
+      const columnTitle = await foDefaultProductPage.getDiscountColumnTitle(page);
       expect(columnTitle).to.equal(test.args.textColumnToCheck);
 
-      const columnValue = await foHummingbirdProductPage.getDiscountValue(page);
+      const columnValue = await foDefaultProductPage.getDiscountValue(page);
       expect(columnValue).to.equal(test.args.valueToCheck);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', `goBackToBo${index}`, baseContext);
 
-      page = await foHummingbirdProductPage.closePage(browserContext, page, 0);
+      page = await foDefaultProductPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boProductSettingsPage.getPageTitle(page);
       expect(pageTitle).to.contains(boProductSettingsPage.pageTitle);

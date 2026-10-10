@@ -2,6 +2,12 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCmsPage,
+  foDefaultHomePage,
+  foDefaultSitemapPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCMSPageCategoriesCreatePage,
   boCMSPagesPage,
   boCMSPagesCreatePage,
@@ -10,9 +16,6 @@ import {
   type BrowserContext,
   FakerCMSCategory,
   FakerCMSPage,
-  foHummingbirdCmsPage,
-  foHummingbirdHomePage,
-  foHummingbirdSitemapPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -140,32 +143,32 @@ describe('BO - Design - Pages : CRUD category and page', async () => {
 
       page = await boCMSPagesPage.viewMyShop(page);
 
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdHomePage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdHomePage.pageTitle);
+      const pageTitle = await foDefaultHomePage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultHomePage.pageTitle);
     });
 
     it('should go to \'Sitemap\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToSiteMapPage1', baseContext);
 
-      await foHummingbirdHomePage.goToFooterLink(page, 'Sitemap');
+      await foDefaultHomePage.goToFooterLink(page, 'Sitemap');
 
-      const pageTitle = await foHummingbirdSitemapPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSitemapPage.pageTitle);
+      const pageTitle = await foDefaultSitemapPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSitemapPage.pageTitle);
     });
 
     it('should check the created category', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkCreatedCategoryFO1', baseContext);
 
-      const pageCategoryName = await foHummingbirdSitemapPage.getPageCategoryName(page, categoryID);
+      const pageCategoryName = await foDefaultSitemapPage.getPageCategoryName(page, categoryID);
       expect(pageCategoryName).to.contains(createCategoryData.name);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO', baseContext);
 
-      page = await foHummingbirdSitemapPage.closePage(browserContext, page, 0);
+      page = await foDefaultSitemapPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCMSPagesPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCMSPagesPage.pageTitle);
@@ -229,20 +232,20 @@ describe('BO - Design - Pages : CRUD category and page', async () => {
 
       page = await boCMSPagesCreatePage.previewPage(page);
 
-      const pageTitle = await foHummingbirdCmsPage.getTextContent(page, foHummingbirdCmsPage.pageTitle);
+      const pageTitle = await foDefaultCmsPage.getTextContent(page, foDefaultCmsPage.pageTitle);
       expect(pageTitle).to.contains(createPageData.title);
 
-      const metaTitle = await foHummingbirdCmsPage.getPageTitle(page);
+      const metaTitle = await foDefaultCmsPage.getPageTitle(page);
       expect(metaTitle).to.equal(createPageData.metaTitle);
 
-      const pageContent = await foHummingbirdCmsPage.getTextContent(page, foHummingbirdCmsPage.pageContent);
+      const pageContent = await foDefaultCmsPage.getTextContent(page, foDefaultCmsPage.pageContent);
       expect(pageContent).to.include(createPageData.content);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO2', baseContext);
 
-      page = await foHummingbirdCmsPage.closePage(browserContext, page, 0);
+      page = await foDefaultCmsPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCMSPagesCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boCMSPagesCreatePage.editPageTitle(createPageData.title));
@@ -312,32 +315,32 @@ describe('BO - Design - Pages : CRUD category and page', async () => {
       await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop2', baseContext);
 
       page = await boCMSPagesPage.viewMyShop(page);
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdHomePage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdHomePage.pageTitle);
+      const pageTitle = await foDefaultHomePage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultHomePage.pageTitle);
     });
 
     it('should go to \'Sitemap\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToSiteMapPage2', baseContext);
 
-      await foHummingbirdHomePage.goToFooterLink(page, 'Sitemap');
+      await foDefaultHomePage.goToFooterLink(page, 'Sitemap');
 
-      const pageTitle = await foHummingbirdSitemapPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdSitemapPage.pageTitle);
+      const pageTitle = await foDefaultSitemapPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultSitemapPage.pageTitle);
     });
 
     it('should check the updated category', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'checkUpdatedCategoryFO2', baseContext);
 
-      const pageCategoryName = await foHummingbirdSitemapPage.getPageCategoryName(page, categoryID);
+      const pageCategoryName = await foDefaultSitemapPage.getPageCategoryName(page, categoryID);
       expect(pageCategoryName).to.contains(editCategoryData.name);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO3', baseContext);
 
-      page = await foHummingbirdSitemapPage.closePage(browserContext, page, 0);
+      page = await foDefaultSitemapPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCMSPagesPage.getPageTitle(page);
       expect(pageTitle).to.contains(boCMSPagesPage.pageTitle);
@@ -403,14 +406,14 @@ describe('BO - Design - Pages : CRUD category and page', async () => {
 
       page = await boCMSPagesCreatePage.previewPage(page);
 
-      const pageTitle = await foHummingbirdCmsPage.getTextContent(page, foHummingbirdCmsPage.pageTitle);
-      expect(pageTitle).to.include(foHummingbirdCmsPage.pageNotFound);
+      const pageTitle = await foDefaultCmsPage.getTextContent(page, foDefaultCmsPage.pageTitle);
+      expect(pageTitle).to.include(foDefaultCmsPage.pageNotFound);
     });
 
     it('should go back to BO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goBackToBO4', baseContext);
 
-      page = await foHummingbirdCmsPage.closePage(browserContext, page, 0);
+      page = await foDefaultCmsPage.closePage(browserContext, page, 0);
 
       const pageTitle = await boCMSPagesCreatePage.getPageTitle(page);
       expect(pageTitle).to.contains(boCMSPagesCreatePage.editPageTitle(editPageData.title));

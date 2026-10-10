@@ -2,16 +2,19 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultCartPage,
+  foDefaultCheckoutPage,
+  foDefaultHomePage,
+  foDefaultProductPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boPaymentPreferencesPage,
   type BrowserContext,
   dataCountries,
   dataCustomers,
-  foHummingbirdCartPage,
-  foHummingbirdCheckoutPage,
-  foHummingbirdHomePage,
-  foHummingbirdProductPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -79,10 +82,10 @@ describe('BO - Payment - Preferences : Configure country restrictions', async ()
       // Click on view my shop
       page = await boPaymentPreferencesPage.viewMyShop(page);
       // Change language in FO
-      await foHummingbirdHomePage.changeLanguage(page, 'en');
+      await foDefaultHomePage.changeLanguage(page, 'en');
 
-      const pageTitle = await foHummingbirdHomePage.getPageTitle(page);
-      expect(pageTitle).to.contains(foHummingbirdHomePage.pageTitle);
+      const pageTitle = await foDefaultHomePage.getPageTitle(page);
+      expect(pageTitle).to.contains(foDefaultHomePage.pageTitle);
     });
 
     it('should add the first product to the cart and checkout', async function () {
@@ -94,13 +97,13 @@ describe('BO - Payment - Preferences : Configure country restrictions', async ()
       );
 
       // Go to the first product page
-      await foHummingbirdHomePage.goToProductPage(page, 1);
+      await foDefaultHomePage.goToProductPage(page, 1);
       // Add the product to the cart
-      await foHummingbirdProductPage.addProductToTheCart(page);
+      await foDefaultProductPage.addProductToTheCart(page);
       // Proceed to checkout the shopping cart
-      await foHummingbirdCartPage.clickOnProceedToCheckout(page);
+      await foDefaultCartPage.clickOnProceedToCheckout(page);
 
-      const isCheckoutPage = await foHummingbirdCheckoutPage.isCheckoutPage(page);
+      const isCheckoutPage = await foDefaultCheckoutPage.isCheckoutPage(page);
       expect(isCheckoutPage).to.eq(true);
     });
 
@@ -110,9 +113,9 @@ describe('BO - Payment - Preferences : Configure country restrictions', async ()
 
       if (index === 0) {
         // Personal information step - Login
-        await foHummingbirdCheckoutPage.clickOnSignIn(page);
+        await foDefaultCheckoutPage.clickOnSignIn(page);
 
-        const isStepLoginComplete = await foHummingbirdCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
+        const isStepLoginComplete = await foDefaultCheckoutPage.customerLogin(page, dataCustomers.johnDoe);
         expect(isStepLoginComplete, 'Step Personal information is not complete').to.eq(true);
       }
     });
@@ -121,7 +124,7 @@ describe('BO - Payment - Preferences : Configure country restrictions', async ()
       await testContext.addContextItem(this, 'testIdentifier', `goToDeliveryStep${index}`, baseContext);
 
       // Address step - Go to delivery step
-      const isStepAddressComplete = await foHummingbirdCheckoutPage.goToDeliveryStep(page);
+      const isStepAddressComplete = await foDefaultCheckoutPage.goToDeliveryStep(page);
       expect(isStepAddressComplete, 'Step Address is not complete').to.eq(true);
     });
 
@@ -129,11 +132,11 @@ describe('BO - Payment - Preferences : Configure country restrictions', async ()
       await testContext.addContextItem(this, 'testIdentifier', `goToPaymentStep${index}`, baseContext);
 
       // Delivery step - Go to payment step
-      const isStepDeliveryComplete = await foHummingbirdCheckoutPage.goToPaymentStep(page);
+      const isStepDeliveryComplete = await foDefaultCheckoutPage.goToPaymentStep(page);
       expect(isStepDeliveryComplete, 'Step Address is not complete').to.eq(true);
 
       // Payment step - Check payment method
-      const isVisible = await foHummingbirdCheckoutPage.isPaymentMethodExist(page, test.args.paymentModule);
+      const isVisible = await foDefaultCheckoutPage.isPaymentMethodExist(page, test.args.paymentModule);
       expect(isVisible).to.be.equal(test.args.exist);
     });
 
@@ -141,7 +144,7 @@ describe('BO - Payment - Preferences : Configure country restrictions', async ()
       await testContext.addContextItem(this, 'testIdentifier', `goBackToBo${index}`, baseContext);
 
       // Close current tab
-      page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+      page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
       const pageTitle = await boPaymentPreferencesPage.getPageTitle(page);
       expect(pageTitle).to.contains(boPaymentPreferencesPage.pageTitle);

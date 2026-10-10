@@ -3,6 +3,10 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLanguagesPage,
   boLoginPage,
@@ -10,7 +14,6 @@ import {
   boTranslationsPage,
   type BrowserContext,
   dataLanguages,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -74,9 +77,9 @@ describe('BO - International - Translation : Add update a language', async () =>
     await testContext.addContextItem(this, 'testIdentifier', 'goToFOAndCheckLanguage', baseContext);
 
     page = await boTranslationsPage.viewMyShop(page);
-    await foHummingbirdHomePage.changeLanguage(page, dataLanguages.deutsch.isoCode);
+    await foDefaultHomePage.changeLanguage(page, dataLanguages.deutsch.isoCode);
 
-    const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+    const isHomePage = await foDefaultHomePage.isHomePage(page);
     expect(isHomePage).to.eq(true);
   });
 
@@ -84,7 +87,7 @@ describe('BO - International - Translation : Add update a language', async () =>
     await testContext.addContextItem(this, 'testIdentifier', 'goBackToBo', baseContext);
 
     // Close tab and init other page objects with new current tab
-    page = await foHummingbirdHomePage.closePage(browserContext, page, 0);
+    page = await foDefaultHomePage.closePage(browserContext, page, 0);
 
     const pageTitle = await boTranslationsPage.getPageTitle(page);
     expect(pageTitle).to.contains(boTranslationsPage.pageTitle);

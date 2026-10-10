@@ -3,9 +3,12 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+} from '@utils/foDefaultPages';
+
+import {
   boLoginPage,
   type BrowserContext,
-  foHummingbirdHomePage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -40,7 +43,7 @@ describe('BO - Login : Check links', async () => {
 
     await boLoginPage.clickOnBackToShopNameLink(page);
 
-    const result = await foHummingbirdHomePage.isHomePage(page);
+    const result = await foDefaultHomePage.isHomePage(page);
     expect(result).to.equal(true);
   });
 

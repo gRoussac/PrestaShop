@@ -2,6 +2,14 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultContactUsPage,
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyGDPRPersonalDataPage,
+} from '@utils/foDefaultPages';
+
+import {
   boCustomerServicePage,
   boDashboardPage,
   boLoginPage,
@@ -9,11 +17,6 @@ import {
   dataCustomers,
   dataOrders,
   FakerContactMessage,
-  foHummingbirdContactUsPage,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyGDPRPersonalDataPage,
   type Page,
   utilsFile,
   utilsPlaywright,
@@ -51,64 +54,64 @@ describe('FO - Account : Contact us on GDPR page', async () => {
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.eq(true);
     });
 
     it('should go to login page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToLoginFoPage', baseContext);
 
-      await foHummingbirdHomePage.goToLoginPage(page);
+      await foDefaultHomePage.goToLoginPage(page);
 
-      const pageHeaderTitle = await foHummingbirdLoginPage.getPageTitle(page);
-      expect(pageHeaderTitle).to.equal(foHummingbirdLoginPage.pageTitle);
+      const pageHeaderTitle = await foDefaultLoginPage.getPageTitle(page);
+      expect(pageHeaderTitle).to.equal(foDefaultLoginPage.pageTitle);
     });
 
     it('should sign in FO', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'signInFo', baseContext);
 
-      await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+      await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-      const isCustomerConnected = await foHummingbirdMyAccountPage.isCustomerConnected(page);
+      const isCustomerConnected = await foDefaultMyAccountPage.isCustomerConnected(page);
       expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
     });
 
     it('should go to my account page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToMyAccountPage', baseContext);
 
-      await foHummingbirdHomePage.goToMyAccountPage(page);
+      await foDefaultHomePage.goToMyAccountPage(page);
 
-      const pageTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdMyAccountPage.pageTitle);
+      const pageTitle = await foDefaultMyAccountPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultMyAccountPage.pageTitle);
     });
 
     it('should go to \'GDPR - Personal data\' page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToGDPRPage', baseContext);
 
-      await foHummingbirdMyAccountPage.goToMyGDPRPersonalDataPage(page);
+      await foDefaultMyAccountPage.goToMyGDPRPersonalDataPage(page);
 
-      const pageTitle = await foHummingbirdMyGDPRPersonalDataPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdMyGDPRPersonalDataPage.pageTitle);
+      const pageTitle = await foDefaultMyGDPRPersonalDataPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultMyGDPRPersonalDataPage.pageTitle);
     });
 
     it('should click on \'Contact page\' link from Rectification & Erasure requests block', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToContactUsPage', baseContext);
 
-      await foHummingbirdMyGDPRPersonalDataPage.goToContactUsPage(page);
+      await foDefaultMyGDPRPersonalDataPage.goToContactUsPage(page);
 
-      const pageTitle = await foHummingbirdContactUsPage.getPageTitle(page);
-      expect(pageTitle).to.equal(foHummingbirdContactUsPage.pageTitle);
+      const pageTitle = await foDefaultContactUsPage.getPageTitle(page);
+      expect(pageTitle).to.equal(foDefaultContactUsPage.pageTitle);
     });
 
     it('should send message to customer service', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'sendMessage', baseContext);
 
-      await foHummingbirdContactUsPage.sendMessage(page, contactUsData, `${contactUsData.fileName}.txt`);
+      await foDefaultContactUsPage.sendMessage(page, contactUsData, `${contactUsData.fileName}.txt`);
 
-      const validationMessage = await foHummingbirdContactUsPage.getAlertSuccess(page);
-      expect(validationMessage).to.equal(foHummingbirdContactUsPage.validationMessage);
+      const validationMessage = await foDefaultContactUsPage.getAlertSuccess(page);
+      expect(validationMessage).to.equal(foDefaultContactUsPage.validationMessage);
     });
 
     it('should login in BO', async function () {

@@ -5,6 +5,14 @@ import {expect} from 'chai';
 import {createAddressTest, bulkDeleteAddressesTest} from '@commonTests/BO/customers/address';
 
 import {
+  foDefaultHomePage,
+  foDefaultLoginPage,
+  foDefaultMyAccountPage,
+  foDefaultMyOrderDetailsPage,
+  foDefaultMyOrderHistoryPage,
+} from '@utils/foDefaultPages';
+
+import {
   boAddressesCreatePage,
   boDashboardPage,
   boLoginPage,
@@ -17,11 +25,6 @@ import {
   dataPaymentMethods,
   dataProducts,
   FakerAddress,
-  foHummingbirdHomePage,
-  foHummingbirdLoginPage,
-  foHummingbirdMyAccountPage,
-  foHummingbirdMyOrderDetailsPage,
-  foHummingbirdMyOrderHistoryPage,
   type Frame,
   type Page,
   utilsPlaywright,
@@ -322,54 +325,54 @@ describe('BO - Orders - Create order : Choose address', async () => {
         // Click on view my shop
         page = await boOrdersViewBlockCustomersPage.viewMyShop(page);
         // Change FO language
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.changeLanguage(page, 'en');
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage, 'Home page is not displayed').to.eq(true);
       });
 
       it('should go to login page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToLoginPageFO', baseContext);
 
-        await foHummingbirdHomePage.goToLoginPage(page);
+        await foDefaultHomePage.goToLoginPage(page);
 
-        const pageTitle = await foHummingbirdLoginPage.getPageTitle(page);
-        expect(pageTitle).to.contains(foHummingbirdLoginPage.pageTitle);
+        const pageTitle = await foDefaultLoginPage.getPageTitle(page);
+        expect(pageTitle).to.contains(foDefaultLoginPage.pageTitle);
       });
 
       it('should sign in with customer credentials', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'signInFO', baseContext);
 
-        await foHummingbirdLoginPage.customerLogin(page, dataCustomers.johnDoe);
+        await foDefaultLoginPage.customerLogin(page, dataCustomers.johnDoe);
 
-        const isCustomerConnected = await foHummingbirdLoginPage.isCustomerConnected(page);
+        const isCustomerConnected = await foDefaultLoginPage.isCustomerConnected(page);
         expect(isCustomerConnected, 'Customer is not connected').to.eq(true);
       });
 
       it('should go to account page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToAccountPage', baseContext);
 
-        await foHummingbirdHomePage.goToMyAccountPage(page);
+        await foDefaultHomePage.goToMyAccountPage(page);
 
-        const pageTitle = await foHummingbirdMyAccountPage.getPageTitle(page);
-        expect(pageTitle).to.contains(foHummingbirdMyAccountPage.pageTitle);
+        const pageTitle = await foDefaultMyAccountPage.getPageTitle(page);
+        expect(pageTitle).to.contains(foDefaultMyAccountPage.pageTitle);
       });
 
       it('should go to \'Order history and details\' page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToOrderHistoryPage', baseContext);
 
-        await foHummingbirdMyAccountPage.goToHistoryAndDetailsPage(page);
+        await foDefaultMyAccountPage.goToHistoryAndDetailsPage(page);
 
-        const pageTitle = await foHummingbirdMyOrderHistoryPage.getPageTitle(page);
-        expect(pageTitle).to.contains(foHummingbirdMyOrderHistoryPage.pageTitle);
+        const pageTitle = await foDefaultMyOrderHistoryPage.getPageTitle(page);
+        expect(pageTitle).to.contains(foDefaultMyOrderHistoryPage.pageTitle);
       });
 
       it('should click on details link of the first created order and check the delivery address', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'checkDeliveryAddressFO', baseContext);
 
-        await foHummingbirdMyOrderHistoryPage.goToOrderDetailsPage(page, orderID);
+        await foDefaultMyOrderHistoryPage.goToOrderDetailsPage(page, orderID);
 
-        const deliveryAddress = await foHummingbirdMyOrderDetailsPage.getDeliveryAddress(page);
+        const deliveryAddress = await foDefaultMyOrderDetailsPage.getDeliveryAddress(page);
         expect(deliveryAddress).to.contain(newAddressToCreate.firstName)
           .and.to.contain(newAddressToCreate.lastName)
           .and.to.contain(newAddressToCreate.address)
@@ -382,7 +385,7 @@ describe('BO - Orders - Create order : Choose address', async () => {
       it('should check the invoice address', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'checkInvoiceAddressFO', baseContext);
 
-        const deliveryAddress = await foHummingbirdMyOrderDetailsPage.getInvoiceAddress(page);
+        const deliveryAddress = await foDefaultMyOrderDetailsPage.getInvoiceAddress(page);
         expect(deliveryAddress).to.contain(newAddressToCreate.firstName)
           .and.to.contain(newAddressToCreate.lastName)
           .and.to.contain(newAddressToCreate.address)
@@ -395,7 +398,7 @@ describe('BO - Orders - Create order : Choose address', async () => {
       it('should close the FO page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'closeFo', baseContext);
 
-        page = await foHummingbirdMyOrderDetailsPage.closePage(browserContext, page, 0);
+        page = await foDefaultMyOrderDetailsPage.closePage(browserContext, page, 0);
 
         const pageTitle = await boOrdersViewBlockCustomersPage.getPageTitle(page);
         expect(pageTitle).to.contains(boOrdersViewBlockCustomersPage.pageTitle);

@@ -3,10 +3,13 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultModalQuickViewPage,
+} from '@utils/foDefaultPages';
+
+import {
   type BrowserContext,
   dataProducts,
-  foHummingbirdHomePage,
-  foHummingbirdModalQuickViewPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -36,41 +39,41 @@ describe('FO - Product page - Quick view : Close quick view modal', async () => 
     it('should go to FO home page', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'goToFo', baseContext);
 
-      await foHummingbirdHomePage.goToFo(page);
+      await foDefaultHomePage.goToFo(page);
 
-      const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+      const isHomePage = await foDefaultHomePage.isHomePage(page);
       expect(isHomePage).to.equal(true);
     });
 
     it('should quick view the third product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'quickView', baseContext);
 
-      await foHummingbirdHomePage.quickViewProduct(page, 3);
+      await foDefaultHomePage.quickViewProduct(page, 3);
 
-      const isModalVisible = await foHummingbirdModalQuickViewPage.isQuickViewProductModalVisible(page);
+      const isModalVisible = await foDefaultModalQuickViewPage.isQuickViewProductModalVisible(page);
       expect(isModalVisible).to.equal(true);
     });
 
     it('should click outside the modal and check that the modal is closed', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOutSideModal', baseContext);
 
-      const isQuickViewModalClosed = await foHummingbirdModalQuickViewPage.closeQuickViewModal(page, true);
+      const isQuickViewModalClosed = await foDefaultModalQuickViewPage.closeQuickViewModal(page, true);
       expect(isQuickViewModalClosed).to.equal(true);
     });
 
     it('should quick view the third product', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'quickView2', baseContext);
 
-      await foHummingbirdHomePage.quickViewProduct(page, 3);
+      await foDefaultHomePage.quickViewProduct(page, 3);
 
-      const isModalVisible = await foHummingbirdModalQuickViewPage.isQuickViewProductModalVisible(page);
+      const isModalVisible = await foDefaultModalQuickViewPage.isQuickViewProductModalVisible(page);
       expect(isModalVisible).to.equal(true);
     });
 
     it('should click on the cross link and check that the modal is closed', async function () {
       await testContext.addContextItem(this, 'testIdentifier', 'clickOnCrossLink', baseContext);
 
-      const isQuickViewModalClosed = await foHummingbirdModalQuickViewPage.closeQuickViewModal(page);
+      const isQuickViewModalClosed = await foDefaultModalQuickViewPage.closeQuickViewModal(page);
       expect(isQuickViewModalClosed).to.equal(true);
     });
   });

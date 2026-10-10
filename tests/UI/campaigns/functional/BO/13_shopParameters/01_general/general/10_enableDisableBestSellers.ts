@@ -2,12 +2,15 @@ import testContext from '@utils/testContext';
 import {expect} from 'chai';
 
 import {
+  foDefaultHomePage,
+  foDefaultSitemapPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boShopParametersPage,
   type BrowserContext,
-  foHummingbirdHomePage,
-  foHummingbirdSitemapPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -76,32 +79,32 @@ describe('BO - Shop Parameters - General : Enable/Disable display best sellers',
         // View shop
         page = await boShopParametersPage.viewMyShop(page);
         // Change shop language
-        await foHummingbirdHomePage.changeLanguage(page, 'en');
+        await foDefaultHomePage.changeLanguage(page, 'en');
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.eq(true);
       });
 
       it('should go to site map page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `goToBestSellersPage_${test.args.action}`, baseContext);
 
-        await foHummingbirdHomePage.goToFooterLink(page, 'Sitemap');
+        await foDefaultHomePage.goToFooterLink(page, 'Sitemap');
 
-        const pageTitle = await foHummingbirdSitemapPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdSitemapPage.pageTitle);
+        const pageTitle = await foDefaultSitemapPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultSitemapPage.pageTitle);
       });
 
       it('should verify the existence of the best sellers page link', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `checkBestSellersPage_${test.args.action}`, baseContext);
 
-        const exist = await foHummingbirdSitemapPage.isBestSellersLinkVisible(page);
+        const exist = await foDefaultSitemapPage.isBestSellersLinkVisible(page);
         expect(exist).to.equal(test.args.exist);
       });
 
       it('should go back to BO', async function () {
         await testContext.addContextItem(this, 'testIdentifier', `goBackToBo_${test.args.action}`, baseContext);
 
-        page = await foHummingbirdSitemapPage.closePage(browserContext, page, 0);
+        page = await foDefaultSitemapPage.closePage(browserContext, page, 0);
 
         const pageTitle = await boShopParametersPage.getPageTitle(page);
         expect(pageTitle).to.contains(boShopParametersPage.pageTitle);

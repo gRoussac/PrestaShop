@@ -3,12 +3,15 @@ import testContext from '@utils/testContext';
 
 import {expect} from 'chai';
 import {
+  foDefaultHomePage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boSearchPage,
   type BrowserContext,
-  foHummingbirdHomePage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -65,67 +68,67 @@ describe('BO - Shop Parameters - Search : Minimum word length (in characters)', 
     await testContext.addContextItem(this, 'testIdentifier', 'viewMyShop', baseContext);
 
     page = await boSearchPage.viewMyShop(page);
-    await foHummingbirdHomePage.changeLanguage(page, 'en');
+    await foDefaultHomePage.changeLanguage(page, 'en');
 
-    const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+    const isHomePage = await foDefaultHomePage.isHomePage(page);
     expect(isHomePage).to.eq(true);
   });
 
   it('should search the word "Pack"', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'searchWordPack', baseContext);
 
-    await foHummingbirdHomePage.searchProduct(page, 'Pack');
+    await foDefaultHomePage.searchProduct(page, 'Pack');
 
-    const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-    expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+    const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+    expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-    const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+    const hasResults = await foDefaultSearchResultsPage.hasResults(page);
     expect(hasResults).to.eq(true);
 
-    const numResults = await foHummingbirdSearchResultsPage.getSearchResultsNumber(page);
+    const numResults = await foDefaultSearchResultsPage.getSearchResultsNumber(page);
     expect(numResults).to.eq(1);
 
-    const searchInputValue = await foHummingbirdSearchResultsPage.getSearchValue(page);
+    const searchInputValue = await foDefaultSearchResultsPage.getSearchValue(page);
     expect(searchInputValue).to.be.equal('Pack');
   });
 
   it('should search the word "Pac"', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'searchWordPac', baseContext);
 
-    await foHummingbirdSearchResultsPage.searchProduct(page, 'Pac');
+    await foDefaultSearchResultsPage.searchProduct(page, 'Pac');
 
-    const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-    expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+    const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+    expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-    const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+    const hasResults = await foDefaultSearchResultsPage.hasResults(page);
     expect(hasResults).to.eq(true);
 
-    const numResults = await foHummingbirdSearchResultsPage.getSearchResultsNumber(page);
+    const numResults = await foDefaultSearchResultsPage.getSearchResultsNumber(page);
     expect(numResults).to.eq(1);
 
-    const searchInputValue = await foHummingbirdSearchResultsPage.getSearchValue(page);
+    const searchInputValue = await foDefaultSearchResultsPage.getSearchValue(page);
     expect(searchInputValue).to.be.equal('Pac');
   });
 
   it('should search the word "Pa"', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'searchWordPa', baseContext);
 
-    await foHummingbirdSearchResultsPage.searchProduct(page, 'Pa');
+    await foDefaultSearchResultsPage.searchProduct(page, 'Pa');
 
-    const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-    expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+    const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+    expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-    const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+    const hasResults = await foDefaultSearchResultsPage.hasResults(page);
     expect(hasResults).to.eq(false);
 
-    const searchInputValue = await foHummingbirdSearchResultsPage.getSearchValue(page);
+    const searchInputValue = await foDefaultSearchResultsPage.getSearchValue(page);
     expect(searchInputValue).to.be.equal('Pa');
   });
 
   it('should set the minimum word length to 5', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'setMinWordLengthTo5', baseContext);
 
-    page = await foHummingbirdSearchResultsPage.changePage(browserContext, 0);
+    page = await foDefaultSearchResultsPage.changePage(browserContext, 0);
     const textResult = await boSearchPage.setMinimumWordLength(page, 5);
     expect(textResult).to.be.eq(boSearchPage.settingsUpdateMessage);
   });
@@ -134,18 +137,18 @@ describe('BO - Shop Parameters - Search : Minimum word length (in characters)', 
     await testContext.addContextItem(this, 'testIdentifier', 'searchWordNoteb', baseContext);
 
     page = await boSearchPage.changePage(browserContext, 1);
-    await foHummingbirdHomePage.searchProduct(page, 'noteb');
+    await foDefaultHomePage.searchProduct(page, 'noteb');
 
-    const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-    expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+    const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+    expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-    const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+    const hasResults = await foDefaultSearchResultsPage.hasResults(page);
     expect(hasResults).to.eq(true);
 
-    const numResults = await foHummingbirdSearchResultsPage.getSearchResultsNumber(page);
+    const numResults = await foDefaultSearchResultsPage.getSearchResultsNumber(page);
     expect(numResults).to.eq(3);
 
-    const searchInputValue = await foHummingbirdSearchResultsPage.getSearchValue(page);
+    const searchInputValue = await foDefaultSearchResultsPage.getSearchValue(page);
     expect(searchInputValue).to.be.equal('noteb');
   });
 
@@ -153,22 +156,22 @@ describe('BO - Shop Parameters - Search : Minimum word length (in characters)', 
     await testContext.addContextItem(this, 'testIdentifier', 'searchWordNote', baseContext);
 
     page = await boSearchPage.changePage(browserContext, 1);
-    await foHummingbirdHomePage.searchProduct(page, 'note');
+    await foDefaultHomePage.searchProduct(page, 'note');
 
-    const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-    expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+    const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+    expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
 
-    const hasResults = await foHummingbirdSearchResultsPage.hasResults(page);
+    const hasResults = await foDefaultSearchResultsPage.hasResults(page);
     expect(hasResults).to.eq(false);
 
-    const searchInputValue = await foHummingbirdSearchResultsPage.getSearchValue(page);
+    const searchInputValue = await foDefaultSearchResultsPage.getSearchValue(page);
     expect(searchInputValue).to.be.equal('note');
   });
 
   it('should reset the minimum word length', async function () {
     await testContext.addContextItem(this, 'testIdentifier', 'resetMinimumWordLength', baseContext);
 
-    page = await foHummingbirdSearchResultsPage.changePage(browserContext, 0);
+    page = await foDefaultSearchResultsPage.changePage(browserContext, 0);
 
     const textResult = await boSearchPage.setMinimumWordLength(page, minimumWordLength);
     expect(textResult).to.be.eq(boSearchPage.settingsUpdateMessage);

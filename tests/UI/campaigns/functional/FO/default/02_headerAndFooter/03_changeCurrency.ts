@@ -6,6 +6,11 @@ import {createCurrencyTest, deleteCurrencyTest} from '@commonTests/BO/internatio
 
 // Import pages
 import {
+  foDefaultHomePage,
+  foDefaultSearchResultsPage,
+} from '@utils/foDefaultPages';
+
+import {
   boDashboardPage,
   boLoginPage,
   boLocalizationPage,
@@ -13,8 +18,6 @@ import {
   type BrowserContext,
   dataCurrencies,
   dataProducts,
-  foHummingbirdHomePage,
-  foHummingbirdSearchResultsPage,
   type Page,
   utilsPlaywright,
 } from '@prestashop-core/ui-testing';
@@ -56,16 +59,16 @@ describe('FO - Header and Footer : Change currency', async () => {
       it('should go to FO home page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToFO', baseContext);
 
-        await foHummingbirdHomePage.goToFo(page);
+        await foDefaultHomePage.goToFo(page);
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.be.eq(true);
       });
 
       it('should check that the currencies block is not visible', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'checkCurrenciesLink', baseContext);
 
-        const isVisible = await foHummingbirdHomePage.isCurrencyVisible(page);
+        const isVisible = await foDefaultHomePage.isCurrencyVisible(page);
         expect(isVisible).to.be.eq(false);
       });
     });
@@ -123,9 +126,9 @@ describe('FO - Header and Footer : Change currency', async () => {
       it('should go to FO home page', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'goToFO2', baseContext);
 
-        await foHummingbirdHomePage.goToFo(page);
+        await foDefaultHomePage.goToFo(page);
 
-        const isHomePage = await foHummingbirdHomePage.isHomePage(page);
+        const isHomePage = await foDefaultHomePage.isHomePage(page);
         expect(isHomePage).to.be.eq(true);
       });
 
@@ -133,19 +136,19 @@ describe('FO - Header and Footer : Change currency', async () => {
         await testContext.addContextItem(this, 'testIdentifier', 'changeFoCurrency', baseContext);
 
         // Check currency
-        await foHummingbirdHomePage.changeCurrency(page, dataCurrencies.mad.isoCode, dataCurrencies.mad.symbol);
+        await foDefaultHomePage.changeCurrency(page, dataCurrencies.mad.isoCode, dataCurrencies.mad.symbol);
 
-        const shopCurrency = await foHummingbirdHomePage.getDefaultCurrency(page);
+        const shopCurrency = await foDefaultHomePage.getDefaultCurrency(page);
         expect(shopCurrency).to.contains(dataCurrencies.mad.isoCode);
       });
 
       it('should search product', async function () {
         await testContext.addContextItem(this, 'testIdentifier', 'searchProduct', baseContext);
 
-        await foHummingbirdHomePage.searchProduct(page, dataProducts.demo_11.name);
+        await foDefaultHomePage.searchProduct(page, dataProducts.demo_11.name);
 
-        const pageTitle = await foHummingbirdSearchResultsPage.getPageTitle(page);
-        expect(pageTitle).to.equal(foHummingbirdSearchResultsPage.pageTitle);
+        const pageTitle = await foDefaultSearchResultsPage.getPageTitle(page);
+        expect(pageTitle).to.equal(foDefaultSearchResultsPage.pageTitle);
       });
 
       it('should check the product price', async function () {
@@ -153,7 +156,7 @@ describe('FO - Header and Footer : Change currency', async () => {
 
         const newExchangeRateValue = (exchangeRateValue * dataProducts.demo_11.finalPrice).toFixed(dataCurrencies.mad.decimals);
 
-        const productPrice = await foHummingbirdSearchResultsPage.getProductPrice(page);
+        const productPrice = await foDefaultSearchResultsPage.getProductPrice(page);
         expect(productPrice).to.contains(`${dataCurrencies.mad.symbol}${newExchangeRateValue}`);
       });
 
@@ -166,9 +169,9 @@ describe('FO - Header and Footer : Change currency', async () => {
         );
 
         // Check currency
-        await foHummingbirdHomePage.changeCurrency(page, dataCurrencies.euro.isoCode, dataCurrencies.euro.symbol);
+        await foDefaultHomePage.changeCurrency(page, dataCurrencies.euro.isoCode, dataCurrencies.euro.symbol);
 
-        const shopCurrency = await foHummingbirdHomePage.getDefaultCurrency(page);
+        const shopCurrency = await foDefaultHomePage.getDefaultCurrency(page);
         expect(shopCurrency).to.contains(dataCurrencies.euro.isoCode);
       });
 
@@ -177,7 +180,7 @@ describe('FO - Header and Footer : Change currency', async () => {
 
         const exchangeRate = Math.round(dataCurrencies.euro.exchangeRate * dataProducts.demo_11.finalPrice);
 
-        const productPrice = await foHummingbirdSearchResultsPage.getProductPrice(page);
+        const productPrice = await foDefaultSearchResultsPage.getProductPrice(page);
         expect(productPrice).to.contains(`${dataCurrencies.euro.symbol}${exchangeRate}`);
       });
     });
