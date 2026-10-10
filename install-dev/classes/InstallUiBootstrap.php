@@ -42,7 +42,7 @@ class InstallUiBootstrap
             'steps' => $steps,
             'menuSteps' => $menuSteps,
             'strings' => [
-                'installationAssistant' => $this->trans('Installation Assistant'),
+                'installationAssistant' => $this->trans('Installation'),
                 'next' => $this->trans('Next'),
                 'back' => $this->trans('Back'),
                 'needJavascript' => $this->trans('To install PrestaShop, you need to have JavaScript enabled in your browser.'),
@@ -110,7 +110,7 @@ class InstallUiBootstrap
             ),
             'continueIn' => $this->trans('Continue the installation in:'),
             'languageNote' => $this->trans(
-                'The language selection above only applies to the Installation Assistant. Once your store is installed, you can choose the language of your store from over %d% translations, all for free!',
+                'The language selection above only applies to the Installation. Once your store is installed, you can choose the language of your store from over %d% translations, all for free!',
                 ['%d%' => 60]
             ),
             'language' => $c->language->getLanguageIso(),
@@ -145,9 +145,9 @@ class InstallUiBootstrap
         $c = $this->controller;
 
         return [
-            'title' => $this->trans('We are currently checking PrestaShop compatibility with your system environment'),
+            'title' => $this->trans('We are currently checking compatibility with your system environment'),
             'requiredSuccess' => (bool) ($c->tests['required']['success'] ?? false),
-            'okMessage' => $this->trans('PrestaShop compatibility with your system environment has been verified!'),
+            'okMessage' => $this->trans('Compatibility with your system environment has been verified!'),
             'errorMessage' => $this->trans(
                 'Oops! Please correct the item(s) below, and then click "%refresh_label%" to test the compatibility of your new system.',
                 ['%refresh_label%' => $this->trans('Refresh information')]

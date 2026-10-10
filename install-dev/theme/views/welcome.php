@@ -47,7 +47,7 @@
 
 <p>
   <?php echo $this->translator->trans(
-    'The language selection above only applies to the Installation Assistant. Once your store is installed, you can choose the language of your store from over %d% translations, all for free!',
+    'The language selection above only applies to the Installation. Once your store is installed, you can choose the language of your store from over %d% translations, all for free!',
       ['%d%' => 60],
       'Install'
     );

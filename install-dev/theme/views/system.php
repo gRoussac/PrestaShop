@@ -5,11 +5,11 @@
  */
 ?>
 
-<h2><?php echo $this->translator->trans('We are currently checking PrestaShop compatibility with your system environment', [], 'Install'); ?></h2>
+<h2><?php echo $this->translator->trans('We are currently checking compatibility with your system environment', [], 'Install'); ?></h2>
 
 <?php if ($this->tests['required']['success']) { ?>
   <h3 class="okBlock">
-    <?php echo $this->translator->trans('PrestaShop compatibility with your system environment has been verified!', [], 'Install'); ?>
+    <?php echo $this->translator->trans('Compatibility with your system environment has been verified!', [], 'Install'); ?>
   </h3>
 <?php } else { ?>
   <h3 class="errorBlock">
