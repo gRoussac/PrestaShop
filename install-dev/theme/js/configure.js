@@ -96,7 +96,10 @@ function restoreConfigureDraft() {
     }
   }
 
-  if (typeof draft.enable_ssl !== 'undefined') {
+  // On HTTPS, always prefer Enable SSL = Yes (page is already SSL).
+  if (window.location.protocol === 'https:') {
+    $('input[name="enable_ssl"][value="1"]').prop('checked', true);
+  } else if (typeof draft.enable_ssl !== 'undefined') {
     $('input[name="enable_ssl"][value="' + (draft.enable_ssl ? '1' : '0') + '"]').prop('checked', true);
   }
 }
