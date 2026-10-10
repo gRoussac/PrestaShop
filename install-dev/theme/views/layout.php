@@ -16,7 +16,7 @@
     <meta http-equiv="Expires" content="-1" />
     <meta name="robots" content="noindex" />
     <link rel="shortcut icon" href="theme/img/favicon.ico" />
-    <link rel="stylesheet" type="text/css" media="all" href="theme/view.css?version=<?php echo _PS_VERSION_; ?>" />
+    <link rel="stylesheet" type="text/css" media="all" href="theme/view.css?version=<?php echo rawurlencode(_PS_VERSION_ . '.' . (string) filemtime(_PS_INSTALL_PATH_ . 'theme/view.css')); ?>" />
 
     <?php if ($this->language->getLanguage()->isRtl() == 'true') { ?>
       <link rel="stylesheet" type="text/css" media="all" href="theme/rtl.css" />
@@ -47,14 +47,11 @@
 
   <body>
     <div id="container">
-      <?php echo $this->getTemplate('header'); ?>
-
       <!-- Ajax loader animation -->
       <div id="loaderSpace">
         <div id="loader">&nbsp;</div>
       </div>
-      
-        
+
       <!-- Page content -->
       <form id="mainForm" action="index.php" method="post">
         <div class="mainForm__header">
@@ -105,7 +102,5 @@
 
       <?php echo $this->getHook('content-footer'); ?>
     </div>
-
-    <?php echo $this->getTemplate('footer'); ?>
   </body>
 </html>
